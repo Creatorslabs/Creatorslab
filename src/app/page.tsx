@@ -5,6 +5,7 @@ import TaskCard from './components/TaskCard';
 import Navbar from './components/Navbar';
 import { ContextProvider } from '../contexts/ContextProvider';
 import NewTasks from './components/NewTask';
+import Link from 'next/link';
 
 
 // Dynamically import Solana wallet context provider
@@ -17,21 +18,29 @@ const Home: React.FC = () => {
         <ContextProvider>
         <Navbar />
         <main className="container mx-auto py-8">
-          <section>
-            <div></div>
-            <div></div>
+      
+          <section className='border flex items-center justify-between'>
+            <div className='rounded-lg border border-solid border-grey-200 w-[70%]'>
+              <div className=' flex justify-between m-2'>
+                <p>Browse all categories</p>
+                <Link href={'/'}>Show All</Link>
+              </div>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Trending</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Promoted</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Projects</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Articles</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Quest</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>All</button>
+            </div>
+            <div className='rounded-lg border border-solid border-grey-200 w-[25%]'>
+              <div className=' flex justify-between'>
+                <p>Top Creators</p>
+                <Link href={'/'}>View All</Link>
+              </div>
+            </div>
           </section>
 
-          <NewTasks />
-
-          {/* <section>
-            <h2 className="text-2xl font-bold mb-4">New Tasks</h2>
-            <div className="flex items-center justify-around">
-              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/> 
-              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/>
-              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/> 
-            </div>
-          </section> */}
+        <NewTasks />
 
           <section className="mt-8">
             <h2 className="text-2xl font-bold mb-4">Purchase $CLS</h2>
