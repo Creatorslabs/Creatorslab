@@ -5,6 +5,7 @@ import React from 'react';
 import Image from 'next/image';
 import  logo  from '../../logo.svg';
 import profileImg from '../../../../public/images/profileImg.svg'
+import Link from 'next/link';
 
 
 const Navbar: React.FC = () => {
@@ -13,7 +14,9 @@ const Navbar: React.FC = () => {
   return (
     <nav className="flex justify-between items-center p-6 ">
       {/* <div className="text-2xl font-bold">creatorslab</div> */}
-      <Image src={logo} alt='' width={150} height={200}/>
+      <Link href='/'>
+        <Image src={logo} alt='' width={150} height={200}/>
+      </Link>  
       
       <input
         type="text"

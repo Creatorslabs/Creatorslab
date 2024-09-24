@@ -4,6 +4,7 @@ import React from 'react';
 import TaskCard from './components/TaskCard';
 import Navbar from './components/Navbar';
 import { ContextProvider } from '../contexts/ContextProvider';
+import NewTasks from './components/NewTask';
 
 
 // Dynamically import Solana wallet context provider
@@ -21,14 +22,16 @@ const Home: React.FC = () => {
             <div></div>
           </section>
 
-          <section>
+          <NewTasks />
+
+          {/* <section>
             <h2 className="text-2xl font-bold mb-4">New Tasks</h2>
             <div className="flex items-center justify-around">
-              <TaskCard title="Task/Article Title here" price={100} /> 
-              <TaskCard title="Task/Article Title here" price={100} />
-              <TaskCard title="Task/Article Title here" price={100} /> 
+              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/> 
+              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/>
+              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/> 
             </div>
-          </section>
+          </section> */}
 
           <section className="mt-8">
             <h2 className="text-2xl font-bold mb-4">Purchase $CLS</h2>
@@ -49,9 +52,9 @@ const Home: React.FC = () => {
           <section className='m-8'>
             <h2 className="text-2xl font-bold mb-4">Trending Tasks</h2>
             <div className="flex items-center justify-around">
-              <TaskCard title="Task/Article Title here" price={100} /> 
-              <TaskCard title="Task/Article Title here" price={100} />
-              <TaskCard title="Task/Article Title here" price={100} /> 
+              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/> 
+              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/>
+              <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/> 
             </div>
           </section>
 
