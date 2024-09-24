@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import { ContextProvider } from '../contexts/ContextProvider';
 import NewTasks from './components/NewTask';
 import Link from 'next/link';
+import TrendingTasks from './components/TrendingTask';
 
 
 // Dynamically import Solana wallet context provider
@@ -25,12 +26,12 @@ const Home: React.FC = () => {
                 <p>Browse all categories</p>
                 <Link href={'/'}>Show All</Link>
               </div>
-              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Trending</button>
-              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Promoted</button>
-              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Projects</button>
-              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Articles</button>
-              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>Quest</button>
-              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2'>All</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Trending</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Promoted</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Projects</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Articles</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Quest</button>
+              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>All</button>
             </div>
             <div className='rounded-lg border border-solid border-grey-200 w-[25%]'>
               <div className=' flex justify-between'>
@@ -58,14 +59,16 @@ const Home: React.FC = () => {
             </div>
           </section>
 
-          <section className='m-8'>
+          <TrendingTasks />
+
+          {/* <section className='m-8'>
             <h2 className="text-2xl font-bold mb-4">Trending Tasks</h2>
             <div className="flex items-center justify-around">
               <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/> 
               <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/>
               <TaskCard title="Task/Article Title here" price={100} description='Task description goes here'/> 
             </div>
-          </section>
+          </section> */}
 
           <div className="bg-gradient-to-r from-purple-400 to-pink-500 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold">Stake SOL</h3>
