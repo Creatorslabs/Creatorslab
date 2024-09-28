@@ -162,8 +162,8 @@ const page = () => {
                 height={220}
               />
               <div className="absolute top-0 p-8">
-                <span className="text-sm text-[#606060]">Wallet Balance</span>
-                <p className="text-3xl flex gap-8 items-center mt-3 mb-6">
+                <span className="text-[#606060]">Wallet Balance</span>
+                <p className="text-4xl flex gap-8 items-center mt-3 mb-6">
                   $CLS 206.08
                   <Image
                     src="/images/eye.svg"
@@ -172,11 +172,11 @@ const page = () => {
                     height={20}
                   />
                 </p>
-                <div className="flex gap-2">
+                <div className="flex gap-2 font-semibold text-base">
                   <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#5d3fd1] to-[#03abff]">
                     Buy $CLS
                   </button>
-                  <button className="px-6 py-2 rounded-lg bg-[#F4B30C]">
+                  <button className="px-6 py-2 rounded-lg bg-[#F4B30C] text-black">
                     Claim $CLS
                   </button>
                 </div>
