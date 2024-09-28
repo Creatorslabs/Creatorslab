@@ -34,7 +34,7 @@ const page = () => {
         </nav>
         {/* header navigation section */}
         <div className="flex justify-between items-center my-6">
-          <div className="p-2 rounded-lg bg-[#242424]">
+          <div className="p-3 rounded-lg bg-[#242424]">
             <Image
               src="/images/back-arrow.svg"
               alt="back"
