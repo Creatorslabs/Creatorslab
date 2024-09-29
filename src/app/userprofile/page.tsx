@@ -2,8 +2,8 @@ import Image from "next/image";
 
 const page = () => {
   return (
-    <div className="bg-[#161616]">
-      <div className="w-[88%] mx-auto py-4 ">
+    <div className="bg-[#161616] w-full max-w-[1440px] mx-auto">
+      <div className="w-[88%] mx-auto py-4 min-h-screen">
         {/* navbar */}
         <nav className="h-20 flex justify-between items-center">
           <Image src="/images/logo.svg" alt="logo" width={200} height={100} />
