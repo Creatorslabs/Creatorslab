@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 import newTask from '@/newTasks'
 import TaskCard from '../TaskCard';
 import Link from 'next/link';
+import leftArrow from '../../../../public/images/leftarrow.svg';
+import rightArrow from '../../../../public/images/rightarrow.svg';
+import Image from 'next/image';
 
 const NewTasks: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -30,19 +33,22 @@ const NewTasks: React.FC = () => {
           <h2 className="text-2xl font-bold">New Tasks</h2>
           <div className="flex items-center justify-between w-[15%]">
             <Link href={'/'} className='underline text-[14px]'>Show all ({newTask.length})</Link>
-            {/* Left Arrow */}
+           
             <button
               onClick={handlePrev}
-              className="text-white bg-blue-500 p-2 w-[40px] h-[40px] rounded-full"
+              className="text-white bg-[#222222] p-2 w-[40px] h-[40px] rounded-full"
             >
-              {"<--"}
+              {/* {"<--"} */}
+              <Image src={leftArrow} alt='' width={20} height={20}/>
+              
             </button>
            {/* Right Arrow */}
             <button
               onClick={handleNext}
-              className="text-white bg-blue-500 p-2 w-[40px] h-[40px] rounded-full"
+              className="text-white bg-[#222222] p-2 w-[40px] h-[40px] rounded-full"
             >
-              {"-->"}
+              {/* {"-->"} */}
+              <Image src={rightArrow} alt='' width={20} height={20}/>
             </button>
           </div>
         </div>

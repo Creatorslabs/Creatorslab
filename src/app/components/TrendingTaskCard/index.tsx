@@ -16,8 +16,8 @@ interface TrendingTaskCardProps {
 const TrendingTaskCard: React.FC<TrendingTaskCardProps> = ({ title, price, description, taskBanner, posterImage, participants, retweets, trending }) => (
   <div className=" rounded-lg shadow-lg p-4 w-[32%] border border-solid-grey">
     <div className='relative'>
-      <Image src={taskBanner} alt='' width={500} height={300}/>
-      <Image src={posterImage} alt='' width={40} height={40} className='absolute right-0 bottom-[-10px]'/>
+      <Image src={taskBanner} alt='' width={500} height={300} className='w-[500px] h-[150px]'/>
+      <Image src={posterImage} alt='' width={40} height={40} className='absolute right-0 bottom-[-10px]  w-10 h-10 rounded-[50%]'/>
     </div>
     
     <h3 className="text-xl font-semibold mt-4">{title}</h3>

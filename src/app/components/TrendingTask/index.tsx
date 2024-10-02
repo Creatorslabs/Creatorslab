@@ -3,6 +3,10 @@ import React, { useState } from 'react'
 import newTask from '@/newTasks'
 import Link from 'next/link';
 import TrendingTaskCard from '../TrendingTaskCard';
+import leftArrow from '../../../../public/images/leftarrow.svg';
+import rightArrow from '../../../../public/images/rightarrow.svg';
+import Image from 'next/image';
+
 
 const TrendingTasks: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -33,16 +37,18 @@ const TrendingTasks: React.FC = () => {
             {/* Left Arrow */}
             <button
               onClick={handlePrev}
-              className="text-white bg-blue-500 p-2 w-[40px] h-[40px] rounded-full"
+              className="text-white bg-[#222222] p-2 w-[40px] h-[40px] rounded-full"
             >
-              {"<--"}
+              {/* {"<--"} */}
+              <Image src={leftArrow} alt='' width={20} height={20}/>
             </button>
            {/* Right Arrow */}
             <button
               onClick={handleNext}
-              className="text-white bg-blue-500 p-2 w-[40px] h-[40px] rounded-full"
+              className="text-white bg-[#222222] p-2 w-[40px] h-[40px] rounded-full"
             >
-              {"-->"}
+              {/* {"-->"} */}
+              <Image src={rightArrow} alt='' width={20} height={20}/>
             </button>
           </div>
         </div>
