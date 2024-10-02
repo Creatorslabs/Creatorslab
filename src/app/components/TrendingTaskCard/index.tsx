@@ -33,12 +33,12 @@ const TrendingTaskCard: React.FC<TrendingTaskCardProps> = ({ title, price, descr
         </div>
         
         <div className='flex items-center justify-between w-20% rounded-lg bg-[#222222] p-1'>
-         <Image src={fireIcon} alt='' width={10} height={10}/>
+         <Image src={fireIcon} alt='' width={20} height={20}/>
           <span className='mx-2'>{trending}</span>  
         </div>
       
         <div className='flex items-center justify-between w-20% rounded-lg bg-[#222222] p-1'>
-          <Image src={twitterBird} alt='' width={10} height={10}/>
+          <Image src={twitterBird} alt='' width={20} height={20}/>
           <span className='mx-2'>{retweets}k</span>
         </div>
         

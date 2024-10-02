@@ -24,7 +24,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ title, price, description, taskBann
     <div className='w-[35%] flex items-center justify-between'>
       <span className="text-sm text-white bg-[#5D3FD1] py-2 px-2 rounded-lg flex items-center justify-between w-[70%]">
         {price} $CLS 
-        <Image src={coin} alt='' width={10} height={10}/>
+        <Image src={coin} alt='' width={20} height={20}/>
       </span>
       <div className='border p-2 rounded-lg border-[#606060]'>
         <Image src={linkImage} alt='' width={20} height={20} />
