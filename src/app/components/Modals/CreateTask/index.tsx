@@ -27,37 +27,37 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose }) => {
                 </div>
                 
             </div>
-          <label className="block mb-2">
+          <label className="block my-4">
             Title:
-            <input type="text" className="w-full p-2 rounded" />
+            <input type="text" className="w-full p-2 rounded border border-[#606060] bg-inherit " />
           </label>
-          <label className="block mb-2">
+          <label className="block my-4">
             Social Platform:
-            <select className="w-full p-2 rounded">
-              <option value="Twitter">Twitter</option>
+            <select className="w-full p-2 rounded border border-[#606060] bg-inherit text-[#606060]">
+              <option value="Twitter " >Twitter</option>
               <option value="Facebook">Facebook</option>
               {/* Add more options as needed */}
             </select>
           </label>
-          <label className="block mb-2">
+          <label className="block my-4">
             Engagement Type:
-            <select className="w-full p-2 rounded">
+            <select className="w-full p-2 rounded border border-[#606060] bg-inherit text-[#606060]">
               <option value="Like">Like</option>
               <option value="Retweet">Retweet</option>
               {/* Add more options as needed */}
             </select>
           </label>
-          <label className="block mb-2">
+          <label className="block my-4">
             Rate Needed:
-            <input type="number" className="w-full p-2 rounded" />
+            <input type="number" className="w-full p-2 rounded border border-[#606060] bg-inherit" />
           </label>
-          <label className="block mb-2">
+          <label className="block my-4">
             Task Description:
-            <textarea className="w-full p-2 rounded" rows={4}></textarea>
+            <textarea className="w-full p-2 rounded border border-[#606060] bg-inherit" rows={4}></textarea>
           </label>
-          <label className="block mb-2">
+          <label className="block my-4">
             Task Link:
-            <input type="url" className="w-full p-2 rounded" />
+            <input type="url" className="w-full p-2 rounded border border-[#606060] bg-inherit" />
           </label>
         </form>
         <div className="flex justify-between mt-4">

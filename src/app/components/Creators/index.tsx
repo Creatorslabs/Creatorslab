@@ -15,7 +15,7 @@ const TopCreators: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gray-900 p-4 rounded-lg w-full max-w-sm">
+    <div className=" p-4 rounded-lg w-full max-w-sm">
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-white font-semibold text-lg">Top Creators</h3>
         <a href="#" className="text-purple-500 hover:underline">View all</a>

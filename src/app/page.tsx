@@ -23,7 +23,7 @@ const Home: React.FC = () => {
         <main className="container mx-auto py-8">
       
           <section className=' flex items-center justify-between'>
-            <div className='rounded-lg border border-solid border-grey-200 w-[70%]'>
+            <div className='rounded-lg border border-solid border-[#3f3f3f] w-[70%]'>
               <div className=' flex justify-between m-2'>
                 <p>Browse all categories</p>
                 <Link href={'/'} className='font-bold text-[#5D3FD1]'>Show All</Link>
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
               <button className='p-3 rounded-lg bg-[url(/images/button-bg04.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Quest</button>
               <button className='p-3 rounded-lg bg-[url(/images/button-bg05.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>All</button>
             </div>
-            <div className='rounded-lg border border-solid border-grey-200 w-[25%]'>
+            <div className='rounded-lg bg-[#3f3f3f] w-[25%]'>
               {/* <div className=' flex justify-between'>
                 <p>Top Creators</p>
                 <Link href={'/'} className='font-bold text-[#5D3FD1]'>View All</Link>
