@@ -8,6 +8,7 @@ import Link from 'next/link';
 import TrendingTasks from './components/TrendingTask';
 import moneyBag from '../../public/images/moneybag.svg';
 import Image from 'next/image'
+import TopCreators from './components/Creators';
 
 
 // Dynamically import Solana wallet context provider
@@ -35,10 +36,11 @@ const Home: React.FC = () => {
               <button className='p-3 rounded-lg bg-[url(/images/button-bg05.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>All</button>
             </div>
             <div className='rounded-lg border border-solid border-grey-200 w-[25%]'>
-              <div className=' flex justify-between'>
+              {/* <div className=' flex justify-between'>
                 <p>Top Creators</p>
                 <Link href={'/'} className='font-bold text-[#5D3FD1]'>View All</Link>
-              </div>
+              </div> */}
+              <TopCreators />
             </div>
           </section>
 
