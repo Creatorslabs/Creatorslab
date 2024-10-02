@@ -49,10 +49,6 @@ const TrendingTaskCard: React.FC<TrendingTaskCardProps> = ({ title, price, descr
 
       <span className="text-sm text-white bg-[#5D3FD1] py-2 px-2 rounded-lg ">{price} $CLS</span>
     </div>
-    
-    
-    
-
   </div>
 );
 

@@ -76,11 +76,11 @@ const Home: React.FC = () => {
 
           <TrendingTasks />
 
-          <div className='bg-[url(/images/banner-bg03.jpeg)] bg-no-repeat bg-cover p-6 rounded-lg flex items-center justify-between '>
-            <div className="">
-              <h3 className="text-xl font-semibold">Stake SOL</h3>
-              <p>Stake SOL to enhance your rewards.</p>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Stake SOL</button>
+          <div className='bg-[url(/images/banner-bg03.jpeg)] bg-no-repeat bg-cover p-10 rounded-lg flex items-center justify-between '>
+            <div className="w-[300px]">
+              <h3 className="text-xl font-semibold">Earn as you learn with us.</h3>
+              <p >Whether you are a creator, contributor or a community member, you can earn $CLS as you learn and engage.</p>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Become a member</button>
             </div>
 
             <Image src={moneyBag} alt='' width={100} height={100}/>
