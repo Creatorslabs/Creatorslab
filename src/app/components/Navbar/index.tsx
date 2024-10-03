@@ -7,6 +7,7 @@ import logo from '../../logo.svg';
 import profileImg from '../../../../public/images/profileImg.svg';
 import Link from 'next/link';
 import TaskModal from '../Modals/CreateTask';
+import { useRouter } from 'next/router';
 
 const Navbar: React.FC = () => {
   const { connected } = useWallet();
@@ -57,7 +58,10 @@ const Navbar: React.FC = () => {
               Post Task
             </button>
             <WalletMultiButton>Connect Wallet</WalletMultiButton>
-            <Image src={profileImg} alt="Profile" width={40} height={40} />
+            <Link href='/auth/sign-up'>
+              <Image src={profileImg} alt="Profile" width={40} height={40} />
+            </Link>
+            
           </div>
         </div>
 

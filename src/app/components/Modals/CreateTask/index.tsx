@@ -18,7 +18,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose }) => {
         <form>
             <div className='flex items-center justify-between my-4'>
                 <div>
-                    <p>Upload Imaage</p>
+                    <p>Upload Image</p>
                     <span className='text-[#606060] text-sm'>This will serve as thumbnail for your task</span>
                 </div>
 
