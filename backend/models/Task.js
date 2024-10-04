@@ -2,18 +2,46 @@
 const mongoose = require('mongoose');
 
 const TaskSchema = new mongoose.Schema({
+  image: {
+      type: String,
+      required: true,
+  },
   title: {
-    type: String,
+      type: String,
+      required: true,
+  },
+  socialPlatform: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'SocialPlatform', 
     required: true,
+  }],
+  engagementType: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EngagementType', 
+    required: true,
+  }],
+  rate: {
+      type: Number,
+      required: true,
   },
   description: {
-    type: String,
+      type: String,
+      required: true,
   },
-  creator: {
+  taskLink: {
+      type: String,
+      required: true,
+  },
+  taskPrice: {
+      type: Number,
+      required: true,
+  },
+
+  user: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'User', 
     required: true,
-  },
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Task', TaskSchema);
