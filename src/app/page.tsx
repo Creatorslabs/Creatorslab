@@ -1,8 +1,6 @@
 "use client"
 // import dynamic from 'next/dynamic';
 import React from 'react';
-import Navbar from './components/Navbar';
-import { ContextProvider } from '../contexts/ContextProvider';
 import NewTasks from './components/NewTask';
 import Link from 'next/link';
 import TrendingTasks from './components/TrendingTask';
@@ -16,10 +14,7 @@ import TopCreators from './components/Creators';
 
 const Home: React.FC = () => {
   return (
-    
       <div className="w-[90%] m-auto">
-        <ContextProvider>
-        <Navbar />
         <main className="container mx-auto py-8">
       
           <section className=' flex items-center justify-between'>
@@ -88,7 +83,6 @@ const Home: React.FC = () => {
           </div>
           
         </main>
-        </ContextProvider>
       </div>
   );
 };

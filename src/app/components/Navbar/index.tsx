@@ -1,3 +1,4 @@
+
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 // import '@solana/wallet-adapter-react-ui/styles.css'; // Wallet styles
@@ -23,11 +24,19 @@ const Navbar: React.FC = () => {
         </Link>
 
         {/* Search Box */}
-        <input
-          type="text"
-          placeholder="Search projects, articles, creators"
-          className="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none w-[300px] hidden md:block"
-        />
+        <div className="border border-[#3F3F3F] p-2 flex gap-1 rounded-xl w-80">
+            <Image
+              src="/images/search.svg"
+              alt="search"
+              height={20}
+              width={20}
+            />
+            <input
+              type="text"
+              className="outline-none bg-transparent px-1 w-full"
+              placeholder="Search projects, quests, creators"
+            />
+          </div>
 
         {/* Hamburger Icon and Profile/Button Section */}
         <div className="flex items-center space-x-4">
@@ -69,7 +78,7 @@ const Navbar: React.FC = () => {
         {menuOpen && (
           <div className="absolute top-16 right-4 bg-gray-800 text-white p-4 rounded-lg md:hidden">
             <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg">
-              Post Task
+              Plant Seeds
             </button>
             <WalletMultiButton className="block w-full text-left p-3 mb-2 bg-blue-500 rounded-lg">
               Connect Wallet

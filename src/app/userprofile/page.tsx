@@ -4,34 +4,6 @@ const page = () => {
   return (
     <div className="bg-[#161616] w-full max-w-[1440px] mx-auto">
       <div className="w-[88%] mx-auto py-4 min-h-screen">
-        {/* navbar */}
-        <nav className="h-20 flex justify-between items-center">
-          <Image src="/images/logo.svg" alt="logo" width={200} height={100} />
-          <div className="border border-[#3F3F3F] p-2 flex gap-1 rounded-xl w-80">
-            <Image
-              src="/images/search.svg"
-              alt="search"
-              height={20}
-              width={20}
-            />
-            <input
-              type="text"
-              className="outline-none bg-transparent px-1 w-full"
-              placeholder="Search projects, quests, creators"
-            />
-          </div>
-          <div className="flex gap-6 items-center">
-            <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#5d3fd1] to-[#03abff]">
-              Post Task
-            </button>
-            <Image
-              src="/images/profileImg.svg"
-              alt="profile"
-              width={50}
-              height={50}
-            />
-          </div>
-        </nav>
         {/* header navigation section */}
         <div className="flex justify-between items-center my-6">
           <div className="p-3 rounded-lg bg-[#242424]">
