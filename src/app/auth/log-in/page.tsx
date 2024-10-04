@@ -35,7 +35,7 @@ const LogIn: FC = () => {
                 <h2 className='font-syne font-bold text-xl'>Log in to CreatorsLab</h2>
                 <p className='text-sm text-[#606060]'>Welcome back.</p>
                 <label className="block my-4">Log in with Wallet</label>
-                <WalletMultiButton className='text-red-500 w-full'>connect</WalletMultiButton>
+                <WalletMultiButton style={{background:"#222222", width: '500px'}}>Connect with wallet</WalletMultiButton>
                 <div className='flex items-center justify-between my-4'>
                   <div className=' w-[40%] border border-[#606060] '></div>
                   <span>OR</span>

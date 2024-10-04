@@ -1,6 +1,6 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import '@solana/wallet-adapter-react-ui/styles.css'; // Wallet styles
+// import '@solana/wallet-adapter-react-ui/styles.css'; // Wallet styles
 import React, { useState } from 'react';
 import Image from 'next/image';
 import logo from '../../logo.svg';
@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
             <button className="p-3 rounded-lg font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff]"  onClick={() => setModalOpen(true)}> 
               Post Task
             </button>
-            <WalletMultiButton>Connect Wallet</WalletMultiButton>
+            <WalletMultiButton style={{background:"#222222"}}>Connect Wallet</WalletMultiButton>
             <Link href='/auth/sign-up'>
               <Image src={profileImg} alt="Profile" width={40} height={40} />
             </Link>
