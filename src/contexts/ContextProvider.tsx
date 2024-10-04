@@ -1,3 +1,4 @@
+"use client"
 import { WalletAdapterNetwork, WalletError } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
@@ -19,6 +20,8 @@ import {
   NetworkConfigurationProvider,
   useNetworkConfiguration,
 } from "./NetworkConfigurationProvider";
+import '@solana/wallet-adapter-react-ui/styles.css'; // Wallet styles
+
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
