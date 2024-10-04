@@ -1,5 +1,6 @@
 import React from "react";
 import newTask from "@/newTasks";
+import Link from "next/link";
 
 const TopCreators: React.FC = () => {
   const avatars = [
@@ -28,7 +29,10 @@ const TopCreators: React.FC = () => {
             className={`w-10 h-10 rounded-full overflow-hidden border-2 border-gray-800
               ${index !== 0 ? '-ml-3' : ''}`} // Overlap from second avatar
           >
-            <img src={avatar} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
+            <Link href={'/userprofile'} >
+               <img src={avatar} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
+            </Link>
+           
           </div>
         ))}
         {/* Ellipsis for more avatars */}
