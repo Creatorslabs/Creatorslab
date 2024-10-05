@@ -16,12 +16,11 @@ const Home: React.FC = () => {
   return (
       <div className="w-[90%] m-auto">
         <main className="container mx-auto py-8">
-      
           <section className=' flex items-center justify-between'>
             <div className='rounded-lg border border-solid border-[#3f3f3f] w-[70%]'>
               <div className=' flex justify-between m-2'>
                 <p>Browse all categories</p>
-                <Link href={'/'} className='font-bold text-[#5D3FD1]'>Show All</Link>
+                <Link href={'/tasks'} className='font-bold text-[#5D3FD1]'>Show All</Link>
               </div>
               <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Trending</button>
               <button className='p-3 rounded-lg bg-[url(/images/button-bg01.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Promoted</button>

@@ -63,8 +63,8 @@ const Navbar: React.FC = () => {
 
           {/* Full Menu (hidden on small screens) */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="p-3 rounded-lg font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff]"  onClick={() => setModalOpen(true)}> 
-              Post Task
+            <button className="p-3 rounded-lg bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"  onClick={() => setModalOpen(true)}> 
+              Plant Seeds
             </button>
             <WalletMultiButton style={{background:"#222222"}}>Connect Wallet</WalletMultiButton>
             <Link href='/auth/sign-up'>

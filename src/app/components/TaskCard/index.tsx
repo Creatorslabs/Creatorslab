@@ -4,14 +4,16 @@ import coin from '../../../../public/images/coin.svg'
 import Image from 'next/image';
 
 interface TaskCardProps {
+  id: number;
   title: string;
   price: number;
   description: string;
   taskBanner: string;
-  posterImage : string;
+  posterImage: string;
+  
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ title, price, description, taskBanner, posterImage }) => (
+const TaskCard: React.FC<TaskCardProps> = ({ title, price, description, taskBanner, posterImage, id }) => (
   <div className=" rounded-lg shadow-lg p-4 w-[32%] border border-[#3f3f3f] my-2">
     <div className='relative'>
       <Image src={taskBanner} alt='' width={500} height={300} className='w-[500px] h-[150px]'/>

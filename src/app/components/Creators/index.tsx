@@ -29,7 +29,7 @@ const TopCreators: React.FC = () => {
             className={`w-10 h-10 rounded-full overflow-hidden border-2 border-gray-800
               ${index !== 0 ? '-ml-3' : ''}`} // Overlap from second avatar
           >
-            <Link href={'/userprofile'} >
+            <Link href={''} >
                <img src={avatar} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
             </Link>
            
