@@ -10,6 +10,9 @@ import checked from '../../../../public/images/checked.svg'
 import link from '../../../../public/images/link.svg'
 import X from '../../../../public/images/X.svg'
 import telegram from '../../../../public/images/telegram.svg'
+import discord from '../../../../public/images/discord.svg'
+import paper from '../../../../public/images/thxjoin.svg'
+
 
 
 const page = () => {
@@ -22,7 +25,7 @@ const page = () => {
                 </Link>
             </div> 
         </div>
-        <div className='w-full  m-auto flex items-center justify-between'>
+        <div className='w-full  m-auto flex items-start justify-between'>
             <div className='w-[60%] p-10 bg-[#1c1c1c] rounded-xl'>
                 <div className='w-[80%] mx-auto'>
                     <div className='rounded-xl w-full bg-[url(/images/taskbg.jpeg)] bg-no-repeat bg-cover p-4'>
@@ -31,7 +34,7 @@ const page = () => {
                         </div>
                         <h2 className='mt-6 text-xl font-bold tracking-widest'>Follow CEO Abayaomi Chukwudi on X</h2>  
                     </div>
-                    <div className='my-4 border border-[#606060] rounded-xl flex items-center justify-between px-6 py-2]'>
+                    <div className='my-4 border border-[#606060] rounded-xl flex items-center justify-between px-6 py-4'>
                         <div>
                             <p className='mb-2 text-[#606060]'>Creator</p>
                             <div className='flex items-center justify-between w-[150px]'>
@@ -64,7 +67,7 @@ const page = () => {
                             <Image src={checked} alt='' width={40} height={40} />
                             <p>Follow <a href="" className='text-[#2aabee]'>CEO Abayomi Chukwudi</a> on X</p>
                         </div>
-                        <button className='px-2 py-2 bg-[#222222] rounded-lg flex items-center justify-between'>Link & Verify</button>
+                        <button className='px-2 py-2 bg-[#222222] rounded-lg'>Link & Verify</button>
                     </div>
 
                     <div className='my-4 border border-[#606060] rounded-lg p-4'>
@@ -88,12 +91,67 @@ const page = () => {
                                 Connect Telegram
                             </button>
                         </div>
-                     
+                    </div>
+                    <div className='flex justify-end items-center'>
+                        <button className='px-20 py-4 bg-[#222222] text-[#606060] rounded-lg'>Complete</button>
                     </div>
                 </div>
             </div>
-            <div className='w-[35%] border border-blue-600 bg-[#1c1c1c] p-6 rounded-xl'>
+            <div className='w-[35%]  bg-[#1c1c1c] p-6 rounded-xl'>
+                <div className='border border-[#606060] px-6 py-4 rounded-lg bg-[#5D3FD126]'>
+                   <h2>Other tasks from TH</h2>
+                   <p className='text-[#787878]'>Get started with more task to earn more $CLS</p>
+                   <p>0 / 3</p>
+                   <input type="range" name="" id="" className='w-[full]' />
+                </div>
 
+                <div className='my-4 border border-[#606060] rounded-xl flex items-center justify-between px-6 py-4'>
+                    <div>
+                        <p className='mb-2'>Follow CEO Abayomi Chukwudi on X</p>
+                        <div className='flex items-center justify-between w-[150px]'>
+                            <Image src={X} alt='' width={50} height={50} className='rounded-xl h-[50px] w-[50px] mb-2 bg-white p-2'/>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button className=' px-6 py-2 bg-gradient-to-br from-[#5d3fd1] to-[#03abff] rounded-lg flex items-center justify-between'>
+                            $CLS 10
+                            <Image src={coin} alt='' width={20} height={20} className='pl-1'/>
+                        </button>
+                    </div>   
+                </div>
+
+                <div className='my-4 border border-[#606060] rounded-xl flex items-center justify-between px-6 py-4'>
+                    <div>
+                        <p className='mb-2'>Join the  TH community Discord server</p>
+                        <div className='flex items-center justify-between w-[150px]'>
+                            <Image src={discord} alt='' width={50} height={50} className='rounded-xl h-[50px] w-[50px] mb-2 '/>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button className=' px-6 py-2 bg-[#222222] rounded-lg flex items-center justify-between'>
+                            $CLS 15
+                            <Image src={coin} alt='' width={20} height={20} className='pl-1'/>
+                        </button>
+                    </div>   
+                </div>
+
+                <div className='my-4 border border-[#606060] rounded-xl flex items-center justify-between px-6 py-4'>
+                    <div>
+                        <p className='mb-2'>Sign up for THX</p>
+                        <div className='flex items-center justify-between w-[150px]'>
+                            <Image src={paper} alt='' width={50} height={50} className='rounded-xl h-[50px] w-[50px] mb-2 '/>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button className=' px-6 py-2 bg-[#222222] rounded-lg flex items-center justify-between'>
+                            $CLS 15
+                            <Image src={coin} alt='' width={20} height={20} className='pl-1'/>
+                        </button>
+                    </div>   
+                </div>
             </div>
         </div>
     </div>
