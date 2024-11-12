@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center p-6 text-white w-[90%] m-auto ">
+      <nav className="flex justify-between items-center p-6 text-white w-[83%] m-auto ">
         {/* Logo */}
         <Link href="/">
           <Image src={logo} alt="Creatorslab Logo" width={150} height={200} />
@@ -66,8 +66,8 @@ const Navbar: React.FC = () => {
             <button className="p-3 rounded-lg bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"  onClick={() => setModalOpen(true)}> 
               Plant Seeds
             </button>
-            <WalletMultiButton style={{background:"#222222"}}>Connect Wallet</WalletMultiButton>
-            <Link href='/auth/sign-up'>
+            <WalletMultiButton style={{background:"#222222"}}></WalletMultiButton>
+            <Link href='/userprofile'>
               <Image src={profileImg} alt="Profile" width={40} height={40} />
             </Link>
             
