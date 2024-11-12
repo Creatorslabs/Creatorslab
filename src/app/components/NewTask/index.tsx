@@ -64,6 +64,7 @@ const NewTasks: React.FC = () => {
           <div className={` flex items-center justify-between flex-grow mx-4  ${showAllTasks ? 'flex items-center justify-between flex-wrap mx-4' : 'grid-cols-3'} `}>
             {displayedCards.map((card, index) => (
               <TaskCard 
+                id = {card.id}
                 key={index} 
                 title={card.title} 
                 price={card.price} 

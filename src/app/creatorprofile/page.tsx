@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const page = () => {
   return (
@@ -7,12 +8,15 @@ const page = () => {
         {/* header navigation section */}
         <div className="flex justify-between items-center my-6">
           <div className="p-3 rounded-lg bg-[#242424]">
-            <Image
-              src="/images/back-arrow.svg"
-              alt="back"
-              width={20}
-              height={20}
-            />
+            <Link href={'/'}>
+              <Image
+                src="/images/back-arrow.svg"
+                alt="back"
+                width={20}
+                height={20}
+              />
+            </Link>
+            
           </div>
           <button className="border border-[#606060] rounded-lg px-4 py-2 bg-[#242424] text-white flex justify-center items-center gap-2">
             <Image src="/images/coin.svg" alt="coin" width={30} height={30} />
