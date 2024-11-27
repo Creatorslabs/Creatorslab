@@ -17,17 +17,17 @@ const Home: React.FC = () => {
       <div className="w-[90%] m-auto">
         <main className="container mx-auto py-8">
           <section className=' flex items-center justify-between'>
-            <div className='rounded-lg border border-solid border-[#3f3f3f] w-[70%]'>
+            <div className='rounded-lg border border-solid border-[#3f3f3f] w-[35%]'>
               <div className=' flex justify-between m-2'>
-                <p>Browse all categories</p>
-                <Link href={'/tasks'} className='font-bold text-[#5D3FD1]'>Show All</Link>
+                <p>Engage</p>
+                {/* <Link href={'/tasks'} className='font-bold text-[#5D3FD1]'>Show All</Link> */}
               </div>
               <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Trending</button>
               <button className='p-3 rounded-lg bg-[url(/images/button-bg01.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Promoted</button>
               <button className='p-3 rounded-lg bg-[url(/images/button-bg02.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Projects</button>
               <button className='p-3 rounded-lg bg-[url(/images/button-bg03.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Articles</button>
-              <button className='p-3 rounded-lg bg-[url(/images/button-bg04.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Quest</button>
-              <button className='p-3 rounded-lg bg-[url(/images/button-bg05.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>All</button>
+              {/* <button className='p-3 rounded-lg bg-[url(/images/button-bg04.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Quest</button>
+              <button className='p-3 rounded-lg bg-[url(/images/button-bg05.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>All</button> */}
             </div>
             <div className='rounded-lg bg-[#3f3f3f] w-[25%]'>
               {/* <div className=' flex justify-between'>
@@ -46,7 +46,7 @@ const Home: React.FC = () => {
               <div className='flex items-center justify-between bg-[url(/images/banner-bg01.jpeg)] bg-no-repeat bg-cover p-6 rounded-lg'>
                 <div className="">
                   <h3 className="text-xl font-semibold">Purchase $CLS</h3>
-                  <p>Buy cryptocurrency to boost content visibility.</p>
+                  <p>By staking or investing $CLS  in a project, users can show their support and potentially earn a share of the project’s future success, [Tokens, NFTs,  whitelist].</p>
                   <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Buy $CLS</button>
                 </div>
                 
@@ -56,9 +56,9 @@ const Home: React.FC = () => {
               
               <div className='flex items-center justify-between bg-[url(/images/banner-bg02.jpeg)] bg-no-repeat bg-cover p-6 rounded-lg'>
                 <div className="">
-                  <h3 className="text-xl font-semibold">Stake SOL</h3>
-                  <p>Stake SOL to enhance your rewards.</p>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Stake SOL</button>
+                  <h3 className="text-xl font-semibold">Earn SOL</h3>
+                  <p>Burn CLS to earn SOL. (Coming Soon)</p>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Buy $CLS</button>
                 </div>
 
                 <Image src={moneyBag} alt='' width={100} height={100}/>
@@ -72,8 +72,8 @@ const Home: React.FC = () => {
 
           <div className='bg-[url(/images/banner-bg03.jpeg)] bg-no-repeat bg-cover p-10 rounded-lg flex items-center justify-between '>
             <div className="w-[300px]">
-              <h3 className="text-xl font-semibold">Earn as you learn with us.</h3>
-              <p >Whether you are a creator, contributor or a community member, you can earn $CLS as you learn and engage.</p>
+              <h3 className="text-xl font-semibold">Earn, Engage and Expand with  Creatorslab.</h3>
+              <p >Creating a long term relationship among builders and content creators, to a wider global web3 communities</p>
               <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Become a member</button>
             </div>
 
