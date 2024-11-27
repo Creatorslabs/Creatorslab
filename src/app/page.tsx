@@ -46,8 +46,8 @@ const Home: React.FC = () => {
               <div className='flex items-center justify-between bg-[url(/images/banner-bg01.jpeg)] bg-no-repeat bg-cover p-6 rounded-lg'>
                 <div className="">
                   <h3 className="text-xl font-semibold">Purchase $CLS</h3>
-                  <p>By staking or investing $CLS  in a project, users can show their support and potentially earn a share of the project’s future success, [Tokens, NFTs,  whitelist].</p>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Buy $CLS</button>
+                  <p className='w-[400px]'>By staking or investing $CLS  in a project, users can show their support and potentially earn a share of the project’s future success, [Tokens, NFTs,  whitelist].</p>
+                  <button className="bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg mt-4">Buy $CLS</button>
                 </div>
                 
                 <Image src={moneyBag} alt='' width={100} height={100}/>
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
                 <div className="">
                   <h3 className="text-xl font-semibold">Earn SOL</h3>
                   <p>Burn CLS to earn SOL. (Coming Soon)</p>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Buy $CLS</button>
+                  <button className="bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg mt-4">Buy $CLS</button>
                 </div>
 
                 <Image src={moneyBag} alt='' width={100} height={100}/>
@@ -74,7 +74,7 @@ const Home: React.FC = () => {
             <div className="w-[300px]">
               <h3 className="text-xl font-semibold">Earn, Engage and Expand with  Creatorslab.</h3>
               <p >Creating a long term relationship among builders and content creators, to a wider global web3 communities</p>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Become a member</button>
+              <button className="bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg mt-4">Become a member</button>
             </div>
 
             <Image src={moneyBag} alt='' width={100} height={100}/>

@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import logo from '../../logo.svg';
 import profileImg from '../../../../public/images/profileImg.svg';
+import coin from '../../../../public/images/coin.svg'
 import Link from 'next/link';
 import TaskModal from '../Modals/CreateTask';
 import { useRouter } from 'next/router';
@@ -63,6 +64,10 @@ const Navbar: React.FC = () => {
 
           {/* Full Menu (hidden on small screens) */}
           <div className="hidden md:flex items-center space-x-4">
+            <Link href='/auth/log-in'  className="p-3 rounded-lg bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around">
+              <Image src={coin} alt='coin' width={20} height={20}/>
+              Earn $CLS
+            </Link>
             <button className="p-3 rounded-lg bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"  onClick={() => setModalOpen(true)}> 
               Plant Seeds
             </button>
