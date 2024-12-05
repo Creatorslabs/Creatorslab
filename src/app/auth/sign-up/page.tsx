@@ -10,37 +10,37 @@ const SignUp : FC = () => {
   const [otp, setOtp] = useState('');
   const [stage, setStage] = useState(1);
 
-    const sendOtp = async () => {
-      const response = await fetch('/api/auth/sendOtp', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
-      });
+  //   const sendOtp = async () => {
+  //     const response = await fetch('/api/auth/sendOtp', {
+  //         method: 'POST',
+  //         headers: {
+  //             'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ email }),
+  //     });
 
-      if (response.ok) {
-          setStage(2); // Move to OTP verification stage
-      } else {
-          alert('Failed to send OTP');
-      }
-  };
+  //     if (response.ok) {
+  //         setStage(2); // Move to OTP verification stage
+  //     } else {
+  //         alert('Failed to send OTP');
+  //     }
+  // };
 
-  const verifyOtp = async () => {
-      const response = await fetch('/api/auth/verifyOtp', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, otp }),
-      });
+  // const verifyOtp = async () => {
+  //     const response = await fetch('/api/auth/verifyOtp', {
+  //         method: 'POST',
+  //         headers: {
+  //             'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ email, otp }),
+  //     });
 
-      if (response.ok) {
-          alert('OTP Verified!');
-      } else {
-          alert('Invalid OTP');
-      }
-  };
+  //     if (response.ok) {
+  //         alert('OTP Verified!');
+  //     } else {
+  //         alert('Invalid OTP');
+  //     }
+  // };
  
   return (
     <>
@@ -63,25 +63,31 @@ const SignUp : FC = () => {
               <h2 className='font-syne font-bold text-xl'>Welcome to CreatorsLab</h2>
               <p className='text-sm text-[#606060]'>Join the global community of content creators and earn.</p>
 
-              {stage === 1 ? (
+              {/* {stage === 1 ? ( */}
                 <>
                   <label className="block my-4">
                     Email address
                     <input type="text" className="w-full p-3 rounded border border-[#606060] bg-inherit my-2 text-[#606060]" placeholder='address@email.com'/>
                   </label>
-                  <button className="w-full p-3 rounded border border-[#606060] bg-inherit my-2" onClick={sendOtp}>Continue with email</button>
+                  <button 
+                    className="w-full p-3 rounded border border-[#606060] bg-inherit my-2" 
+                    // onClick={sendOtp}
+                    >Continue with email</button>
                   <p className='text-xs text-[#606060] my-2'>By continuing, you agree to our <span className='font-bold text-white'>Terms of Service</span> and <span className='font-bold text-white'>Privacy Policy</span></p>
                 </>  
-              ) : (
-                <>
+              {/* ) : ( */}
+                {/* <>
                   <label className="block my-4">
                     Enter O.T.P
                     <input type="text" className="w-full p-3 rounded border border-[#606060] bg-inherit my-2 text-[#606060]" placeholder='address@email.com'/>
                   </label>
-                  <button className="w-full p-3 rounded border border-[#606060] bg-inherit my-2" onClick={verifyOtp}>Continue with email</button>
+                  <button 
+                    className="w-full p-3 rounded border border-[#606060] bg-inherit my-2" 
+                    // onClick={verifyOtp}
+                    >Continue with email</button>
                   <p className='text-xs text-[#606060] my-2'>By continuing, you agree to our <span className='font-bold text-white'>Terms of Service</span> and <span className='font-bold text-white'>Privacy Policy</span></p>
-                </>
-              )}
+                </> */}
+              {/* )} */}
               </form>
           </div>
         </div>
