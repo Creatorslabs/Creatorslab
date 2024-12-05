@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface TaskCardProps {
-  id: number;
+  // id: number;
   title: string;
   price: number;
   description: string;
@@ -14,7 +14,7 @@ interface TaskCardProps {
   
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ title, price, description, taskBanner, posterImage, id }) => (
+const TaskCard: React.FC<TaskCardProps> = ({ title, price, description, taskBanner, posterImage, }) => (
   <>
       <div className=" rounded-lg shadow-lg p-4 w-[32%] border border-[#3f3f3f] my-2">
         <Link href={'/tasks'}>
