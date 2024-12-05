@@ -1,7 +1,9 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { FC, useState } from 'react'
+import React, { FC, 
+  // useState 
+} from 'react'
 import logo from '../../logo.svg'
 
 
