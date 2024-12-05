@@ -13,7 +13,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-[#161616] p-6 rounded-lg w-[450px]">
-        <h2 className="text-lg font-bold mb-4 font-syne">Let's create your task</h2>
+        <h2 className="text-lg font-bold mb-4 font-syne">Lets create your task</h2>
         <span className='text-[#606060] text-sm'>Enter the information about your task</span>
         <form>
             <div className='flex items-center justify-between my-4'>
