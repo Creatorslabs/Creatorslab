@@ -6,9 +6,9 @@ import logo from '../../logo.svg'
 
 
 const SignUp : FC = () => {
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
-  const [stage, setStage] = useState(1);
+  // const [email, setEmail] = useState('');
+  // const [otp, setOtp] = useState('');
+  // const [stage, setStage] = useState(1);
 
   //   const sendOtp = async () => {
   //     const response = await fetch('/api/auth/sendOtp', {

@@ -7,7 +7,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import '@solana/wallet-adapter-react-ui/styles.css';
-import { useWallet } from '@solana/wallet-adapter-react'
+// import { useWallet } from '@solana/wallet-adapter-react'
 import { ContextProvider } from '@/src/contexts/ContextProvider'
 
 const LogIn: FC = () => {
