@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import newTask from '@/newTasks'
-import Link from 'next/link';
+// import Link from 'next/link';
 import TrendingTaskCard from '../TrendingTaskCard';
 import leftArrow from '../../../../public/images/leftarrow.svg';
 import rightArrow from '../../../../public/images/rightarrow.svg';
