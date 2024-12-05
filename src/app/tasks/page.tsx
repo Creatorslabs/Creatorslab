@@ -86,7 +86,7 @@ const page = () => {
                     </div>
 
                     <div className='my-4'>
-                        <p className='mb-10 w-[480px]'>Follow TH CEO Abayomi Chukwudi on X! If you're already following Abayomi, simply complete the quest again to claim the $CLS.</p>
+                        <p className='mb-10 w-[480px]'>Follow TH CEO Abayomi Chukwudi on X! If you are already following Abayomi, simply complete the quest again to claim the $CLS.</p>
                         <p className='mb-10 w-[480px]'>To learn more: <a href="" className='text-[#2aabee]'>https://www.CreatorsLab?node-id=80-586&node-type=frame&t=Myuuav</a></p>
                     </div>
 
