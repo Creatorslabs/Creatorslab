@@ -1,5 +1,8 @@
 "use client"
-import { WalletAdapterNetwork, WalletError } from "@solana/wallet-adapter-base";
+import { 
+  WalletAdapterNetwork, 
+  // WalletError 
+} from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
   WalletProvider,
@@ -12,8 +15,12 @@ import {
 //   SolletWalletAdapter,
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
-import { Cluster, clusterApiUrl } from "@solana/web3.js";
-import { FC, ReactNode, useCallback, useMemo } from "react";
+import { 
+  // Cluster, 
+  clusterApiUrl } from "@solana/web3.js";
+import { FC, ReactNode, 
+  // useCallback, 
+  useMemo } from "react";
 import { AutoConnectProvider, useAutoConnect } from "./AutoConnectProvider";
 // import { notify } from "../utils/notifications";
 import {

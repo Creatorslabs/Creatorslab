@@ -2,7 +2,7 @@
 // import dynamic from 'next/dynamic';
 import React from 'react';
 import NewTasks from './components/NewTask';
-import Link from 'next/link';
+// import Link from 'next/link';
 import TrendingTasks from './components/TrendingTask';
 import moneyBag from '../../public/images/moneybag.svg';
 import Image from 'next/image'

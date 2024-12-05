@@ -1,5 +1,5 @@
 
-import { useWallet } from '@solana/wallet-adapter-react';
+// import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 // import '@solana/wallet-adapter-react-ui/styles.css'; // Wallet styles
 import React, { useState } from 'react';
@@ -9,10 +9,10 @@ import profileImg from '../../../../public/images/profileImg.svg';
 import coin from '../../../../public/images/coin.svg'
 import Link from 'next/link';
 import TaskModal from '../Modals/CreateTask';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 const Navbar: React.FC = () => {
-  const { connected } = useWallet();
+  // const { connected } = useWallet();
   const [menuOpen, setMenuOpen] = useState(false); // State to control the hamburger menu
   const [modalOpen, setModalOpen] = useState(false); // State to control the modal visibility
 
