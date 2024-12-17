@@ -24,8 +24,8 @@ const page = () => {
           </button>
         </div>
         {/* details section */}
-        <div className="flex gap-8">
-          <div className="flex-[4]">
+        <div className="grid grid-cols-2 gap-8">
+          <div className="">
             <div className="relative">
               <Image
                 src="/images/creator-bg.svg"
@@ -230,7 +230,7 @@ const page = () => {
               </table>
             </div>
           </div>
-          <div className="flex-[2]">
+          <div className="w-[425px]">
             <div className="relative">
               <Image
                 src="/images/walletcard.svg"
