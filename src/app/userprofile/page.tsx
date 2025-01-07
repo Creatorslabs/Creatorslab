@@ -1,28 +1,34 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const page = () => {
   return (
     <div className="bg-[#161616] w-full max-w-[1440px] mx-auto">
       <div className="w-[88%] mx-auto py-4 min-h-screen">
         {/* header navigation section */}
-        <div className="flex justify-between items-center my-6">
-          <div className="p-3 rounded-lg bg-[#242424]">
-            <Image
-              src="/images/back-arrow.svg"
-              alt="back"
-              width={20}
-              height={20}
-            />
+        <div className="sm:flex justify-between items-center my-6 block">
+          <div className="p-3 rounded-lg bg-[#242424] w-fit">
+            <Link href={'/'}>
+              <Image
+                src="/images/back-arrow.svg"
+                alt="back"
+                width={20}
+                height={20}
+              />
+            </Link>
           </div>
-          <button className="border border-[#606060] rounded-lg px-4 py-2 bg-[#242424] text-white flex justify-center items-center gap-2">
-            <Image src="/images/coin.svg" alt="coin" width={30} height={30} />
-            Earn $CLS
-          </button>
+          <div className="flex justify-between items-center flex-1 sm:ml-5 sm:text-xl font-medium mt-4 sm:mt-0">
+            <p>User profile</p>
+            <button className="border border-[#606060] rounded-lg p-2 sm:px-4 sm:py-2 bg-[#242424] text-white flex justify-center items-center gap-2 text-xs sm:text-base">
+              <Image src="/images/coin.svg" alt="coin" width={30} height={30} className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]" />
+              Earn $CLS
+            </button>
+          </div>
         </div>
         {/* details section */}
-        <div className="flex gap-8">
-          <div className="flex-[4] border-[0.5px] border-[#606060] p-8 rounded-xl">
-            <div className="flex justify-between">
+        <div className="grid lg:grid-cols-[minmax(425px,_1fr)_425px] gap-8 grid-cols-1">
+          <div className="border-[0.5px] border-[#606060] p-4 sm:p-8 rounded-xl">
+            <div className="flex justify-between flex-wrap gap-4">
               <div className="relative">
                 <Image
                   src="/images/dp.svg"
@@ -65,8 +71,8 @@ const page = () => {
             <hr className="border-[#606060] my-8 border-t-[0.5px]" />
             <div className="mb-8">
               <p className="text-lg mb-2">Social Media Accounts</p>
-              <div className="flex gap-6">
-                <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 w-[320px]">
+              <div className="flex gap-6 flex-col md:flex-row lg:flex-col xl:flex-row">
+                <div className="flex justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 md:w-[320px]">
                   <div className="flex gap-3 items-center">
                     <Image
                       src="/images/x-icon.svg"
@@ -80,7 +86,7 @@ const page = () => {
                     <span className="text-sm text-[#606060]">Linked</span>
                   </button>
                 </div>
-                <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 w-[320px]">
+                <div className="flex justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 md:w-[320px]">
                   <div className="flex gap-3 items-center">
                     <Image
                       src="/images/discord.svg"
@@ -108,7 +114,7 @@ const page = () => {
                 Link your Email to get latest updates on Creatorslab
               </span>
               <div className="flex gap-6">
-                <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 w-[320px]">
+                <div className="flex flex-wrap gap-2 justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 md:w-[320px]">
                   <div className="flex gap-3 items-center">
                     <Image
                       src="/images/email.svg"
@@ -125,17 +131,18 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className="flex-[2]">
+          <div className="">
             <div className="relative">
               <Image
                 src="/images/walletcard.svg"
                 alt="walletcard"
                 width={425}
                 height={220}
+                className="w-[425px] sm:h-[220px]"
               />
-              <div className="absolute top-0 p-8">
+              <div className="absolute top-0 p-5 sm:p-8">
                 <span className="text-[#606060]">Wallet Balance</span>
-                <p className="text-4xl flex gap-8 items-center mt-3 mb-6">
+                <p className="text-xl sm:text-4xl flex gap-8 items-center my-3 sm:mt-3 sm:mb-6">
                   $CLS 206.08
                   <Image
                     src="/images/eye.svg"
@@ -145,19 +152,19 @@ const page = () => {
                   />
                 </p>
                 <div className="flex gap-2 font-semibold text-base">
-                  <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#5d3fd1] to-[#03abff]">
+                  <button className="p-2 sm:px-6 sm:py-2 rounded-lg bg-gradient-to-r from-[#5d3fd1] to-[#03abff]">
                     Buy $CLS
                   </button>
-                  <button className="px-6 py-2 rounded-lg bg-[#F4B30C] text-black">
+                  <button className="p-2 sm:px-6 sm:py-2 rounded-lg bg-[#F4B30C] text-black">
                     Claim $CLS
                   </button>
                 </div>
               </div>
             </div>
-            <div className="border-[0.5px] border-[#606060] p-6 rounded-xl mt-6">
+            <div className="border-[0.5px] border-[#606060] p-3 sm:p-6 rounded-xl mt-6 overflow-scroll">
               <p className="text-lg mb-2">My Rewards</p>
               <div className="flex flex-col gap-4">
-                <div className="bg-[#222222] flex gap-3 items-center p-4 rounded-lg font-medium text-base">
+                <div className="bg-[#222222] flex gap-3  items-center p-4 rounded-lg font-medium text-base min-w-[300px]">
                   <Image
                     src="/images/trophy.svg"
                     alt="trophy"
@@ -170,7 +177,7 @@ const page = () => {
                     width={30}
                     height={30}
                   />
-                  <span>Task title here</span>
+                  <p className="min-w-fit">Task title here</p>
                   <p className="ml-auto flex items-center text-[#03ABFF] gap-2">
                     $CLS10
                     <Image
@@ -181,7 +188,7 @@ const page = () => {
                     />
                   </p>
                 </div>
-                <div className="bg-[#222222] flex gap-3 items-center p-4 rounded-lg font-medium text-base">
+                <div className="bg-[#222222] flex gap-3  items-center p-4 rounded-lg font-medium text-base min-w-[300px]">
                   <Image
                     src="/images/trophy.svg"
                     alt="trophy"
@@ -194,7 +201,7 @@ const page = () => {
                     width={30}
                     height={30}
                   />
-                  <span>Task title here</span>
+                  <p className="min-w-fit">Task title here</p>
                   <p className="ml-auto flex items-center text-[#03ABFF] gap-2">
                     $CLS10
                     <Image
@@ -205,7 +212,7 @@ const page = () => {
                     />
                   </p>
                 </div>
-                <div className="bg-[#222222] flex gap-3 items-center p-4 rounded-lg font-medium text-base">
+                <div className="bg-[#222222] flex gap-3  items-center p-4 rounded-lg font-medium text-base min-w-[300px]">
                   <Image
                     src="/images/trophy.svg"
                     alt="trophy"
@@ -218,7 +225,7 @@ const page = () => {
                     width={30}
                     height={30}
                   />
-                  <span>Task title here</span>
+                  <p className="min-w-fit">Task title here</p>
                   <p className="ml-auto flex items-center text-[#03ABFF] gap-2">
                     $CLS10
                     <Image
