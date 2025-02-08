@@ -206,6 +206,24 @@ function LandingPage() {
         </div>
       </div>
 
+      {/** Bottom banner section */}
+      <div className="m-6 md:m-8 rounded-md p-4 flex flex-row justify-between bg-blue-500">
+        <div className="flex flex-col gap-3 w-[60%] md:w-[40%] items-start justify-center">
+          <h3 className="text-2xl font-syne">Earn, Engage and Expand with Creatorslab.</h3>
+          <p className="text-sm">
+            Creating a long term relationship among builders and content
+            creators, to a wider global web3 communities.
+          </p>
+          <button className="p-2 rounded-md bg-white bg-opacity-15">Become a member</button>
+        </div>
+        <Image
+          src="/images/landing-page/Group 11.png"
+          width={100}
+          height={100}
+          alt="coin sack"
+        />
+      </div>
+
       {/** Footer */}
       <div className="text-center text-gray-500 text-sm p-4">
         Copyright {new Date().getFullYear()}
