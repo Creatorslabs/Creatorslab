@@ -13,10 +13,11 @@
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.95.3",
-    "next": "14.2.13",
+    "next": "^14.2.13",
     "nodemailer": "^6.9.15",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-icons": "^5.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",

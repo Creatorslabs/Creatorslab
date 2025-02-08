@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ParentComponent from "./components/ParentComponent";
 
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -28,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full overflow-x-hidden`}
       >
         <ParentComponent>{children}</ParentComponent>
       </body>
