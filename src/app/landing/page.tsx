@@ -163,13 +163,20 @@ function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(3)].map((_, index) => (
               <div key={index} className="w-full flex-1">
-                <div>
+                <div className="relative">
                   <Image
                     src="/images/landing-page/Rectangle 3.png"
                     width={300}
                     height={250}
                     alt="image"
                     className="w-full"
+                  />
+                  <Image
+                    src="/images/user01.jpeg"
+                    width={10}
+                    height={10}
+                    alt="image"
+                    className="w-10 h-10 absolute right-0 -bottom-4 rounded-full"
                   />
                 </div>
                 <div className="flex flex-col py-3 gap-2">

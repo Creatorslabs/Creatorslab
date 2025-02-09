@@ -17,6 +17,12 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .creator-content {
   display: grid;
   grid-template-columns: 1fr 425px;
