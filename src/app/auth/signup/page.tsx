@@ -2,11 +2,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { SyntheticEvent, useState } from "react";
+import AccountCreationModal from "../../components/Modals/account-creation-modal";
 
 function Page() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -15,6 +17,7 @@ function Page() {
 
   const verifyOtp = (e: SyntheticEvent) => {
     e.preventDefault();
+    setIsModalOpen(true);
     setStep(1);
   };
 
@@ -107,8 +110,54 @@ function Page() {
           </form>
         )}
       </div>
+      <AccountCreationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <div className="w-full flex flex-col gap-4 justify-center items-center">
+          <Image
+            src="/images/signup/noto_confetti-ball.png"
+            width={50}
+            height={50}
+            alt="CreatorslLab lgo"
+          />
+          <div className="flex flex-col gap-2 p-4 bg-[#FFFFFF] bg-opacity-5 text-xs w-[80%] rounded-md">
+            <p className="font-bold">As a Newbie you can earn:</p>
+            <p>
+              0.3 labseeds for{" "}
+              <span className="text-[#03ABFF]">Daily login</span>
+            </p>
+            <p>
+              0.3 labseeds for <span className="text-[#03ABFF]">Comments</span>
+            </p>
+            <p>
+              0.3 labseeds for <span className="text-[#03ABFF]">Repost</span>
+            </p>
+            <p>
+              0.3 labseeds to{" "}
+              <span className="text-[#03ABFF]">Read stories & Blog post</span>
+            </p>
+            <p>
+              1 CLS for a Referral{" "}
+              <span className="text-[#03ABFF]">Referral</span>
+            </p>
+            <p className="p-2 text-center w-full bg-[#03ABFF] rounded-md bg-opacity-20 border border-[#03ABFF]">
+              50CLS = $1
+            </p>
+          </div>
+          <button className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md">
+            Lets go!
+          </button>
+        </div>
+      </AccountCreationModal>
     </div>
   );
 }
 
 export default Page;
+
+//0.3 labseeds  for  Liking  posts
+// 0.5 labseeds for  Comments
+// 0.8 labseeds for  Repost
+// 0.8 labseeds to Read stories & Blog post
+// 1 CLS for a Referral
