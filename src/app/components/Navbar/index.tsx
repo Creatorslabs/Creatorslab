@@ -1,14 +1,12 @@
-
 // import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-// import '@solana/wallet-adapter-react-ui/styles.css'; // Wallet styles
-import React, { useState } from 'react';
-import Image from 'next/image';
-import logo from '../../logo.svg';
-import profileImg from '../../../../public/images/profileImg.svg';
-import coin from '../../../../public/images/coin.svg'
-import Link from 'next/link';
-import TaskModal from '../Modals/CreateTask';
+
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import TaskModal from "../Modals/CreateTask";
+import { GiHamburgerMenu } from "react-icons/gi";
+import SearchBar from "../search-bar";
 // import { useRouter } from 'next/router';
 
 const Navbar: React.FC = () => {
@@ -18,70 +16,79 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center p-6 text-white w-[83%] m-auto ">
+      <nav className="flex justify-between items-center p-6 md:px-14 gap-4">
         {/* Logo */}
         <Link href="/">
-          <Image src={logo} alt="Creatorslab Logo" width={150} height={200} />
+          <Image
+            src="/images/logo.svg"
+            alt="Creatorslab Logo"
+            width={150}
+            height={200}
+          />
         </Link>
 
-        {/* Search Box */}
-        <div className="border border-[#3F3F3F] p-2 flex gap-1 rounded-xl w-80">
-            <Image
-              src="/images/search.svg"
-              alt="search"
-              height={20}
-              width={20}
-            />
-            <input
-              type="text"
-              className="outline-none bg-transparent px-1 w-full"
-              placeholder="Search projects, quests, creators"
-            />
-          </div>
+        <div className="flex-1 flex flex-row items-center justify-end gap-2">
+          {/* Search Box */}
+          <SearchBar />
 
-        {/* Hamburger Icon and Profile/Button Section */}
-        <div className="flex items-center space-x-4">
-          {/* Hamburger Icon (visible on small screens) */}
-          <button
-            className="md:hidden p-2 bg-gray-800 rounded-lg"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          {/* Hamburger Icon and Profile/Button Section */}
+          <div className="flex items-center space-x-4">
+            {/* Hamburger Icon (visible on small screens) */}
+            <button
+              className="md:hidden p-2 bg-gray-800 rounded-lg"
+              onClick={() => setMenuOpen(!menuOpen)}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-
-          {/* Full Menu (hidden on small screens) */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link href='/auth/log-in'  className="p-3 rounded-lg bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around">
-              <Image src={coin} alt='coin' width={20} height={20}/>
-              Earn $CLS
-            </Link>
-            <button className="p-3 rounded-lg bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"  onClick={() => setModalOpen(true)}> 
-              Plant Seeds
+              <GiHamburgerMenu />
             </button>
-            <WalletMultiButton style={{background:"#222222"}}></WalletMultiButton>
-            <Link href='/userprofile'>
-              <Image src={profileImg} alt="Profile" width={40} height={40} />
-            </Link>
-            
+
+            {/* Full Menu (hidden on small screens) */}
+            <div className="hidden md:flex items-center gap-3">
+              <Link
+                href="/auth/login"
+                className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs"
+              >
+                <Image
+                  src="/images/coin.svg"
+                  alt="coin"
+                  width={15}
+                  height={15}
+                />
+                Earn $CLS
+              </Link>
+              <button
+                className="p-2 text-xs rounded-md bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"
+                onClick={() => setModalOpen(true)}
+              >
+                Plant Seeds
+              </button>
+              <WalletMultiButton
+                style={{
+                  padding: "0.5rem",
+                  borderRadius: "0.375rem",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  gap: "0.5rem",
+                  fontSize: "0.75rem",
+                  height: "2rem",
+                  backgroundColor: "#222222",
+                }}
+                className="p-2 text-xs rounded-md "
+              ></WalletMultiButton>
+              <Link href="/userprofile">
+                <Image
+                  src="/images/profileImg.svg"
+                  alt="Profile"
+                  width={30}
+                  height={30}
+                />
+              </Link>
+            </div>
           </div>
         </div>
 
         {/* Mobile Menu (visible when hamburger is clicked) */}
         {menuOpen && (
-          <div className="absolute top-16 right-4 bg-gray-800 text-white p-4 rounded-lg md:hidden">
+          <div className="absolute top-16 right-4 bg-gray-800 flex flex-col gap-2 text-white p-4 rounded-lg md:hidden z-50">
             <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg">
               Plant Seeds
             </button>
@@ -89,7 +96,12 @@ const Navbar: React.FC = () => {
               Connect Wallet
             </WalletMultiButton>
             <div className="flex justify-center">
-              <Image src={profileImg} alt="Profile" width={40} height={40} />
+              <Image
+                src="/images/profileImg.svg"
+                alt="Profile"
+                width={30}
+                height={30}
+              />
             </div>
           </div>
         )}
@@ -102,4 +114,3 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
-

@@ -1,88 +1,304 @@
-"use client"
-// import dynamic from 'next/dynamic';
-import React from 'react';
-import NewTasks from './components/NewTask';
-// import Link from 'next/link';
-import TrendingTasks from './components/TrendingTask';
-import moneyBag from '../../public/images/moneybag.svg';
-import Image from 'next/image'
-import TopCreators from './components/Creators';
+"use client";
 
+import React from "react";
+import Image from "next/image";
+import { FaComment, FaHeart } from "react-icons/fa";
+import { IoIosShareAlt, IoMdArrowBack } from "react-icons/io";
+import Link from "next/link";
+import { IoArrowForward } from "react-icons/io5";
 
 // Dynamically import Solana wallet context provider
 // const WalletContextProvider = dynamic(() => import('./components/WalletProvider'), { ssr: false });
 
+const avatars = [
+  "/images/user01.jpeg",
+  "/images/user02.jpeg",
+  "/images/user03.jpeg",
+  "/images/user04.jpeg",
+  "/images/user05.jpeg",
+  "/images/user06.jpeg",
+  "/images/user07.jpeg",
+  "/images/user08.jpeg",
+  "/images/user09.jpeg",
+  "/images/Frame 10.png",
+];
+
 const Home: React.FC = () => {
   return (
-      <div className="w-[90%] m-auto">
-        <main className="container mx-auto py-8">
-          <section className=' flex items-center justify-between'>
-            <div className='rounded-lg border border-solid border-[#3f3f3f] w-[35%]'>
-              <div className=' flex justify-between m-2'>
-                <p>Engage</p>
-                {/* <Link href={'/tasks'} className='font-bold text-[#5D3FD1]'>Show All</Link> */}
-              </div>
-              <button className='p-3 rounded-lg bg-[url(/images/greenlemonbg.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Trending</button>
-              <button className='p-3 rounded-lg bg-[url(/images/button-bg01.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Promoted</button>
-              <button className='p-3 rounded-lg bg-[url(/images/button-bg02.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Projects</button>
-              <button className='p-3 rounded-lg bg-[url(/images/button-bg03.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Articles</button>
-              {/* <button className='p-3 rounded-lg bg-[url(/images/button-bg04.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>Quest</button>
-              <button className='p-3 rounded-lg bg-[url(/images/button-bg05.jpeg)] bg-no-repeat bg-cover font-bold m-2 w-[100px]'>All</button> */}
-            </div>
-            <div className='rounded-lg bg-[#3f3f3f] w-[25%]'>
-              {/* <div className=' flex justify-between'>
-                <p>Top Creators</p>
-                <Link href={'/'} className='font-bold text-[#5D3FD1]'>View All</Link>
-              </div> */}
-              <TopCreators />
-            </div>
-          </section>
+    <div className="flex flex-col gap-4">
+      {/** Categories section */}
+      <div className="p-6 md:py-8 md:px-14 flex flex-col md:flex-row gap-4 justify-between">
+        <div className="flex flex-col gap-4 border border-[#3F3F3F] rounded-md p-4 w-full md:w-[50%] ">
+          <p className="flex flex-row justify-between text-sm">
+            Browse by categories<span className="text-[#5D3FD1]">View all</span>
+          </p>
+          <div className="flex flex-row items-center justify-between gap-2">
+            <button className="text-xs rounded-md border border-[#E3E3E3] px-3 py-2 relative overflow-hidden flex-1">
+              <div className="absolute inset-0 bg-[url('/images/greenlemonbg.jpeg')] bg-cover bg-center"></div>
 
-          <NewTasks />
+              {/* Button Text */}
+              <span className="relative z-10 text-white font-semibold">
+                Trending
+              </span>
+            </button>
+            <button className="text-xs rounded-md border border-[#E3E3E3] px-3 py-2 relative overflow-hidden flex-1">
+              <div className="absolute inset-0 bg-[url('/images/button-bg01.jpeg')] bg-cover bg-center"></div>
 
-          <section className="mt-8">
-            {/* <h2 className="text-2xl font-bold mb-4">Purchase $CLS</h2> */}
-            <div className="grid grid-cols-2 gap-6">
-              <div className='flex items-center justify-between bg-[url(/images/banner-bg01.jpeg)] bg-no-repeat bg-cover p-6 rounded-lg'>
-                <div className="">
-                  <h3 className="text-xl font-semibold">Purchase $CLS</h3>
-                  <p className='w-[400px]'>By staking or investing $CLS  in a project, users can show their support and potentially earn a share of the project’s future success, [Tokens, NFTs,  whitelist].</p>
-                  <button className="bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg mt-4">Buy $CLS</button>
-                </div>
-                
-                <Image src={moneyBag} alt='' width={100} height={100}/>
+              {/* Button Text */}
+              <span className="relative z-10 text-white font-semibold">
+                Promoted
+              </span>
+            </button>
+            <button className="text-xs rounded-md border border-[#E3E3E3] px-3 py-2 relative overflow-hidden flex-1">
+              <div className="absolute inset-0 bg-[url('/images/button-bg02.jpeg')] bg-cover bg-center"></div>
 
-              </div>
-              
-              <div className='flex items-center justify-between bg-[url(/images/banner-bg02.jpeg)] bg-no-repeat bg-cover p-6 rounded-lg'>
-                <div className="">
-                  <h3 className="text-xl font-semibold">Earn SOL</h3>
-                  <p>Burn CLS to earn SOL. (Coming Soon)</p>
-                  <button className="bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg mt-4">Buy $CLS</button>
-                </div>
+              {/* Button Text */}
+              <span className="relative z-10 text-white font-semibold">
+                Projects
+              </span>
+            </button>
+            <button className="text-xs rounded-md border border-[#E3E3E3] px-3 py-2 relative overflow-hidden flex-1">
+              <div className="absolute inset-0 bg-[url('/images/button-bg03.jpeg')] bg-cover bg-center"></div>
 
-                <Image src={moneyBag} alt='' width={100} height={100}/>
-
-              </div>
-             
-            </div>
-          </section>
-
-          <TrendingTasks />
-
-          <div className='bg-[url(/images/banner-bg03.jpeg)] bg-no-repeat bg-cover p-10 rounded-lg flex items-center justify-between '>
-            <div className="w-[300px]">
-              <h3 className="text-xl font-semibold">Earn, Engage and Expand with  Creatorslab.</h3>
-              <p >Creating a long term relationship among builders and content creators, to a wider global web3 communities</p>
-              <button className="bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg mt-4">Become a member</button>
-            </div>
-
-            <Image src={moneyBag} alt='' width={100} height={100}/>
-
+              {/* Button Text */}
+              <span className="relative z-10 text-white font-semibold">
+                Articles
+              </span>
+            </button>
           </div>
-          
-        </main>
+        </div>
+        <div className="flex flex-col gap-4 border border-[#3F3F3F] rounded-md p-4 bg-[#222222] w-full md:w-[40%]">
+          <p className="flex flex-row justify-between text-sm">
+            Browse by categories<span className="text-[#5D3FD1]">View all</span>
+          </p>
+          <div className="flex items-center">
+            {avatars.map((src, index) => (
+              <div
+                key={index}
+                className={`relative w-10 h-10 ${index !== 0 ? "-ml-3" : ""} aspect-square md`}
+              >
+                <Image
+                  src={src}
+                  alt={`Avatar ${index + 1}`}
+                  width={40}
+                  height={40}
+                  className="rounded-full aspect-square h-full"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/** New tasks section */}
+      <div className="relative px-6 md:px-14 flex flex-col gap-4">
+        <div>
+          <div className="flex items-center justify-between py-4">
+            <p className="flex-1 text-lg">New tasks</p>
+            <div className="flex flex-row gap-2 items-center">
+              <Link href="#" className="text-gray-500 text-sm underline">
+                {"Show all (20)"}
+              </Link>
+              <div className="rounded-full bg-gray-700 text-gray-400 w-6 h-6 flex justify-center items-center">
+                <IoMdArrowBack />
+              </div>
+              <div className="rounded-full bg-gray-700 text-gray-400 w-6 h-6 flex justify-center items-center">
+                <IoArrowForward />
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="w-full flex-1">
+                <div className="relative">
+                  <Image
+                    src="/images/landing-page/Rectangle 3.png"
+                    width={300}
+                    height={250}
+                    alt="image"
+                    className="w-full"
+                  />
+                  <Image
+                    src="/images/user01.jpeg"
+                    width={10}
+                    height={10}
+                    alt="image"
+                    className="w-10 h-10 absolute right-0 -bottom-4 rounded-full"
+                  />
+                </div>
+                <div className="flex flex-col py-3 gap-2">
+                  <h3 className="font-syne text-xl">Task/Article Title Here</h3>
+                  <p className="text-sm text-gray-500">
+                    Task description goes here.
+                  </p>
+                  <div className="flex flex-row gap-2">
+                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white p-1 text-sm items-center">
+                      100 $CLS
+                      <Image
+                        src="/images/coin.svg"
+                        width={20}
+                        height={20}
+                        alt="CLS coin image"
+                      />
+                    </div>
+                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
+                      <FaHeart /> 1.5K
+                    </div>
+                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
+                      <FaComment />
+                      10K
+                    </div>
+                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
+                      <IoIosShareAlt />
+                      120
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/** Features section */}
+      <div className="p-6 md:py-8 md:px-14 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="relative flex-1 rounded-md p-4 flex flex-row justify-between overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/images/button-bg05.jpeg')] bg-cover bg-center -z-30"></div>
+          <div className="flex flex-col gap-3 flex-1 items-start justify-center">
+            <h3 className="text-lg font-syne">Purchase $CLS</h3>
+            <p className="text-xs">
+              Buy creatorslab seeds to boost content visibility and engagement.
+            </p>
+            <button className="p-2 rounded-md bg-white bg-opacity-15 text-xs">
+              Buy $CLS
+            </button>
+          </div>
+          <Image
+            src="/images/landing-page/Group 11.png"
+            width={200}
+            height={200}
+            alt="coin sack"
+            className="h-28 w-auto"
+          />
+        </div>
+        <div className="relative flex-1 rounded-md p-4 flex flex-row justify-between overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/images/button-bg02.jpeg')] bg-cover bg-center -z-30 "></div>
+          <div className="flex flex-col gap-3 flex-1 items-start justify-center">
+            <h3 className="text-lg font-syne">Burn $CLS</h3>
+            <p className="text-xs">Burn CLS to earn SOL. (Coming Soon)</p>
+            <button className="p-2 rounded-md bg-white bg-opacity-15 text-xs">
+              Burn now
+            </button>
+          </div>
+          <Image
+            src="/images/landing-page/Group 11.png"
+            width={200}
+            height={200}
+            alt="coin sack"
+            className="h-auto w-auto"
+          />
+        </div>
+      </div>
+
+      {/** Trending section */}
+      <div className="relative p-6 md:py-8 md:px-14 flex flex-col gap-4">
+        <div>
+          <div className="flex items-center justify-between py-4">
+            <p className="flex-1 text-lg">Trending tasks</p>
+            <div className="flex flex-row gap-2 items-center">
+              <Link href="#" className="text-gray-500 text-sm underline">
+                {"Show all (20)"}
+              </Link>
+              <div className="rounded-full bg-gray-700 text-gray-400 w-6 h-6 flex justify-center items-center">
+                <IoMdArrowBack />
+              </div>
+              <div className="rounded-full bg-gray-700 text-gray-400 w-6 h-6 flex justify-center items-center">
+                <IoArrowForward />
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="w-full flex-1">
+                <div className="relative">
+                  <Image
+                    src="/images/landing-page/Rectangle 3.png"
+                    width={300}
+                    height={250}
+                    alt="image"
+                    className="w-full"
+                  />
+                  <Image
+                    src="/images/user01.jpeg"
+                    width={10}
+                    height={10}
+                    alt="image"
+                    className="w-10 h-10 absolute right-0 -bottom-4 rounded-full"
+                  />
+                </div>
+                <div className="flex flex-col py-3 gap-2">
+                  <h3 className="font-syne text-xl">Task/Article Title Here</h3>
+                  <p className="text-sm text-gray-500">
+                    Task description goes here.
+                  </p>
+                  <div className="flex flex-row gap-2">
+                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white p-1 text-sm items-center">
+                      100 $CLS
+                      <Image
+                        src="/images/coin.svg"
+                        width={20}
+                        height={20}
+                        alt="CLS coin image"
+                      />
+                    </div>
+                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
+                      <FaHeart /> 1.5K
+                    </div>
+                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
+                      <FaComment />
+                      10K
+                    </div>
+                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
+                      <IoIosShareAlt />
+                      120
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/** Bottom banner section */}
+      <div className="m-6 md:m-8 rounded-md p-4 flex flex-row justify-between bg-blue-500">
+        <div className="flex flex-col gap-3 w-[60%] md:w-[40%] items-start justify-center">
+          <h3 className="text-2xl font-syne">
+            Earn, Engage and Expand with Creatorslab.
+          </h3>
+          <p className="text-sm">
+            Creating a long term relationship among builders and content
+            creators, to a wider global web3 communities.
+          </p>
+          <button className="p-2 rounded-md bg-white bg-opacity-15">
+            Become a member
+          </button>
+        </div>
+        <Image
+          src="/images/landing-page/Group 11.png"
+          width={100}
+          height={100}
+          alt="coin sack"
+          className="h-28 w-auto"
+        />
+      </div>
+
+      {/** Footer */}
+      <div className="text-center text-gray-500 text-sm p-4">
+        Copyright {new Date().getFullYear()}
+      </div>
+    </div>
   );
 };
 
