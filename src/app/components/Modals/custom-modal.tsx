@@ -6,7 +6,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-const AccountCreationModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const CustomModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -45,4 +45,4 @@ const AccountCreationModal: React.FC<ModalProps> = ({ isOpen, onClose, children 
   );
 };
 
-export default AccountCreationModal;
+export default CustomModal;

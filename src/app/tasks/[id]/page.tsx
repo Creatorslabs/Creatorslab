@@ -1,7 +1,7 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import back from "../../../../public/images/back-arrow.svg";
+import React, { useState } from "react";
 import serif from "../../../../public/images/serif.png";
 import creator from "../../../../public/images/user03.jpeg";
 import coin from "../../../../public/images/coin.svg";
@@ -13,8 +13,13 @@ import { IoIosLock, IoMdArrowRoundBack } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaLink } from "react-icons/fa6";
 import { Progress } from "@heroui/progress";
+import CustomModal from "../../components/Modals/custom-modal";
+import { HiLightBulb } from "react-icons/hi";
 
-const page = () => {
+const Page = () => {
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isCompleted, setIsCompleted] = useState(false);
+
   return (
     <div className="px-6 md:px-14">
       <div className="w-full pb-10">
@@ -137,7 +142,15 @@ const page = () => {
               </div>
             </div>
 
-            <button className="p-4 bg-[#222222] text-[#606060] rounded-md w-full md:w-[40%] self-end">
+            {/* <button className="p-4 bg-[#222222] text-[#606060] rounded-md w-full md:w-[40%] self-end">
+              Complete
+                      </button> */}
+
+            {/** delete this in production */}
+            <button
+              className="p-4 bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] text-white rounded-md w-full md:w-[40%] self-end"
+              onClick={() => setIsModalOpen(true)}
+            >
               Complete
             </button>
           </div>
@@ -198,8 +211,53 @@ const page = () => {
           </div>
         </div>
       </div>
+
+      {/** Task completion modal */}
+      <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="w-full flex flex-col gap-4 justify-center items-center">
+          {isCompleted ? (
+            <>
+              <Image
+                src="/images/signup/noto_confetti-ball.png"
+                width={50}
+                height={50}
+                alt="CreatorslLab lgo"
+              />
+              <h3 className="text-xl font-bold">
+                You just earned <span className="text-[#03ABFF]">0.5 CLS</span>
+              </h3>
+              <p className="text-xs text-center">
+                Go to the profile page and claim your amazing token rewards!
+              </p>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md"
+              >
+                Lets go!
+              </button>
+            </>
+          ) : (
+            <>
+              <HiLightBulb
+                size={50}
+                className="bg-[#5D3FD1] p-2 rounded-full"
+              />
+              <p className="text-xs text-center">
+                Please complete all mandatory tasks first.
+              </p>
+
+              <button
+                onClick={() => setIsCompleted(true)}
+                className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md"
+              >
+                Okay
+              </button>
+            </>
+          )}
+        </div>
+      </CustomModal>
     </div>
   );
 };
 
-export default page;
+export default Page;
