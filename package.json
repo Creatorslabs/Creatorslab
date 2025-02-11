@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroui/progress": "^2.2.7",
+    "@heroui/system": "^2.4.7",
+    "@heroui/theme": "^2.4.6",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.95.3",
+    "framer-motion": "^12.4.2",
     "next": "^14.2.13",
     "nodemailer": "^6.9.15",
     "react": "^18",
