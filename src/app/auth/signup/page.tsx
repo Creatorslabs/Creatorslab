@@ -2,7 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { SyntheticEvent, useState } from "react";
-import AccountCreationModal from "../../components/Modals/account-creation-modal";
+import { InputOtp } from "@heroui/input-otp";
+import CustomModal from "../../components/Modals/custom-modal";
 
 function Page() {
   const [step, setStep] = useState(1);
@@ -96,13 +97,15 @@ function Page() {
 
             {/* {stage === 1 ? ( */}
             <>
-              <input
-                type="number"
-                className="block my-4 w-full p-3 rounded border border-[#606060] bg-inherit text-[#606060] no-arrows"
-                placeholder="Enter OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/, ""))}
-              />
+              <div className="flex items-center justify-center py-4">
+                <InputOtp
+                  length={6}
+                  value={otp}
+                  onValueChange={setOtp}
+                  className="self-center"
+                />
+              </div>
+
               <button className="w-full p-3 rounded border border-[#606060] bg-inherit my-2">
                 Verify OTP
               </button>
@@ -110,7 +113,7 @@ function Page() {
           </form>
         )}
       </div>
-      <AccountCreationModal
+      <CustomModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
@@ -149,7 +152,7 @@ function Page() {
             Lets go!
           </button>
         </div>
-      </AccountCreationModal>
+      </CustomModal>
     </div>
   );
 }
