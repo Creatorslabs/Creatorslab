@@ -1,25 +1,107 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { SyntheticEvent, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InputOtp } from "@heroui/input-otp";
 import CustomModal from "../../components/Modals/custom-modal";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function Page() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [otp, setOtp] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const searchParams = useSearchParams();
+  const [referrerCode, setReferrerCode] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const code = searchParams.get("referrerCode");
+    if (code) setReferrerCode(code);
+  }, [searchParams]);
+
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(2);
+    setLoading(true);
+    setError("");
+
+    try {
+      const userRes = await await fetch("/api/auth/user-exists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!userRes.ok) {
+        throw new Error("Failed to check if user exist");
+      }
+
+      const payload = await userRes.json();
+
+      if (payload.exists) {
+        setError("User already exist with this email");
+        return;
+      }
+
+      const res = await fetch("/api/auth/request-otp", {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          ...(referrerCode && { referrerCode }),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message); // "User registered!"
+
+        setStep(2);
+      } else {
+        setError(data.message || "Registration failed");
+      }
+    } catch (err) {
+      setError((err as Error).message);
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const verifyOtp = (e: SyntheticEvent) => {
+  const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsModalOpen(true);
-    setStep(1);
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message); // "OTP verified successfully!"
+        // Redirect to the dashboard or login page
+        setIsModalOpen(true);
+      } else {
+        setError(data.message || "OTP verification failed");
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again." + (err as Error).message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,7 +131,7 @@ function Page() {
           <form
             action=""
             className="border border-[#606060] rounded-lg max-w-[350px] md:max-w-[500px] w-full mx-auto p-4 md:p-8 bg-[#3f3f3f]/10 backdrop-filter backdrop-blur-sm"
-            onSubmit={handleSubmit}
+            onSubmit={handleRegister}
           >
             <h2 className="font-syne font-bold text-xl">
               Welcome to CreatorsLab
@@ -71,8 +153,13 @@ function Page() {
                 />
               </label>
               <button className="w-full p-3 rounded border border-[#606060] bg-inherit my-2">
-                Continue with email
+                {loading ? "Registering..." : "Continue with email"}
               </button>
+              {error && (
+                <p style={{ color: "red" }} className="text-xs">
+                  {error}
+                </p>
+              )}
               <p className="text-xs text-[#606060] my-2">
                 By continuing, you agree to our{" "}
                 <span className="font-bold text-gray-500">
@@ -87,7 +174,7 @@ function Page() {
           <form
             action=""
             className="border border-[#606060] rounded-lg max-w-[350px] md:max-w-[500px] w-full mx-auto p-4 md:p-8 bg-[#3f3f3f]/10 backdrop-filter backdrop-blur-sm"
-            onSubmit={verifyOtp}
+            onSubmit={handleVerifyOTP}
           >
             <h2 className="font-syne font-bold text-xl">Verify OTP</h2>
             <p className="text-sm text-[#606060]">
@@ -107,16 +194,18 @@ function Page() {
               </div>
 
               <button className="w-full p-3 rounded border border-[#606060] bg-inherit my-2">
-                Verify OTP
+                {loading ? "Verifying..." : "Verify OTP"}
               </button>
+              {error && (
+                <p style={{ color: "red" }} className="text-xs">
+                  {error}
+                </p>
+              )}
             </>
           </form>
         )}
       </div>
-      <CustomModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
+      <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="w-full flex flex-col gap-4 justify-center items-center">
           <Image
             src="/images/signup/noto_confetti-ball.png"
@@ -148,7 +237,10 @@ function Page() {
               50CLS = $1
             </p>
           </div>
-          <button className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md">
+          <button
+            onClick={() => router.push("/login")}
+            className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md"
+          >
             Lets go!
           </button>
         </div>
