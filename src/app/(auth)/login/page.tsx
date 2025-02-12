@@ -7,12 +7,71 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import { TiSocialTwitter } from "react-icons/ti";
 import { FaArrowRight, FaDiscord, FaWallet } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { InputOtp } from "@heroui/input-otp";
 // import { useWallet } from '@solana/wallet-adapter-react'
 
 const LogIn: FC = () => {
   const [loginType, setLoginType] = useState(1);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  const getOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    if (!email) {
+      setError("Please provide an email");
+      return;
+    }
+
+    try {
+      const payload = await (
+        await fetch("/api/auth/request-otp", {
+          method: "POST",
+          body: JSON.stringify({ email }),
+        })
+      ).json();
+
+      setSuccess(payload.message);
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        otp,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        alert("Invalid OTP");
+      } else {
+        router.push("/dashboard"); // Redirect on success
+      }
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="w-full h-screen overflow-hidden flex flex-row">
       <div className="w-full flex-1 h-full z-50">
@@ -61,28 +120,54 @@ const LogIn: FC = () => {
               </WalletMultiButton>
             </div>
           ) : (
-            <div className="w-ful">
-              {" "}
-              <label className="block my-1 text-xs">
-                Email address
-                <input
-                  type="text"
-                  className="w-full p-3 rounded border border-[#606060] bg-inherit my-2 text-[#606060]"
-                  placeholder="address@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </label>
-              <label className="block my-1 text-xs">
-                Verification code
-                <input
-                  type="text"
-                  className="w-full p-3 rounded border border-[#606060] bg-inherit my-2 text-[#606060]"
-                  placeholder="address@email.com"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/, ""))}
-                />
-              </label>
+            <div className="w-ful py-2">
+              {success ? (
+                <>
+                  <div className="flex items-center justify-center py-4">
+                    <InputOtp
+                      length={6}
+                      value={otp}
+                      onValueChange={setOtp}
+                      className="self-center"
+                    />
+                  </div>
+                  <button
+                    className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md"
+                    onClick={handleLogin}
+                  >
+                    {loading ? "Loging in" : "Login"}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <label className="block my-1 text-xs">
+                    Email address
+                    <input
+                      type="text"
+                      className="flex justify-between w-full p-3 rounded border border-[#606060] bg-inherit my-2 text-[#606060]"
+                      placeholder="address@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </label>
+                  <button
+                    className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md"
+                    onClick={getOtp}
+                  >
+                    {loading ? "Requesting OTP" : "Request OTP"}
+                  </button>
+                </>
+              )}
+              {error && (
+                <p style={{ color: "red" }} className="text-xs py-2">
+                  {error}
+                </p>
+              )}
+              {success && (
+                <p style={{ color: "green" }} className="text-xs py-2">
+                  {success}
+                </p>
+              )}
             </div>
           )}
 
@@ -94,10 +179,16 @@ const LogIn: FC = () => {
           <div className="flex flex-col gap-4 py-4">
             <p className="text-xs">Log in with Social account</p>
             <div className="flex flex-row gap-4 items-center flex-wrap">
-              <button className="flex flex-row p-2 flex-1 bg-gradient-to-r from-[#5D3FD1] to-[#191919] rounded-md items-center gap-2 text-xs max-w-[128px] w-full">
+              <button
+                onClick={() => signIn("twitter")}
+                className="flex flex-row p-2 flex-1 bg-gradient-to-r from-[#5D3FD1] to-[#191919] rounded-md items-center gap-2 text-xs max-w-[128px] w-full"
+              >
                 <TiSocialTwitter className="text-[#55ACEE]" /> Twitter
               </button>
-              <button className="flex flex-row p-2 flex-1 bg-gradient-to-r from-[#5D3FD1] to-[#191919] rounded-md items-center gap-2 text-xs max-w-[128px] w-full">
+              <button
+                onClick={() => signIn("discord")}
+                className="flex flex-row p-2 flex-1 bg-gradient-to-r from-[#5D3FD1] to-[#191919] rounded-md items-center gap-2 text-xs max-w-[128px] w-full"
+              >
                 <FaDiscord className="text-[#55ACEE]" /> Discord
               </button>
               {loginType === 1 ? (
@@ -119,7 +210,7 @@ const LogIn: FC = () => {
           </div>
         </div>
       </div>
-      <div className="relative hidden md:block flex-1 h-full -z-50">
+      <div className="relative hidden md:block flex-1 h-full">
         <Image
           src="/images/login/signin-upbg.png"
           width={600}
