@@ -1,7 +1,7 @@
-"use client"
-import { 
-  WalletAdapterNetwork, 
-  // WalletError 
+"use client";
+import {
+  WalletAdapterNetwork,
+  // WalletError
 } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
@@ -11,24 +11,28 @@ import { WalletModalProvider as ReactUIWalletModalProvider } from "@solana/walle
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
-//   SolletExtensionWalletAdapter,
-//   SolletWalletAdapter,
+  //   SolletExtensionWalletAdapter,
+  //   SolletWalletAdapter,
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
-import { 
-  // Cluster, 
-  clusterApiUrl } from "@solana/web3.js";
-import { FC, ReactNode, 
-  // useCallback, 
-  useMemo } from "react";
+import {
+  // Cluster,
+  clusterApiUrl,
+} from "@solana/web3.js";
+import {
+  FC,
+  ReactNode,
+  // useCallback,
+  useMemo,
+} from "react";
 import { AutoConnectProvider, useAutoConnect } from "./AutoConnectProvider";
 // import { notify } from "../utils/notifications";
 import {
   NetworkConfigurationProvider,
   useNetworkConfiguration,
 } from "./NetworkConfigurationProvider";
-import '@solana/wallet-adapter-react-ui/styles.css'; // Wallet styles
-
+import "@solana/wallet-adapter-react-ui/styles.css"; // Wallet styles
+import { SessionProvider } from "next-auth/react";
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
@@ -52,20 +56,20 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     () => [
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
-    //   new SolletWalletAdapter({ network }),
-    //   new SolletExtensionWalletAdapter({ network }),
+      //   new SolletWalletAdapter({ network }),
+      //   new SolletExtensionWalletAdapter({ network }),
       new TorusWalletAdapter(),
     ],
     [network]
   );
 
-//   const onError = useCallback((error: WalletError) => {
-//     notify({
-//       type: "error",
-//       message: error.message ? `${error.name}: ${error.message}` : error.name,
-//     });
-//     console.error(error);
-//   }, []);
+  //   const onError = useCallback((error: WalletError) => {
+  //     notify({
+  //       type: "error",
+  //       message: error.message ? `${error.name}: ${error.message}` : error.name,
+  //     });
+  //     console.error(error);
+  //   }, []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>
@@ -83,11 +87,13 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
-      <NetworkConfigurationProvider>
-        <AutoConnectProvider>
-          <WalletContextProvider>{children}</WalletContextProvider>
-        </AutoConnectProvider>
-      </NetworkConfigurationProvider>
+      <SessionProvider>
+        <NetworkConfigurationProvider>
+          <AutoConnectProvider>
+            <WalletContextProvider>{children}</WalletContextProvider>
+          </AutoConnectProvider>
+        </NetworkConfigurationProvider>
+      </SessionProvider>
     </>
   );
 };

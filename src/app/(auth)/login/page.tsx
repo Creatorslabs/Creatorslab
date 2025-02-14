@@ -54,16 +54,19 @@ const LogIn: FC = () => {
     setError("");
 
     try {
-      const result = await signIn("credentials", {
+      const result = await signIn("email", {
         email,
         otp,
         redirect: false,
       });
 
+      console.log("Sign-in result:", result);
+
       if (result?.error) {
-        alert("Invalid OTP");
+        console.error("NextAuth Sign-in Error:", result.error);
+        alert(result.error);
       } else {
-        router.push("/dashboard"); // Redirect on success
+        router.push("/dashboard");
       }
     } catch (error) {
       setError((error as Error).message);
@@ -86,7 +89,7 @@ const LogIn: FC = () => {
           <div className="flex flex-row gap-2 items-center flex-wrap justify-end">
             <p className="text-sm text-[#3f3f3f]">New to CreatorsLab? </p>
             <Link
-              href="/auth/signup"
+              href="/signup"
               className="py-2 px-4 rounded-md border border-[#606060] bg-[#3f3f3f]/10 backdrop-filter backdrop-blur-sm"
             >
               Create an account

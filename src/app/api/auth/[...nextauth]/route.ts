@@ -45,7 +45,7 @@ const authOptions: NextAuthOptions = {
       version: "2.0",
     }),
     CredentialsProvider({
-      name: "Credentials",
+      name: "email",
       credentials: {
         email: { label: "Email", type: "email" },
         otp: { label: "OTP", type: "text" },
@@ -60,9 +60,29 @@ const authOptions: NextAuthOptions = {
 
         if (!user) throw new Error("User not found. Please request an OTP.");
 
-        if (user.otp !== credentials.otp) throw new Error("Invalid OTP");
-        if (user.otpExpires && user.otpExpires < new Date())
+        console.log(
+          "User OTP:",
+          typeof String(user.verificationCode).trim(),
+          String(user.verificationCode).trim()
+        );
+        console.log(
+          "Received OTP:",
+          typeof String(credentials.otp).trim(),
+          String(credentials.otp).trim()
+        );
+        console.log("OTP match:", user.verificationCode !== credentials.otp);
+        console.log("Test match:", "123" !== "123");
+
+        if (user.verificationCode !== credentials.otp) {
+          throw new Error("Invalid OTP provided");
+        }
+
+        if (
+          !user.otpExpires ||
+          new Date(user.otpExpires).getTime() < Date.now()
+        ) {
           throw new Error("OTP expired");
+        }
 
         user.otp = "";
         user.otpExpires = null;
