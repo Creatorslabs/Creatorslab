@@ -14,23 +14,20 @@ export async function POST(req: NextRequest) {
     await connectDB();
     const { email, referrerCode } = await req.json();
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
     if (!email || typeof email !== "string") {
-      await session.abortTransaction();
-      session.endSession();
       return NextResponse.json(
         { message: "Invalid email format" },
         { status: 400 }
       );
     }
 
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     let user = await User.findOne({ email }).session(session);
 
     if (!user) {
-      // Create a new user
-      user = {
+      user = new User({
         email,
         providers: ["email"],
         role: "user",
@@ -41,7 +38,9 @@ export async function POST(req: NextRequest) {
         isVerified: false,
         emailVerified: false,
         lastLoginDate: null,
-      };
+      });
+
+      await user.save({ session }); // Save the new user within the transaction
     }
 
     const lastOtpTime = user.otpExpires
@@ -50,6 +49,8 @@ export async function POST(req: NextRequest) {
     const now = Date.now();
 
     if (lastOtpTime > now - 60 * 1000) {
+      await session.abortTransaction();
+      session.endSession();
       return NextResponse.json(
         { message: "Wait before requesting a new OTP" },
         { status: 429 }
@@ -57,17 +58,20 @@ export async function POST(req: NextRequest) {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    user.verificationCode = otp;
+    user.verificationCode = otp; // Ensure this field is used for verification
     user.otpExpires = new Date(now + 10 * 60 * 1000); // Expires in 10 minutes
 
     await user.save({ session });
 
+    // Send OTP Email
     await sendVerificationEmail(email, otp);
 
+    // Referral Logic
     if (referrerCode) {
       const referrer = await User.findOne({
         referralCode: referrerCode,
       }).session(session);
+
       if (referrer) {
         referrer.balance += 1;
         referrer.referralCount = (referrer.referralCount || 0) + 1;

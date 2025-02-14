@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { InputOtp } from "@heroui/input-otp";
 import CustomModal from "../../components/Modals/custom-modal";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 function Page() {
   const [step, setStep] = useState(1);
@@ -80,22 +81,19 @@ function Page() {
     setError("");
 
     try {
-      const response = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, otp }),
+      const result = await signIn("email", {
+        email,
+        otp,
+        redirect: false,
       });
 
-      const data = await response.json();
+      console.log("Sign-in result:", result); 
 
-      if (response.ok) {
-        alert(data.message); // "OTP verified successfully!"
-        // Redirect to the dashboard or login page
-        setIsModalOpen(true);
+      if (result?.error) {
+        console.error("NextAuth Sign-in Error:", result.error); 
+        alert(result.error); 
       } else {
-        setError(data.message || "OTP verification failed");
+        router.push("/dashboard"); 
       }
     } catch (err) {
       setError("An error occurred. Please try again." + (err as Error).message);
@@ -117,7 +115,7 @@ function Page() {
         <div className="flex flex-row gap-2 items-center flex-wrap justify-end">
           <p className="text-sm">Already have an account? </p>
           <Link
-            href="/auth/login"
+            href="/login"
             className="py-2 px-4 rounded-md border border-gray-500"
           >
             login
@@ -146,7 +144,7 @@ function Page() {
                 Email address
                 <input
                   type="text"
-                  className="w-full p-3 rounded border border-[#606060] bg-inherit my-2 text-[#606060]"
+                  className="w-full p-3 rounded border border-[#606060] bg-inherit my-2 text-[#ECF3F9]"
                   placeholder="address@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
