@@ -2,7 +2,7 @@ import { User, Task } from "@/models/user";
 import connectDB from "@/utils/connectDB";
 import { NextRequest, NextResponse } from "next/server";
 
-export default async function handler(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const { userId, taskId } = await req.json();
@@ -11,7 +11,10 @@ export default async function handler(req: NextRequest) {
     if (!task)
       return NextResponse.json({ message: "Task not found" }, { status: 404 });
 
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select(
+      "_id username email participatedTasks"
+    );
+
     if (!user)
       return NextResponse.json({ message: "User not found" }, { status: 404 });
 
@@ -22,7 +25,7 @@ export default async function handler(req: NextRequest) {
     if (existingTask)
       return NextResponse.json(
         { message: "Task already started!" },
-        { status: 404 }
+        { status: 400 }
       );
 
     // Add task to participatedTasks
@@ -31,7 +34,7 @@ export default async function handler(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Task started successfully", user },
-      { status: 404 }
+      { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(

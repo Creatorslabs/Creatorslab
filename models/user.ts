@@ -1,3 +1,4 @@
+import { generateReferralCode } from "@/actions/generate-referal-code";
 import { Schema, model, Document, models, Types } from "mongoose";
 
 // User Interface
@@ -5,9 +6,10 @@ export interface IUser extends Document {
   providers: string[];
   providerIds: { [provider: string]: string };
   photo?: string;
+  name?: string;
   username?: string;
   role: "user" | "creator";
-  email: string;
+  email?: string; // Made optional for OAuth compatibility
   otpExpires: Date | null;
   referralCode?: string;
   referredBy?: Schema.Types.ObjectId | null;
@@ -28,15 +30,16 @@ export interface IUser extends Document {
   }[];
 }
 
-// Task Interface
-export interface ITask extends Document {
-  title: string;
-  description: string;
+export interface ITask {
   creator: Types.ObjectId;
+  type: "like" | "follow" | "comment" | "repost" | "quote";
+  platform: "twitter" | "youtube" | "tiktok" | "facebook";
+  target: string; // e.g., Twitter post URL, YouTube channel ID
+  rewardPoints: number;
   maxParticipants: number;
-  participants: Types.ObjectId[];
-  isFilled: boolean;
-  createdAt: Date;
+  participants: Types.ObjectId[]; // Optional array of participant IDs
+  status?: "active" | "completed"; // Default is "active"
+  expiration?: Date; // Optional
 }
 
 // User Schema
@@ -45,37 +48,39 @@ const UserSchema = new Schema<IUser>(
     providers: {
       type: [String],
       default: [],
+      required: true,
     },
     providerIds: {
       type: Map,
       of: String,
       default: {},
+      required: true,
     },
-    photo: {
-      type: String,
-      default: "",
-    },
+    photo: String,
+    name: String,
     username: {
       type: String,
-      default: "",
       trim: true,
       minlength: [3, "Username must be at least 3 characters"],
       maxlength: [30, "Username cannot exceed 30 characters"],
+      index: true,
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
-      unique: true,
       trim: true,
       lowercase: true,
       match: [/^\S+@\S+\.\S+$/, "Invalid email format"],
+      index: true,
+      sparse: true, // Allows null/undefined for OAuth providers without email
     },
     otpExpires: { type: Date, default: null },
     referralCode: {
       type: String,
-      default: "",
       unique: true,
       sparse: true,
+      default: function () {
+        return generateReferralCode();
+      },
     },
     referredBy: {
       type: Schema.Types.ObjectId,
@@ -88,7 +93,7 @@ const UserSchema = new Schema<IUser>(
     },
     balance: {
       type: Number,
-      default: 0,
+      default: 3,
       min: [0, "Balance cannot be negative"],
     },
     isVerified: {
@@ -141,44 +146,28 @@ const UserSchema = new Schema<IUser>(
 );
 
 // Task Schema
-const TaskSchema = new Schema<ITask>(
-  {
-    title: {
-      type: String,
-      required: [true, "Task title is required"],
-      trim: true,
-      minlength: [5, "Title must be at least 5 characters"],
-      maxlength: [100, "Title cannot exceed 100 characters"],
-    },
-    description: {
-      type: String,
-      required: [true, "Task description is required"],
-      trim: true,
-      minlength: [10, "Description must be at least 10 characters"],
-      maxlength: [500, "Description cannot exceed 500 characters"],
-    },
-    creator: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Creator is required"],
-    },
-    maxParticipants: {
-      type: Number,
-      required: [true, "Maximum number of participants is required"],
-      min: [1, "At least one participant is required"],
-      max: [1000, "Maximum participants cannot exceed 1000"],
-    },
-    participants: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    isFilled: { type: Boolean, default: false },
-    createdAt: { type: Date, default: Date.now },
+const TaskSchema = new Schema<ITask>({
+  creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  type: {
+    type: String,
+    enum: ["like", "follow", "comment", "repost", "quote"],
   },
-  { timestamps: true }
-);
+  platform: {
+    type: String,
+    enum: ["twitter", "youtube", "tiktok", "facebook"],
+  },
+  target: { type: String, required: true }, // e.g., Twitter post URL, YouTube channel ID
+  rewardPoints: { type: Number, required: true },
+  maxParticipants: { type: Number, required: true },
+  participants: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
+  status: { type: String, enum: ["active", "completed"], default: "active" },
+  expiration: Date, // Optional
+});
 
 // Pre-save hook to check if task is filled
 TaskSchema.pre("save", function (next) {
   if (this.participants.length >= this.maxParticipants) {
-    this.isFilled = true;
+    this.status = "completed";
   }
   next();
 });

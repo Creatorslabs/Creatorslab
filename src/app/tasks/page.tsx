@@ -75,7 +75,9 @@ const Home: React.FC = () => {
             {avatars.map((src, index) => (
               <div
                 key={index}
-                className={`relative w-10 h-10 ${index !== 0 ? "-ml-4" : ""} aspect-square md`}
+                className={`relative w-10 h-10 ${
+                  index !== 0 ? "-ml-4" : ""
+                } aspect-square md`}
               >
                 <Image
                   src={src}

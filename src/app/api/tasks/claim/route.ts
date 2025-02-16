@@ -7,7 +7,9 @@ export async function POST(req: NextRequest) {
     await connectDB();
     const { userId, taskId } = await req.json();
 
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select(
+      "_id username email participatedTasks"
+    );
     if (!user)
       return NextResponse.json({ message: "User not found" }, { status: 404 });
 
@@ -34,7 +36,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Task claimed successfully!", user },
-      { status: 404 }
+      { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(

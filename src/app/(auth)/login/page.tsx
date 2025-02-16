@@ -33,12 +33,17 @@ const LogIn: FC = () => {
     }
 
     try {
-      const payload = await (
-        await fetch("/api/auth/request-otp", {
-          method: "POST",
-          body: JSON.stringify({ email }),
-        })
-      ).json();
+      const res = await fetch("/api/auth/request-otp", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        setError("Unable to send otp, Please try again");
+        return;
+      }
+
+      const payload = await res.json();
 
       setSuccess(payload.message);
     } catch (error) {
@@ -54,7 +59,7 @@ const LogIn: FC = () => {
     setError("");
 
     try {
-      const result = await signIn("email", {
+      const result = await signIn("credentials", {
         email,
         otp,
         redirect: false,
@@ -62,11 +67,10 @@ const LogIn: FC = () => {
 
       console.log("Sign-in result:", result);
 
-      if (result?.error) {
-        console.error("NextAuth Sign-in Error:", result.error);
-        alert(result.error);
+      if (result && !result.error) {
+        router.push("/tasks");
       } else {
-        router.push("/dashboard");
+        console.error("NextAuth Sign-in Error:", result?.error);
       }
     } catch (error) {
       setError((error as Error).message);
@@ -81,7 +85,7 @@ const LogIn: FC = () => {
         {/** Header section*/}
         <div className="flex justify-between px-6 py-4 md:pl-16 md:py-8 items-start md:items-center">
           <Image
-            src="/images/logo.svg"
+            src="/images/logo.png"
             width={150}
             height={150}
             alt="CreatorslLab lgo"
@@ -183,13 +187,13 @@ const LogIn: FC = () => {
             <p className="text-xs">Log in with Social account</p>
             <div className="flex flex-row gap-4 items-center flex-wrap">
               <button
-                onClick={() => signIn("twitter")}
+                onClick={() => signIn("twitter", { callbackUrl: "/tasks" })}
                 className="flex flex-row p-2 flex-1 bg-gradient-to-r from-[#5D3FD1] to-[#191919] rounded-md items-center gap-2 text-xs max-w-[128px] w-full"
               >
                 <TiSocialTwitter className="text-[#55ACEE]" /> Twitter
               </button>
               <button
-                onClick={() => signIn("discord")}
+                onClick={() => signIn("discord", { callbackUrl: "/tasks" })}
                 className="flex flex-row p-2 flex-1 bg-gradient-to-r from-[#5D3FD1] to-[#191919] rounded-md items-center gap-2 text-xs max-w-[128px] w-full"
               >
                 <FaDiscord className="text-[#55ACEE]" /> Discord

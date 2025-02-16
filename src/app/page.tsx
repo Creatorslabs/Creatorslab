@@ -17,13 +17,13 @@ function LandingPage() {
       {/** Header section*/}
       <div className="flex justify-between px-6 py-4 md:px-16 md:py-8 items-center">
         <Image
-          src="/images/logo.svg"
+          src="/images/logo.png"
           width={150}
           height={150}
           alt="CreatorslLab lgo"
         />
         <Link
-          href="/signup"
+          href="/tasks"
           className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
         >
           Get started
@@ -45,7 +45,7 @@ function LandingPage() {
           </p>
 
           <Link
-            href="/signup"
+            href="/tasks"
             className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
           >
             Get started
@@ -148,7 +148,7 @@ function LandingPage() {
             </p>
           </div>
           <Link
-            href="/signup"
+            href="/tasks"
             className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
           >
             Get started
@@ -232,10 +232,7 @@ function LandingPage() {
             Creating a long term relationship among builders and content
             creators, to a wider global web3 communities.
           </p>
-          <Link
-            href="/signup"
-            className="p-2 rounded-md bg-white bg-opacity-15"
-          >
+          <Link href="/tasks" className="p-2 rounded-md bg-white bg-opacity-15">
             Become a member
           </Link>
         </div>

@@ -84,7 +84,9 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const ContextProvider: FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   return (
     <>
       <SessionProvider>

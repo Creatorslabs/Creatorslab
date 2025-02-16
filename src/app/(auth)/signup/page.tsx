@@ -81,19 +81,19 @@ function Page() {
     setError("");
 
     try {
-      const result = await signIn("email", {
+      const result = await signIn("credentials", {
         email,
         otp,
         redirect: false,
       });
 
-      console.log("Sign-in result:", result); 
+      console.log("Sign-in result:", result);
 
       if (result?.error) {
-        console.error("NextAuth Sign-in Error:", result.error); 
-        alert(result.error); 
+        console.error("NextAuth Sign-in Error:", result.error);
+        alert(result.error);
       } else {
-        router.push("/dashboard"); 
+        router.push("/dashboard");
       }
     } catch (err) {
       setError("An error occurred. Please try again." + (err as Error).message);
@@ -107,7 +107,7 @@ function Page() {
       {/** Header section*/}
       <div className="flex justify-between px-6 py-4 md:px-16 md:py-8 items-start md:items-center">
         <Image
-          src="/images/logo.svg"
+          src="/images/logo.png"
           width={150}
           height={150}
           alt="CreatorslLab lgo"
