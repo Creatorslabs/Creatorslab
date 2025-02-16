@@ -2,12 +2,15 @@ import { User } from "@/models/user";
 import connectDB from "@/utils/connectDB";
 import { NextRequest, NextResponse } from "next/server";
 
-export default async function POST(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const { userId, taskId } = await req.json();
 
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select(
+      "_id username email participatedTasks"
+    );
+
     if (!user)
       return NextResponse.json({ message: "User not found" }, { status: 404 });
 
@@ -21,9 +24,11 @@ export default async function POST(req: NextRequest) {
         { status: 400 }
       );
 
-    if (user.participatedTasks[taskIndex].status !== "pending") {
+    const taskStatus = user.participatedTasks[taskIndex]?.status;
+
+    if (!["pending", "claimed"].includes(taskStatus)) {
       return NextResponse.json(
-        { message: "Task is not pending" },
+        { message: "Task must be pending or has already been claimed." },
         { status: 400 }
       );
     }
@@ -35,7 +40,7 @@ export default async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Task marked as completed", user },
-      { status: 404 }
+      { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(

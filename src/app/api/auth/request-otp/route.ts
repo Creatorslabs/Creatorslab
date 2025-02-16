@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/utils/connectDB";
 import { sendVerificationEmail } from "@/utils/mailer";
 import { User } from "@/models/user";
-import crypto from "crypto";
 import mongoose from "mongoose";
-
-const generateReferralCode = (email: string) => {
-  return crypto.createHash("sha256").update(email).digest("hex").slice(0, 8);
-};
+import {
+  generateRandomUsername,
+  generateReferralCode,
+} from "@/actions/generate-referal-code";
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,8 +30,8 @@ export async function POST(req: NextRequest) {
         email,
         providers: ["email"],
         role: "user",
-        username: email.split("@")[0],
-        referralCode: generateReferralCode(email),
+        username: generateRandomUsername(),
+        referralCode: generateReferralCode(),
         referredBy: null,
         balance: 3,
         isVerified: false,
@@ -61,6 +60,8 @@ export async function POST(req: NextRequest) {
     user.verificationCode = otp; // Ensure this field is used for verification
     user.otpExpires = new Date(now + 10 * 60 * 1000); // Expires in 10 minutes
 
+    console.log("OTP time:", new Date(now + 10 * 60 * 1000));
+
     await user.save({ session });
 
     // Send OTP Email
@@ -74,7 +75,7 @@ export async function POST(req: NextRequest) {
 
       if (referrer) {
         referrer.balance += 1;
-        referrer.referralCount = (referrer.referralCount || 0) + 1;
+        referrer.referralCount += 1;
         await referrer.save({ session });
       }
     }

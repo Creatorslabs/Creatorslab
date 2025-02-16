@@ -5,36 +5,28 @@ import connectDB from "@/utils/connectDB";
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    const { userId, newRole } = await req.json();
 
-    if (!userId || !newRole) {
+    // Parse request body
+    const { userId } = await req.json();
+    if (!userId) {
       return NextResponse.json(
-        { error: "User ID and new role are required" },
+        { error: "User ID is required" },
         { status: 400 }
       );
     }
 
-    if (!["user", "creator"].includes(newRole)) {
-      return NextResponse.json({ error: "Invalid role" }, { status: 400 });
-    }
-
+    // Fetch user
     const user = await User.findById(userId);
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    if (user.role === newRole) {
-      return NextResponse.json(
-        { message: "Role already set to this value" },
-        { status: 200 }
-      );
-    }
-
-    user.role = newRole;
+    // Toggle role between "user" and "creator"
+    user.role = user.role === "user" ? "creator" : "user";
     await user.save();
 
     return NextResponse.json(
-      { success: true, message: `Role switched to ${newRole}` },
+      { success: true, message: `Role switched to ${user.role}` },
       { status: 200 }
     );
   } catch (error) {

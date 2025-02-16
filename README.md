@@ -34,3 +34,27 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Routes done
+
+# Task
+
+- POST /api/tasks/create - DONE
+- POST /api/tasks/available - DONE
+- POST /api/tasks/start - DONE
+- POST /api/tasks/complete - DONE - remain verification logic
+- POST /api/tasks/claim - DONE - remain login for onchain claim
+- GET /api/tasks/get-status?taskId={taskId}&userId={userId} - DONE
+
+# Auth
+
+- Oauth - DONE
+- POST /api/auth/user-exist - DONE
+- POST /api/auth/request-otp - DONE - Creates user if not registered
+- POST /api/auth/verify-otp - DONE -n Not necessary because OAuth handles it
+
+# User
+
+- POST /api/user/follow - DONE
+- POST /api/user/switch-role - DONE
+- PUT /api/user/update - DONE
