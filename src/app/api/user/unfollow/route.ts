@@ -3,7 +3,7 @@ import { User } from "@/models/user";
 import connectDB from "@/utils/connectDB";
 import mongoose from "mongoose";
 
-export async function POST(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
   try {
     await connectDB();
     const { userId, creatorId } = await req.json();
@@ -19,13 +19,28 @@ export async function POST(req: NextRequest) {
     session.startTransaction();
 
     try {
-      // Update following/followers and add balance in one atomic operation
+      // Fetch user balance
+      const user = await User.findById(userId).session(session);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      if (user.balance < 20) {
+        await session.abortTransaction();
+        session.endSession();
+        return NextResponse.json(
+          { error: "Insufficient balance to unfollow" },
+          { status: 400 }
+        );
+      }
+
+      // Perform unfollow operation
       await Promise.all([
         User.findByIdAndUpdate(
           userId,
           {
-            $addToSet: { followingCreators: creatorId },
-            $inc: { balance: 0.3 },
+            $pull: { followingCreators: creatorId },
+            $inc: { balance: -20 },
           },
           { session }
         ),
@@ -33,7 +48,7 @@ export async function POST(req: NextRequest) {
         User.findByIdAndUpdate(
           creatorId,
           {
-            $addToSet: { followers: userId },
+            $pull: { followers: userId },
           },
           { session }
         ),
@@ -49,7 +64,7 @@ export async function POST(req: NextRequest) {
       throw error;
     }
   } catch (error) {
-    console.error("Error following creator:", error);
+    console.error("Error unfollowing creator:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

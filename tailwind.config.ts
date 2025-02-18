@@ -17,8 +17,8 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        inter: ["Inter", "sans-serif"], // Add Inter font family
-        syne: ["Syne", "sans-serif"], // Add Syne font family
+        inter: ["var(--font-inter)", "sans-serif"],
+        syne: ["var(--font-syne)", "sans-serif"],
       },
     },
   },
