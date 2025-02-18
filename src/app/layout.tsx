@@ -1,18 +1,10 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Inter, Syne } from "next/font/google";
 import "./globals.css";
 import ParentComponent from "./components/ParentComponent";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const syne = Syne({ subsets: ["latin"], variable: "--font-syne" });
 
 export const metadata: Metadata = {
   title: "CreatorsLab",
@@ -26,10 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full overflow-x-hidden`}
+        className={`${inter.variable} ${syne.variable} antialiased w-full overflow-x-hidden`}
       >
         <ParentComponent>{children}</ParentComponent>
       </body>

@@ -39,22 +39,23 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 # Task
 
-- POST /api/tasks/create - DONE
-- POST /api/tasks/available - DONE
-- POST /api/tasks/start - DONE
-- POST /api/tasks/complete - DONE - remain verification logic
-- POST /api/tasks/claim - DONE - remain login for onchain claim
-- GET /api/tasks/get-status?taskId={taskId}&userId={userId} - DONE
+- POST      /api/tasks/create - DONE
+- POST      /api/tasks/available - DONE
+- POST      /api/tasks/start - DONE
+- POST      /api/tasks/complete - DONE - remain verification logic
+- POST      /api/tasks/claim - DONE - remain login for onchain claim
+- GET       /api/tasks/get-status?taskId={taskId}&userId={userId} - DONE
 
 # Auth
 
 - Oauth - DONE
-- POST /api/auth/user-exist - DONE
-- POST /api/auth/request-otp - DONE - Creates user if not registered
-- POST /api/auth/verify-otp - DONE -n Not necessary because OAuth handles it
 
 # User
 
-- POST /api/user/follow - DONE
-- POST /api/user/switch-role - DONE
-- PUT /api/user/update - DONE
+- POST      /api/user/follow - DONE
+- DELETE    /api/user/unfollow - DONE
+- POST      /api/user/switch-role - DONE
+- PUT       /api/user/update - DONE
+- POST      /api/user/user-exist - DONE
+- POST      /api/user/request-otp - DONE - Creates user if not registered
+- POST      /api/user/verify-otp - DONE -n Not necessary because OAuth handles it
