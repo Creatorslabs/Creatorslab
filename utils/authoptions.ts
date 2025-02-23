@@ -244,6 +244,7 @@ export const authOptions: NextAuthOptions = {
             id: user._id.toString(),
             email: user.email,
             name: user.name || user.username,
+            image: user.photo,
             role: user.role,
           };
         } catch (error) {
@@ -254,66 +255,39 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
-      await connectDB();
-
-      // Only handle OAuth providers here
-      if (account?.provider !== "credentials") {
-        console.log(`OAuth signIn attempt for provider: ${account?.provider}`);
-        const existingUser = await User.findOne({
-          $or: [
-            { email: user.email },
-            {
-              [`providerIds.${account?.provider}`]: account?.providerAccountId,
-            },
-          ],
-        });
-
-        if (existingUser) {
-          // Merge accounts if email matches but provider ID is new
-          if (!existingUser.providers.includes(account?.provider)) {
-            await User.updateOne(
-              { _id: existingUser._id },
-              {
-                $addToSet: { providers: account?.provider },
-                $set: {
-                  [`providerIds.${account!.provider}`]:
-                    account!.providerAccountId,
-                },
-              }
-            );
-          }
-
-          // Update user object for session
-          user.id = existingUser._id.toString();
-          user.role = existingUser.role;
-          return true;
-        }
-        // Create new user
-        await User.create({
-          email: user.email,
-          name: user.name,
-          providers: [account?.provider],
-          providerIds: { [account!.provider]: account?.providerAccountId },
-          role: "user",
-          isVerified: true,
-        });
+    async jwt({ token, user, account }) {
+      // If user is newly authenticated (i.e., during sign-in), attach the role
+      if (user) {
+        token.role = (user as any).role || "user"; // Default to "user" if undefined
+        token.image = user.image;
+        token.provider = account?.provider;
       }
 
-      // Allow new user creation for OAuth or proceed with credentials
-      return true;
+      return token;
     },
+
     async session({ session, token }) {
-      session.user.id = token.sub!;
+      console.log("🎉🎉🎉 session:", session);
+      console.log("Token:", token);
+
+      if (session.user) {
+        session.user.id = token.sub!;
+        session.user.image = token.image as string;
+        session.user.role = token.role as string; // Ensure role is assigned
+        session.user.provider = token.provider as string;
+      }
+
       return session;
     },
   },
+
   pages: {
     signIn: "/test",
   },
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   secret: process.env.NEXTAUTH_SECRET!,
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
 };

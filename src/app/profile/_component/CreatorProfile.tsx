@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const page = () => {
+const CreatorProfile = () => {
   return (
     <div className="bg-[#161616] w-full max-w-[1440px] mx-auto">
       <div className="w-[88%] mx-auto py-4 min-h-screen">
         {/* header navigation section */}
         <div className="sm:flex justify-between items-center my-6 block">
           <div className="p-3 rounded-lg bg-[#242424] w-fit">
-            <Link href={'/'}>
+            <Link href={"/"}>
               <Image
                 src="/images/back-arrow.svg"
                 alt="back"
@@ -20,7 +20,13 @@ const page = () => {
           <div className="flex justify-between items-center flex-1 sm:ml-5 sm:text-xl font-medium mt-4 sm:mt-0">
             <p>Creator profile</p>
             <button className="border border-[#606060] rounded-lg p-2 sm:px-4 sm:py-2 bg-[#242424] text-white flex justify-center items-center gap-2 text-xs sm:text-base">
-              <Image src="/images/coin.svg" alt="coin" width={30} height={30} className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]" />
+              <Image
+                src="/images/coin.svg"
+                alt="coin"
+                width={30}
+                height={30}
+                className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
+              />
               Earn $CLS
             </button>
           </div>
@@ -65,16 +71,16 @@ const page = () => {
                   </div>
                   <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center sm:justify-start sm:items-start">
                     <div className="flex xl:flex-col flex-row xl: gap-5">
-                    <p className="sm:text-xl my-0">Barbie_xy</p>
-                    <button className="bg-[#2D2D2D] w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
-                      <Image
-                        src="/images/verified.svg"
-                        alt="verified"
-                        height={20}
-                        width={20}
-                      />
-                      <span className="text-xs sm:text-sm">Verified</span>
-                    </button>
+                      <p className="sm:text-xl my-0">Barbie_xy</p>
+                      <button className="bg-[#2D2D2D] w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
+                        <Image
+                          src="/images/verified.svg"
+                          alt="verified"
+                          height={20}
+                          width={20}
+                        />
+                        <span className="text-xs sm:text-sm">Verified</span>
+                      </button>
                     </div>
                     <div className="flex gap-2">
                       <div className="flex justify-between items-center border-[#606060] border rounded-lg py-1 px-2 sm:py-2 sm:px-4">
@@ -113,7 +119,7 @@ const page = () => {
                           className="w-[15px] sm:w-[20px] h-[15px] sm:h-[20px]"
                         />
                       </div>
-                  </button>
+                    </button>
                   </div>
                 </div>
                 <button className="bg-white bg-opacity-20 h-fit py-2 px-4 rounded-lg hidden gap-2 items-center xl:flex">
@@ -355,4 +361,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreatorProfile;

@@ -27,8 +27,8 @@ const Home: React.FC = () => {
   return (
     <div className="flex flex-col gap-4">
       {/** Categories section */}
-      <div className="p-6 md:py-8 md:px-14 flex flex-col md:flex-row gap-4 justify-between">
-        <div className="flex flex-col gap-4 border border-[#3F3F3F] rounded-md p-4 w-full md:w-[50%] ">
+      <div className="py-6 md:py-8 flex-wrap flex flex-col md:flex-row gap-4 justify-between">
+        <div className="flex flex-col gap-4 border border-[#3F3F3F] rounded-md p-4 w-full md:w-[370px] ">
           <p className="flex flex-row justify-between text-sm">
             Browse by categories<span className="text-[#5D3FD1]">View all</span>
           </p>
@@ -67,7 +67,7 @@ const Home: React.FC = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col gap-4 border border-[#3F3F3F] rounded-md p-4 bg-[#222222] w-full md:w-[40%]">
+        <div className="flex flex-col gap-4 border border-[#3F3F3F] rounded-md p-4 bg-[#222222] w-full md:w-[370px]">
           <p className="flex flex-row justify-between text-sm">
             Browse by categories<span className="text-[#5D3FD1]">View all</span>
           </p>
@@ -76,8 +76,8 @@ const Home: React.FC = () => {
               <div
                 key={index}
                 className={`relative w-10 h-10 ${
-                  index !== 0 ? "-ml-4" : ""
-                } aspect-square md`}
+                  index !== 0 ? "-ml-4 md:-ml-2" : ""
+                } aspect-square`}
               >
                 <Image
                   src={src}
@@ -94,7 +94,7 @@ const Home: React.FC = () => {
       </div>
 
       {/** New tasks section */}
-      <div className="relative px-6 md:px-14 flex flex-col gap-4">
+      <div className="relative py-6 flex flex-col gap-4">
         <div>
           <div className="flex items-center justify-between py-4">
             <p className="flex-1 text-lg">New tasks</p>
@@ -164,7 +164,7 @@ const Home: React.FC = () => {
       </div>
 
       {/** Features section */}
-      <div className="p-6 md:py-8 md:px-14 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="py-6 md:py-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="relative flex-1 rounded-md p-4 flex flex-row justify-between overflow-hidden">
           <div className="absolute inset-0 bg-[url('/images/button-bg05.jpeg')] bg-cover bg-center -z-30"></div>
           <div className="flex flex-col gap-3 flex-1 items-start justify-center">
@@ -204,7 +204,7 @@ const Home: React.FC = () => {
       </div>
 
       {/** Trending section */}
-      <div className="relative p-6 md:py-8 md:px-14 flex flex-col gap-4">
+      <div className="relative py-6 md:py-8 flex flex-col gap-4">
         <div>
           <div className="flex items-center justify-between py-4">
             <p className="flex-1 text-lg">Trending tasks</p>
@@ -274,7 +274,7 @@ const Home: React.FC = () => {
       </div>
 
       {/** Bottom banner section */}
-      <div className="m-6 md:m-8 rounded-md p-4 flex flex-row justify-between bg-blue-500">
+      <div className="my-6 md:my-8 rounded-md p-4 flex flex-row justify-between bg-blue-500">
         <div className="flex flex-col gap-3 w-[60%] md:w-[40%] items-start justify-center">
           <h3 className="text-2xl font-syne">
             Earn, Engage and Expand with Creatorslab.
@@ -292,7 +292,7 @@ const Home: React.FC = () => {
           width={100}
           height={100}
           alt="coin sack"
-          className="h-28 w-auto"
+          className="h-28 w-28"
         />
       </div>
 

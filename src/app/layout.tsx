@@ -1,10 +1,23 @@
 import type { Metadata } from "next";
-import { Inter, Syne } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
 import ParentComponent from "./components/ParentComponent";
+import { ThemeModeScript } from "flowbite-react";
+import { HeroUIProvider } from "@heroui/system";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const syne = Syne({ subsets: ["latin"], variable: "--font-syne" });
+// Load Inter Variable Font Locally
+const inter = localFont({
+  src: "/fonts/Inter-VariableFont_opsz,wght.ttf",
+  variable: "--font-inter",
+  display: "swap",
+});
+
+// Load Syne Variable Font Locally
+const syne = localFont({
+  src: "/fonts/Syne-VariableFont_wght.ttf",
+  variable: "--font-syne",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "CreatorsLab",
@@ -17,11 +30,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-[#161616] text-white">
+      <head>
+        <ThemeModeScript />
+      </head>
       <body
-        className={`${inter.variable} ${syne.variable} antialiased w-full overflow-x-hidden`}
+        className={`${inter.variable} ${syne.variable} antialiased w-full overflow-x-hidden max-w-[1440px] mx-auto px-4 md:px-10 lg:px-14`}
       >
-        <ParentComponent>{children}</ParentComponent>
+        <HeroUIProvider>
+          <ParentComponent>{children}</ParentComponent>
+        </HeroUIProvider>
       </body>
     </html>
   );
