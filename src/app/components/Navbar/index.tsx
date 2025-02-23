@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center p-6 md:px-14 gap-4">
+      <nav className="flex justify-between items-center py-6 md:px-14 gap-4">
         {/* Logo */}
         <Link href="/">
           <Image

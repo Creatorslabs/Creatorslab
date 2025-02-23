@@ -4,8 +4,6 @@ import { usePathname } from "next/navigation";
 import Navbar from "../Navbar";
 import { ContextProvider } from "@/src/contexts/ContextProvider";
 
-import { HeroUIProvider } from "@heroui/system";
-
 const ParentComponent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
@@ -15,13 +13,11 @@ const ParentComponent = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <ContextProvider>
-        <HeroUIProvider>
-          {/* Conditionally render Navbar based on the current route */}
-          {!hideNavbarRoutes.includes(pathname) && <Navbar />}
+        {/* Conditionally render Navbar based on the current route */}
+        {!hideNavbarRoutes.includes(pathname) && <Navbar />}
 
-          {/* Render the page content */}
-          {children}
-        </HeroUIProvider>
+        {/* Render the page content */}
+        {children}
       </ContextProvider>
     </>
   );

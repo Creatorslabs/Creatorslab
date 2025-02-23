@@ -1,8 +1,25 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Syne:wght@400..800&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900; /* Supports all weights */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Syne";
+  src: url("/fonts/Syne-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-syne: "Syne", sans-serif;
+}
 
 * {
   margin: 0;
@@ -10,9 +27,14 @@
   box-sizing: border-box;
 }
 
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-syne: "Syne", sans-serif;
+}
+
 body {
-  background: #161616;
-  color: white;
+  /* background: #161616;
+  color: white; */
   width: 100vw;
   font-family: "Inter", sans-serif;
 }
@@ -21,6 +43,42 @@ body {
 .no-arrows::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* Scroll bar */
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Light background */
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #5d3fd1, #03abff);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #03abff, #5d3fd1);
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
 }
 
 .creator-content {

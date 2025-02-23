@@ -33,7 +33,7 @@ function LandingPage() {
       {/** Hero section */}
       <div className="flex flex-col md:flex-row py-6 md:py-8 max-w-full overflow-hidden place-items-center place-content-center">
         <div className="flex-1 md:pl-14 flex flex-col justify-center items-center md:items-start gap-4 px-6 text-center md:text-left md:px-0">
-          <h1 className="text-6xl font-syne">
+          <h1 className="text-6xl font-syne lg:text-8xl">
             Empowering Global Creativity with{" "}
             <span className="bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] bg-clip-text text-transparent">
               Web3
@@ -51,6 +51,7 @@ function LandingPage() {
             Get started
           </Link>
         </div>
+
         <div className="relative hidden md:block">
           {/* Blurred Gradient Shadow */}
           <div

@@ -13,16 +13,13 @@ export default function HomePage() {
   const handleRequestOtp = async () => {
     setLoading(true);
     setMessage("");
-
     try {
       const res = await fetch("/api/user/request-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-
       if (!res.ok) throw new Error("Failed to send OTP");
-
       setOtpSent(true);
       setMessage("OTP sent! Check your email.");
     } catch (error) {
@@ -36,16 +33,9 @@ export default function HomePage() {
   const handleLogin = async () => {
     setLoading(true);
     setMessage("");
-
     try {
-      const res = await signIn("credentials", {
-        email,
-        otp,
-        redirect: false,
-      });
-
+      const res = await signIn("credentials", { email, otp, redirect: false });
       if (res?.error) throw new Error(res.error);
-
       setMessage("Login successful! Redirecting...");
       window.location.reload();
     } catch (error) {
@@ -58,7 +48,7 @@ export default function HomePage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
         <p className="text-2xl font-semibold">Loading...</p>
       </div>
     );
@@ -66,8 +56,8 @@ export default function HomePage() {
 
   if (session) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
-        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4 text-white">
+        <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md">
           <h1 className="text-2xl font-semibold">
             Welcome, {session.user?.name || "Guest"}
           </h1>
@@ -86,21 +76,19 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4 text-white">
+      <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-semibold mb-4">Sign in</h2>
-
         {message && (
-          <p className="text-center text-sm text-green-600">{message}</p>
+          <p className="text-center text-sm text-green-400">{message}</p>
         )}
-
         <div className="space-y-4">
           {!otpSent ? (
             <>
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full border p-2 rounded-md text-black"
+                className="w-full border p-2 rounded-md bg-gray-700 text-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -117,7 +105,7 @@ export default function HomePage() {
               <input
                 type="text"
                 placeholder="Enter OTP"
-                className="w-full border p-2 rounded-md"
+                className="w-full border p-2 rounded-md bg-gray-700 text-white"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
               />
@@ -130,20 +118,17 @@ export default function HomePage() {
               </button>
             </>
           )}
-
           <div className="flex items-center my-4">
-            <div className="flex-1 border-b"></div>
-            <p className="mx-2 text-gray-500">or</p>
-            <div className="flex-1 border-b"></div>
+            <div className="flex-1 border-b border-gray-600"></div>
+            <p className="mx-2 text-gray-400">or</p>
+            <div className="flex-1 border-b border-gray-600"></div>
           </div>
-
           <button
             className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition"
             onClick={() => signIn("discord")}
           >
             Sign in with Discord
           </button>
-
           <button
             className="w-full bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition"
             onClick={() => signIn("twitter")}
