@@ -14,15 +14,17 @@ export async function POST(req: Request) {
       );
     }
 
-    const user = await User.findById(userId).populate({
-      path: "participatedTasks.task",
-      model: Task,
-      populate: {
-        path: "creator",
-        select: "username", // Only fetch the creator's name
-      },
-    });
-      
+    const user = await User.findById(userId)
+      .populate({
+        path: "participatedTasks.task",
+        model: Task,
+        populate: {
+          path: "creator",
+          select: "username", // Only fetch the creator's name
+        },
+      })
+      .populate("createdTasks");
+
     if (!user) {
       return NextResponse.json(
         { success: false, message: "User not found" },

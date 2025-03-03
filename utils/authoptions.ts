@@ -267,9 +267,6 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      console.log("🎉🎉🎉 session:", session);
-      console.log("Token:", token);
-
       if (session.user) {
         session.user.id = token.sub!;
         session.user.image = token.image as string;

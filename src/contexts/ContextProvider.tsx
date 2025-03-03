@@ -60,7 +60,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
       //   new SolletExtensionWalletAdapter({ network }),
       new TorusWalletAdapter(),
     ],
-    [network]
+    []
   );
 
   //   const onError = useCallback((error: WalletError) => {
