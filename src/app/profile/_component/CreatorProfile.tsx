@@ -1,7 +1,90 @@
+"use client";
+import { ITask, IUser } from "@/models/user";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const CreatorProfile = () => {
+const CreatorProfile = ({ userId }: { userId: string }) => {
+  const [user, setUser] = useState<IUser | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isBalanceVisible, setIsBalanceVisible] = useState(false);
+  const [createdTasks, setCreatedTasks] = useState<ITask[] | null>(null);
+
+  useEffect(() => {
+    if (!userId) return; // Prevent unnecessary calls
+
+    let isMounted = true;
+
+    const fetchUser = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch("/api/user/get-user", {
+          method: "POST",
+          body: JSON.stringify({ userId }),
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch user data");
+
+        const data = await response.json();
+
+        console.log("User:", data);
+
+        setUser(data.user);
+        const remappedTasks = data.user.createdTasks.map((task) => {
+          console.log("Created Task:", task);
+          return {
+            type: task.type,
+            platform: task.platform,
+            target: task.target,
+            rewardPoints: task.rewardPoints,
+            maxParticipants: task.maxParticipants,
+            // Convert each participant ObjectId to a string
+            participants: task.participants.map((participant: any) =>
+              participant.toString()
+            ),
+            status: task.status,
+            expiration: task.expiration ? new Date(task.expiration) : undefined,
+          };
+        });
+
+        // remove in full in production
+        if (!createdTasks) setCreatedTasks(remappedTasks);
+      } catch (err) {
+        if (isMounted) {
+          setError("Failed to fetch user.");
+          console.error("Error fetching user:", err);
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchUser();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userId]);
+
+  if (loading) {
+    return (
+      <div className="animate-pulse bg-[#161616] w-full max-w-[1440px] mx-auto min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Loading user profile...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-[#161616] w-full max-w-[1440px] mx-auto min-h-screen flex items-center justify-center">
+        <p className="text-red-500">Error: {error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#161616] w-full max-w-[1440px] mx-auto">
       <div className="w-[88%] mx-auto py-4 min-h-screen">
@@ -71,7 +154,7 @@ const CreatorProfile = () => {
                   </div>
                   <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center sm:justify-start sm:items-start">
                     <div className="flex xl:flex-col flex-row xl: gap-5">
-                      <p className="sm:text-xl my-0">Barbie_xy</p>
+                      <p className="sm:text-xl my-0">{user?.username}</p>
                       <button className="bg-[#2D2D2D] w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
                         <Image
                           src="/images/verified.svg"
@@ -146,13 +229,17 @@ const CreatorProfile = () => {
               <div className="absolute top-0 p-5 sm:p-8">
                 <span className="text-[#606060]">Wallet Balance</span>
                 <p className="text-xl sm:text-4xl flex gap-8 items-center my-3 sm:mt-3 sm:mb-6">
-                  $CLS 206.08
-                  <Image
-                    src="/images/eye.svg"
-                    alt="eye"
-                    width={20}
-                    height={20}
-                  />
+                  $CLS {isBalanceVisible ? user?.balance : "****"}
+                  <button
+                    onClick={() => setIsBalanceVisible(!isBalanceVisible)}
+                  >
+                    <Image
+                      src="/images/eye.svg"
+                      alt="eye"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
                 </p>
                 <div className="flex gap-2 font-semibold text-base">
                   <button className="p-2 sm:px-6 sm:py-2 rounded-lg bg-gradient-to-r from-[#5d3fd1] to-[#03abff]">

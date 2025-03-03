@@ -40,6 +40,7 @@ export interface ITask {
   participants: Types.ObjectId[]; // Optional array of participant IDs
   status?: "active" | "completed"; // Default is "active"
   expiration?: Date; // Optional
+  createdAt: string;
 }
 
 // User Schema

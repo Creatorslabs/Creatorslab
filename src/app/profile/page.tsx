@@ -17,7 +17,7 @@ export default async function Page() {
 
     switch (role) {
       case "creator":
-        return <CreatorProfile />;
+        return <CreatorProfile userId={userId} />;
       case "user":
         return <UserProfile userId={userId} />;
       default:

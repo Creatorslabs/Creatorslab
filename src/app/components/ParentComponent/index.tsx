@@ -8,7 +8,7 @@ const ParentComponent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   // Define routes where you don't want the Navbar to appear
-  const hideNavbarRoutes = ["/login", "/signup", "/"];
+  const hideNavbarRoutes = ["/login", "/signup", "/", "/waitlist"];
 
   return (
     <>
