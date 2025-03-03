@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  console.log("Waitlist middleware");
-  console.log(process.env.NODE_ENV);
-  
+  // console.log("Waitlist middleware");
+  // console.log(process.env.NODE_ENV);
 
   if (
     process.env.NODE_ENV !== "development" &&
