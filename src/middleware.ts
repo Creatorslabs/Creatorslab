@@ -2,28 +2,42 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  // console.log("Waitlist middleware");
-  // console.log(process.env.NODE_ENV);
+  // Allow everything in development mode
+  if (process.env.NODE_ENV === "development") {
+    return NextResponse.next();
+  }
+
+  // Allow access to the waitlist page
+  if (req.nextUrl.pathname === "/waitlist") {
+    return NextResponse.next();
+  }
+
+  // Allow static files, images, and metadata files
+  const exemptPaths = ["/favicon.ico", "/sitemap.xml", "/robots.txt"];
+  const fileExtensionRegex =
+    /\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|woff2|woff|ttf)$/;
 
   if (
-    process.env.NODE_ENV !== "development" &&
-    req.nextUrl.pathname !== "/waitlist"
+    exemptPaths.includes(req.nextUrl.pathname) ||
+    fileExtensionRegex.test(req.nextUrl.pathname)
   ) {
-    return NextResponse.redirect(new URL("/waitlist", req.url));
+    return NextResponse.next();
   }
-  return NextResponse.next();
+
+  // Redirect everything else to /waitlist
+  return NextResponse.redirect(new URL("/waitlist", req.url));
 }
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
+     * Match all request paths except for:
      * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - public assets (image files explicitly excluded)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     * - Static assets (images, fonts, scripts)
+     * - Metadata files (favicon, sitemap, robots.txt)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(png|jpg|jpeg|gif|webp|svg|ico)).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };
