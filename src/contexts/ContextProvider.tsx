@@ -24,7 +24,6 @@ import {
   useMemo,
 } from "react";
 import { AutoConnectProvider, useAutoConnect } from "./AutoConnectProvider";
-// import { notify } from "../utils/notifications";
 import {
   NetworkConfigurationProvider,
   useNetworkConfiguration,
