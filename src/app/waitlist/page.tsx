@@ -203,22 +203,27 @@ function Waitlist() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-black p-6 rounded-lg shadow-lg w-80 text-center text-white">
-            <p>{modalMessage}</p>
-            <button
-              onClick={() => setShowModal(false)}
-              className="mt-4 bg-gray-700 text-white py-2 px-4 rounded-md"
-            >
-              Close
-            </button>
+        <>
+          {/* Prevent page scrolling when modal is open */}
+          <style>{`body { overflow: hidden; }`}</style>
+
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-black p-8 rounded-lg shadow-xl w-96 text-center text-white">
+              <p>{modalMessage}</p>
+              <button
+                onClick={() => setShowModal(false)}
+                className="mt-6 bg-gray-700 text-white py-3 px-6 rounded-md"
+              >
+                Close
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/** Bottom banner section */}
       <div className="m-6 md:m-8 rounded-md p-4 flex flex-col md:flex-row justify-between bg-blue-500 relative">
-        <div className="flex flex-col gap-3 w-full md:w-[40%] items-start justify-center z-10">
+        <div className="flex flex-col gap-3 w-full md:w-[40%] items-start justify-center">
           <h3 className="text-2xl font-syne text-white">
             Earn, Engage and Expand with Creatorslab.
           </h3>
