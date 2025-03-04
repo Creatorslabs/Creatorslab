@@ -1,7 +1,6 @@
 "use client";
 import {
   WalletAdapterNetwork,
-  // WalletError
 } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
