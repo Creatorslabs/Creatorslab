@@ -23,11 +23,33 @@ export const metadata: Metadata = {
   title: "Creators Lab - Empowering Global Creativity with Web3",
   description:
     "Join the movement to enable creators worldwide to grow, engage, and earn. Built on the lightning-fast, low-fee Solana blockchain, backed by Solana Foundation and SuperteamNG.",
+  keywords: [
+    "CreatorLab",
+    "Creator Lab",
+    "creator tools",
+    "digital creators",
+    "content monetization",
+    "web3 for creators",
+    "NFT creators",
+    "AI tools for creators",
+    "influencer marketing",
+    "social media growth tools",
+    "membership platforms",
+    "subscription-based creator tools",
+    "passive income for creators",
+    "crypto payments for creators",
+    "no-code tools for creators",
+    "content automation tools",
+    "digital marketing for creators",
+    "monetization for creators",
+    "best platform for creators",
+    "creator economy",
+  ],
   openGraph: {
     title: "Creators Lab - Empowering Global Creativity with Web3",
     description:
       "Join the movement to enable creators worldwide to grow, engage, and earn. Built on the lightning-fast, low-fee Solana blockchain, backed by Solana Foundation and SuperteamNG.",
-    url: "https://www.creatorslab.cc/",
+    url: "https://creatorslab.cc/",
     type: "website",
     images: [
       {
@@ -46,6 +68,7 @@ export const metadata: Metadata = {
       "Join the movement to enable creators worldwide to grow, engage, and earn. Built on the lightning-fast, low-fee Solana blockchain, backed by Solana Foundation and SuperteamNG.",
     images: ["/images/1500x500.jpeg"],
   },
+  robots: "index, follow",
 };
 
 export default function RootLayout({
@@ -53,19 +76,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "CreatorLab",
-    url: "https://creatorlab.cc",
-    logo: "https://creatorlab.cc/logo.png",
+    name: "CreatorsLab",
+    url: "https://creatorslab.cc",
+    logo: "https://creatorslab.cc/logo.png",
+    description:
+      "CreatorLab provides AI-powered tools and monetization solutions for digital creators and content entrepreneurs.",
     sameAs: [
-      "https://twitter.com/creatorlab",
-      "https://linkedin.com/company/creatorlab",
+      "https://twitter.com/creatorslabseed",
+      "https://www.linkedin.com/company/creatorslab",
+      "https://www.instagram.com/creatorslab",
+      "https://www.facebook.com/creatorslab",
+      "https://www.tiktok.com/@creatorslab",
+      "https://www.youtube.com/@creatorslab",
     ],
   };
-  
+
   return (
     <html lang="en" className="bg-[#161616] text-white">
       <head>
