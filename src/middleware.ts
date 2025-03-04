@@ -1,16 +1,14 @@
-// import { NextResponse } from "next/server";
-// import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware() {
+export function middleware(req: NextRequest) {
   // console.log("Waitlist middleware");
   // console.log(process.env.NODE_ENV);
-  // if (
-  //   process.env.NODE_ENV !== "development" &&
-  //   req.nextUrl.pathname !== "/waitlist"
-  // ) {
-  //   return NextResponse.redirect(new URL("/waitlist", req.url));
-  // }
-  // return NextResponse.next();
+
+  if (process.env.NODE_ENV !== "development") {
+    return NextResponse.redirect(new URL("/waitlist", req.url));
+  }
+  return NextResponse.next();
 }
 
 export const config = {
