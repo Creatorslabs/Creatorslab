@@ -12,6 +12,10 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  if (req.nextUrl.pathname === "/sitemap.xml") {
+    return NextResponse.next();
+  }
+
   // Allow static files, images, and metadata files
   const exemptPaths = ["/favicon.ico", "/sitemap.xml", "/robots.txt"];
   const fileExtensionRegex =
