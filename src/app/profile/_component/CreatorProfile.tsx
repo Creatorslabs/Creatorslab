@@ -67,7 +67,7 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
     return () => {
       isMounted = false;
     };
-  }, [userId]);
+  }, [createdTasks, userId]);
 
   if (loading) {
     return (
