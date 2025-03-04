@@ -53,9 +53,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "CreatorLab",
+    url: "https://creatorlab.cc",
+    logo: "https://creatorlab.cc/logo.png",
+    sameAs: [
+      "https://twitter.com/creatorlab",
+      "https://linkedin.com/company/creatorlab",
+    ],
+  };
+  
   return (
     <html lang="en" className="bg-[#161616] text-white">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <ThemeModeScript />
       </head>
       <body
