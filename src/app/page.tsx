@@ -245,6 +245,17 @@ function LandingPage() {
         />
       </div>
 
+      {/** Powered By Section */}
+      <div className="text-center text-gray-500 text-lg p-4 flex flex-col py-6 items-center justify-center gap-4">
+        <p>Powered By:</p>
+        <Image
+          src="/images/landing-page/Frame 165.png"
+          alt="powered by"
+          height={100}
+          width={100}
+        />
+      </div>
+
       {/** Footer */}
       <div className="text-center text-gray-500 text-sm p-4">
         Copyright {new Date().getFullYear()}

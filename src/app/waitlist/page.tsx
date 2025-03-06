@@ -170,7 +170,7 @@ function Waitlist() {
           className="absolute right-0 md:right-20 -z-10"
         />
         <div className="relative p-6 md:py-8 md:px-14 flex flex-col gap-4 items-center">
-          <h3 className="font-syne text-5xl dark:text-red-600">
+          <h3 className="font-syne text-5xl text-center">
             Join Our Waitlist
           </h3>
           <p className="text-gray-400 text-center">
@@ -250,6 +250,17 @@ function Waitlist() {
           />
         </div>
       </div>
+
+       {/** Powered By Section */}
+            <div className="text-center text-gray-500 text-lg p-4 flex flex-col py-6 items-center justify-center gap-4">
+              <p>Powered By:</p>
+              <Image
+                src="/images/landing-page/Frame 165.png"
+                alt="powered by"
+                height={100}
+                width={100}
+              />
+            </div>
 
       {/** Footer */}
       <div className="text-center text-gray-500 text-sm p-4">
