@@ -1,5 +1,6 @@
 "use client";
 import { ITask, IUser } from "@/models/user";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -10,6 +11,10 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
   const [error, setError] = useState<string | null>(null);
   const [isBalanceVisible, setIsBalanceVisible] = useState(false);
   const [createdTasks, setCreatedTasks] = useState<ITask[] | null>(null);
+
+  const { data: session, status } = useSession();
+
+  console.log(loading, error, session, status);
 
   useEffect(() => {
     if (!userId) return; // Prevent unnecessary calls
@@ -68,22 +73,6 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
       isMounted = false;
     };
   }, [createdTasks, userId]);
-
-  if (loading) {
-    return (
-      <div className="animate-pulse bg-[#161616] w-full max-w-[1440px] mx-auto min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading user profile...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-[#161616] w-full max-w-[1440px] mx-auto min-h-screen flex items-center justify-center">
-        <p className="text-red-500">Error: {error}</p>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-[#161616] w-full max-w-[1440px] mx-auto">

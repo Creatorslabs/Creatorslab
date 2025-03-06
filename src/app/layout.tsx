@@ -104,7 +104,7 @@ export default function RootLayout({
         <ThemeModeScript />
       </head>
       <body
-        className={`${inter.variable} ${syne.variable} antialiased w-full overflow-x-hidden max-w-[1440px] mx-auto px-4 md:px-10 lg:px-14`}
+        className={`${inter.variable} ${syne.variable} antialiased w-full overflow-x-hidden max-w-[1440px] mx-auto md:px-10 lg:px-14`}
       >
         <HeroUIProvider>
           <ParentComponent>{children}</ParentComponent>

@@ -1,6 +1,7 @@
 "use client";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
+import Skeleton from "../components/skeleton-loader";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -48,9 +49,11 @@ export default function HomePage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-        <p className="text-2xl font-semibold">Loading...</p>
-      </div>
+      <Skeleton
+        width="100%"
+        height="100"
+        className="min-h-screen flex items-center justify-center bg-gray-900 text-white"
+      ></Skeleton>
     );
   }
 
