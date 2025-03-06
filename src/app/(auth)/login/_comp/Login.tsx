@@ -21,7 +21,7 @@ const Login: FC = () => {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-
+  
   const getOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);

@@ -3,7 +3,15 @@ import { ITask, IUser } from "@/models/user";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Skeleton from "../../components/skeleton-loader";
+import { MdCameraEnhance, MdVerified } from "react-icons/md";
+import { GoUnverified } from "react-icons/go";
+import CopyButton from "../../components/copy-button";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import CreatorTasksTable from "./creator-task-table";
 
 const CreatorProfile = ({ userId }: { userId: string }) => {
   const [user, setUser] = useState<IUser | null>(null);
@@ -13,11 +21,12 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
   const [createdTasks, setCreatedTasks] = useState<ITask[] | null>(null);
 
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   console.log(loading, error, session, status);
 
   useEffect(() => {
-    if (!userId) return; // Prevent unnecessary calls
+    if (!userId) router.push("login"); // Prevent unnecessary calls
 
     let isMounted = true;
 
@@ -81,12 +90,7 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
         <div className="sm:flex justify-between items-center my-6 block">
           <div className="p-3 rounded-lg bg-[#242424] w-fit">
             <Link href={"/"}>
-              <Image
-                src="/images/back-arrow.svg"
-                alt="back"
-                width={20}
-                height={20}
-              />
+              <IoMdArrowRoundBack />
             </Link>
           </div>
           <div className="flex justify-between items-center flex-1 sm:ml-5 sm:text-xl font-medium mt-4 sm:mt-0">
@@ -106,330 +110,211 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
         {/* details section */}
         <div>
           <div className="creator-content">
-            <div className="relative">
-              <Image
-                src="/images/creator-bg.svg"
-                alt="creator-bg"
-                width={830}
-                height={200}
-                className="w-full h-[220px] object-cover rounded-2xl hidden sm:block"
-              />
+            {status === "loading" ? (
+              <>
+                <Skeleton height="220px" />
+                <Skeleton height="220px" />
+              </>
+            ) : (
+              <>
+                <div className="relative">
+                  <Image
+                    src="/images/creator-bg.svg"
+                    alt="creator-bg"
+                    width={830}
+                    height={200}
+                    className="w-full h-[220px] object-cover rounded-2xl hidden sm:block"
+                  />
 
-              <Image
-                src="/images/profile-bkg.svg"
-                alt="creator-bg"
-                width={380}
-                height={200}
-                className="w-full h-[244px] object-cover rounded-2xl block sm:hidden"
-              />
-              <div className="bkg-creator-profile">
-                <div className="creator-profile-img">
-                  <div className="relative">
-                    <Image
-                      src="/images/dp.svg"
-                      alt="profile"
-                      width={136}
-                      height={136}
-                      className="z-0 w-[70px] sm:w-[136px] h-[70px] sm:h-[136px] mx-auto sm:ml-0"
-                    />
-                    <div className="bg-white rounded-md p-1 w-fit sm:flex right-2 -mt-6 z-10 absolute hidden">
-                      <Image
-                        src="/images/camera.svg"
-                        alt="camera"
-                        height={20}
-                        width={20}
-                      />
+                  <Image
+                    src="/images/profile-bkg.svg"
+                    alt="creator-bg"
+                    width={380}
+                    height={200}
+                    className="w-full h-[244px] object-cover rounded-2xl block sm:hidden"
+                  />
+                  <div className="bkg-creator-profile">
+                    <div className="creator-profile-img">
+                      <div className="relative">
+                        <Image
+                          src={user?.photo || "/images/dp.svg"}
+                          alt="profile"
+                          width={136}
+                          height={136}
+                          className="z-0 w-[70px] sm:w-[136px] h-[70px] sm:h-[136px] mx-auto sm:ml-0 rounded-full"
+                        />
+                        <div className="bg-white rounded-md p-1 w-fit sm:flex right-2 -mt-6 z-10 absolute hidden">
+                          <MdCameraEnhance color="#000" size={24} />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center sm:justify-start sm:items-start">
+                        <div className="flex xl:flex-col flex-row xl: gap-5">
+                          <p className="sm:text-xl my-0">{user?.username}</p>
+                          {user?.isVerified ? (
+                            <p className="bg-[#2D2D2D] w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
+                              <MdVerified
+                                height={30}
+                                width={30}
+                                color="#1a56db"
+                              />
+                              <span className="text-xs sm:text-sm">
+                                Verified
+                              </span>
+                            </p>
+                          ) : (
+                            <p className="bg-[#2D2D2D] w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
+                              <GoUnverified
+                                height={30}
+                                width={30}
+                                color="#e02424"
+                              />
+                              <span className="text-xs sm:text-sm">
+                                Not verified
+                              </span>
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex gap-2">
+                          <div className="flex justify-between items-center border-[#606060] border rounded-lg py-1 px-2 sm:py-2 sm:px-4">
+                            <div className="flex gap-1 sm:gap-3 items-center text-xs sm:text-base">
+                              <Image
+                                src="/images/x-icon.svg"
+                                alt="x-icon"
+                                height={30}
+                                width={30}
+                                className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
+                              />
+                              babriexy
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center border-[#606060] border rounded-lg py-2 px-4">
+                            <div className="flex gap-2 sm:gap-3 items-center">
+                              <Image
+                                src="/images/discord.svg"
+                                alt="discord"
+                                height={30}
+                                width={30}
+                                className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
+                              />
+                              babexy
+                            </div>
+                          </div>
+                        </div>
+                        <button className="bg-white bg-opacity-20 w-fit h-fit p-2 sm:px-4 rounded-lg flex gap-2 items-center xl:hidden text-sm">
+                          <span>Invite Link</span>
+                          <CopyButton
+                            link={`${process.env.NEXT_PUBLIC_URL}signup?referralCode=${user?.referralCode}`}
+                          />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center sm:justify-start sm:items-start">
-                    <div className="flex xl:flex-col flex-row xl: gap-5">
-                      <p className="sm:text-xl my-0">{user?.username}</p>
-                      <button className="bg-[#2D2D2D] w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
-                        <Image
-                          src="/images/verified.svg"
-                          alt="verified"
-                          height={20}
-                          width={20}
-                        />
-                        <span className="text-xs sm:text-sm">Verified</span>
+                </div>
+                <div className="relative">
+                  <Image
+                    src="/images/walletcard.svg"
+                    alt="walletcard"
+                    width={425}
+                    height={220}
+                    className="w-[425px] sm:h-[220px]"
+                  />
+                  <div className="absolute top-0 p-5 sm:p-8">
+                    <span className="text-[#606060]">Wallet Balance</span>
+                    <p className="text-xl sm:text-4xl flex gap-8 items-center my-3 sm:mt-3 sm:mb-6">
+                      $CLS {isBalanceVisible ? user?.balance : "****"}
+                      <button
+                        onClick={() => setIsBalanceVisible(!isBalanceVisible)}
+                      >
+                        {isBalanceVisible ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
+                      </button>
+                    </p>
+                    <div className="flex gap-2 font-semibold text-base">
+                      <button className="p-2 sm:px-6 sm:py-2 rounded-lg bg-gradient-to-r from-[#5d3fd1] to-[#03abff]">
+                        Buy $CLS
+                      </button>
+                      <button className="p-2 sm:px-6 sm:py-2 rounded-lg bg-[#F4B30C] text-black">
+                        Claim $CLS
                       </button>
                     </div>
-                    <div className="flex gap-2">
-                      <div className="flex justify-between items-center border-[#606060] border rounded-lg py-1 px-2 sm:py-2 sm:px-4">
-                        <div className="flex gap-1 sm:gap-3 items-center text-xs sm:text-base">
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div className="creator-content">
+            {status === "loading" ? (
+              <>
+                <Skeleton height="300px" className="mt-8" />
+                <Skeleton height="300px" className="mt-8" />
+              </>
+            ) : (
+              <>
+                {" "}
+                <CreatorTasksTable />
+                <div className="border-[0.5px] border-[#606060] p-4 sm:p-8 rounded-xl mt-8">
+                  <div className="mb-8">
+                    <p className="text-lg mb-2">Social Media Accounts</p>
+                    <div className="flex flex-col gap-6">
+                      <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5">
+                        <div className="flex gap-3 items-center">
                           <Image
                             src="/images/x-icon.svg"
                             alt="x-icon"
                             height={30}
                             width={30}
-                            className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
                           />
                           babriexy
                         </div>
+                        <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
+                          <span className="text-sm text-[#606060]">Linked</span>
+                        </button>
                       </div>
-                      <div className="flex justify-between items-center border-[#606060] border rounded-lg py-2 px-4">
-                        <div className="flex gap-2 sm:gap-3 items-center">
+                      <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 ">
+                        <div className="flex gap-3 items-center">
                           <Image
                             src="/images/discord.svg"
                             alt="discord"
-                            height={30}
-                            width={30}
-                            className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
+                            height={35}
+                            width={35}
                           />
-                          babexy
+                          Link Discord Account
+                        </div>
+                        <div className="p-3 rounded-lg bg-white">
+                          <Image
+                            src="/images/forward-arrow.svg"
+                            alt="forward"
+                            width={20}
+                            height={20}
+                          />
                         </div>
                       </div>
                     </div>
-                    <button className="bg-white bg-opacity-20 w-fit h-fit p-2 sm:px-4 rounded-lg flex gap-2 items-center xl:hidden text-sm">
-                      <span>Invite Link</span>
-                      <div className="bg-white bg-opacity-10 rounded-lg w-8 h-8 flex items-center justify-center">
-                        <Image
-                          src="/images/copy.svg"
-                          alt="copy"
-                          height={20}
-                          width={20}
-                          className="w-[15px] sm:w-[20px] h-[15px] sm:h-[20px]"
-                        />
+                  </div>
+                  <div className="mb-8">
+                    <p className="text-lg mb-1">Email Address</p>
+                    <span className="text-[#787878] text-xs mb-2 block">
+                      Link your Email to get latest updates on Creatorslab
+                    </span>
+                    <div className="flex gap-6">
+                      <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 w-full">
+                        <div className="flex gap-3 items-center">
+                          <Image
+                            src="/images/email.svg"
+                            alt="email"
+                            height={30}
+                            width={30}
+                          />
+                          babriexy@gmail.com
+                        </div>
+                        <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
+                          <span className="text-sm text-[#606060]">Linked</span>
+                        </button>
                       </div>
-                    </button>
-                  </div>
-                </div>
-                <button className="bg-white bg-opacity-20 h-fit py-2 px-4 rounded-lg hidden gap-2 items-center xl:flex">
-                  <span>Invite Link</span>
-                  <div className="bg-white bg-opacity-10 rounded-lg w-8 h-8 flex items-center justify-center">
-                    <Image
-                      src="/images/copy.svg"
-                      alt="copy"
-                      height={20}
-                      width={20}
-                    />
-                  </div>
-                </button>
-              </div>
-            </div>
-            <div className="relative">
-              <Image
-                src="/images/walletcard.svg"
-                alt="walletcard"
-                width={425}
-                height={220}
-                className="w-[425px] sm:h-[220px]"
-              />
-              <div className="absolute top-0 p-5 sm:p-8">
-                <span className="text-[#606060]">Wallet Balance</span>
-                <p className="text-xl sm:text-4xl flex gap-8 items-center my-3 sm:mt-3 sm:mb-6">
-                  $CLS {isBalanceVisible ? user?.balance : "****"}
-                  <button
-                    onClick={() => setIsBalanceVisible(!isBalanceVisible)}
-                  >
-                    <Image
-                      src="/images/eye.svg"
-                      alt="eye"
-                      width={20}
-                      height={20}
-                    />
-                  </button>
-                </p>
-                <div className="flex gap-2 font-semibold text-base">
-                  <button className="p-2 sm:px-6 sm:py-2 rounded-lg bg-gradient-to-r from-[#5d3fd1] to-[#03abff]">
-                    Buy $CLS
-                  </button>
-                  <button className="p-2 sm:px-6 sm:py-2 rounded-lg bg-[#F4B30C] text-black">
-                    Claim $CLS
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="creator-content">
-            <div className="creator-tasks-table">
-              <div className="flex justify-between items-center p-4 flex-wrap gap-2">
-                <p>All Tasks</p>
-                <div className="border border-[#3F3F3F] p-2 flex gap-1 rounded-xl w-80">
-                  <Image
-                    src="/images/search.svg"
-                    alt="search"
-                    height={20}
-                    width={20}
-                  />
-                  <input
-                    type="text"
-                    className="outline-none bg-transparent px-1 w-full"
-                    placeholder="Search projects, quests, creators"
-                  />
-                </div>
-              </div>
-              <table className="w-full text-center">
-                <thead className="p-2">
-                  <tr className="bg-[#222222]">
-                    <td className="p-2 min-w-[130px]">S/N</td>
-                    <td className="p-2 min-w-[130px]">Platform</td>
-                    <td className="p-2 min-w-[130px]">Amount to Earn</td>
-                    <td className="p-2 min-w-[130px]">Status</td>
-                    <td className="p-2 min-w-[130px]">Task Details</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="p-4">1</td>
-                    <td className="p-4 flex items-center gap-2 justify-center">
-                      <Image
-                        src="/images/discord.svg"
-                        alt="discord"
-                        width={20}
-                        height={20}
-                      />
-                      Discord
-                    </td>
-                    <td className="p-4">$CLS 0.5</td>
-                    <td className="p-4 text-[#FFC107]">Ongoing</td>
-                    <td className="p-4">
-                      <button className="bg-[#03ABFF] bg-opacity-10 border border-[#03ABFF] text-[#03ABFF] py-1 px-8 rounded-md">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">1</td>
-                    <td className="p-4 flex items-center gap-2 justify-center">
-                      <Image
-                        src="/images/discord.svg"
-                        alt="discord"
-                        width={20}
-                        height={20}
-                      />
-                      Discord
-                    </td>
-                    <td className="p-4">$CLS 0.5</td>
-                    <td className="p-4 text-[#FFC107]">Ongoing</td>
-                    <td className="p-4">
-                      <button className="bg-[#03ABFF] bg-opacity-10 border border-[#03ABFF] text-[#03ABFF] py-1 px-8 rounded-md">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">1</td>
-                    <td className="p-4 flex items-center gap-2 justify-center">
-                      <Image
-                        src="/images/discord.svg"
-                        alt="discord"
-                        width={20}
-                        height={20}
-                      />
-                      Discord
-                    </td>
-                    <td className="p-4">$CLS 0.5</td>
-                    <td className="p-4 text-[#FFC107]">Ongoing</td>
-                    <td className="p-4">
-                      <button className="bg-[#03ABFF] bg-opacity-10 border border-[#03ABFF] text-[#03ABFF] py-1 px-8 rounded-md">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">1</td>
-                    <td className="p-4 flex items-center gap-2 justify-center">
-                      <Image
-                        src="/images/discord.svg"
-                        alt="discord"
-                        width={20}
-                        height={20}
-                      />
-                      Discord
-                    </td>
-                    <td className="p-4">$CLS 0.5</td>
-                    <td className="p-4 text-[#FFC107]">Ongoing</td>
-                    <td className="p-4">
-                      <button className="bg-[#03ABFF] bg-opacity-10 border border-[#03ABFF] text-[#03ABFF] py-1 px-8 rounded-md">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">1</td>
-                    <td className="p-4 flex items-center gap-2 justify-center">
-                      <Image
-                        src="/images/discord.svg"
-                        alt="discord"
-                        width={20}
-                        height={20}
-                      />
-                      Discord
-                    </td>
-                    <td className="p-4">$CLS 0.5</td>
-                    <td className="p-4 text-[#FFC107]">Ongoing</td>
-                    <td className="p-4">
-                      <button className="bg-[#03ABFF] bg-opacity-10 border border-[#03ABFF] text-[#03ABFF] py-1 px-8 rounded-md">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="border-[0.5px] border-[#606060] p-4 sm:p-8 rounded-xl mt-8">
-              <div className="mb-8">
-                <p className="text-lg mb-2">Social Media Accounts</p>
-                <div className="flex flex-col gap-6">
-                  <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5">
-                    <div className="flex gap-3 items-center">
-                      <Image
-                        src="/images/x-icon.svg"
-                        alt="x-icon"
-                        height={30}
-                        width={30}
-                      />
-                      babriexy
-                    </div>
-                    <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
-                      <span className="text-sm text-[#606060]">Linked</span>
-                    </button>
-                  </div>
-                  <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 ">
-                    <div className="flex gap-3 items-center">
-                      <Image
-                        src="/images/discord.svg"
-                        alt="discord"
-                        height={35}
-                        width={35}
-                      />
-                      Link Discord Account
-                    </div>
-                    <div className="p-3 rounded-lg bg-white">
-                      <Image
-                        src="/images/forward-arrow.svg"
-                        alt="forward"
-                        width={20}
-                        height={20}
-                      />
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="mb-8">
-                <p className="text-lg mb-1">Email Address</p>
-                <span className="text-[#787878] text-xs mb-2 block">
-                  Link your Email to get latest updates on Creatorslab
-                </span>
-                <div className="flex gap-6">
-                  <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 w-full">
-                    <div className="flex gap-3 items-center">
-                      <Image
-                        src="/images/email.svg"
-                        alt="email"
-                        height={30}
-                        width={30}
-                      />
-                      babriexy@gmail.com
-                    </div>
-                    <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
-                      <span className="text-sm text-[#606060]">Linked</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>
