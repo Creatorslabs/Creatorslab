@@ -15,9 +15,11 @@ import {
   useConnectWallet,
 } from "@privy-io/react-auth";
 import { DarkThemeToggle } from "flowbite-react";
+// import { useWallet } from '@solana/wallet-adapter-react'
 
 const Login: FC = () => {
   const [error, setError] = useState("");
+
   const router = useRouter();
 
   const {
@@ -25,10 +27,10 @@ const Login: FC = () => {
     loginWithCode: loginWithCodeEmail,
     state: stateEmail,
   } = useLoginWithEmail({
-    onComplete: ({ user, isNewUser , wasAlreadyAuthenticated, loginMethod }) => {
+    onComplete: ({ user, isNewUser, wasAlreadyAuthenticated, loginMethod }) => {
       console.log("🔑 ✅ User successfully logged in with email", {
         user,
-        isNewUser ,
+        isNewUser,
         wasAlreadyAuthenticated,
         loginMethod,
       });
@@ -41,10 +43,10 @@ const Login: FC = () => {
   });
 
   const { initOAuth } = useLoginWithOAuth({
-    onComplete: ({ user, isNewUser , wasAlreadyAuthenticated, loginMethod }) => {
+    onComplete: ({ user, isNewUser, wasAlreadyAuthenticated, loginMethod }) => {
       console.log("🔑 ✅ User successfully logged in with email", {
         user,
-        isNewUser ,
+        isNewUser,
         wasAlreadyAuthenticated,
         loginMethod,
       });
@@ -59,6 +61,7 @@ const Login: FC = () => {
   const { connectWallet } = useConnectWallet({
     onSuccess: ({ wallet }) => {
       console.log(wallet.address);
+
       router.push("/tasks");
     },
     onError: (error) => {
@@ -83,28 +86,38 @@ const Login: FC = () => {
   }, [stateEmail]);
 
   return (
-    <div className="w-full h-screen flex flex-col">
-      {/** Header section*/}
-      <div className="flex justify-between px-6 py-4 md:pl-16 md:py-8 items-start md:items-center w-full">
-        <Link href="/" className="flex flex-row gap-2 items-center">
-          <Image
+    <div className="w-full h-screen overflow-hidden flex flex-row">
+      <div className="w-full flex-1 h-full z-50">
+        {/** Header section*/}
+        <div className="flex justify-between px-6 py-4 md:pl-16 md:py-8 items-start md:items-center">
+          <div className="flex flex-row gap-2 items-center">
+            <Image
             src="/images/logo.png"
             width={30}
             height={30}
-            alt="CreatorsLab logo"
+            alt="CreatorslLab lgo"
           />
-          <p className="text-lg">Creatorslab</p>
-        </Link>
-        <DarkThemeToggle />
-      </div>
-      <div className="flex-grow flex items-center justify-center md:pt-10">
-        <div className="border border-[#F1F2F4] rounded-lg max-w-[350px] md:max-w-[450px] w-full m-auto p-4 md:p-8  mt-10 md:mt-0 shadow-lg">
-          <h2 className="font-syne font-bold text-xl">Welcome to CreatorsLab</h2>
-          <p className="text-sm text-[#606060]">Join the global community of content creators and earn.</p>
+            <p className="text-lg">Creatorslab</p>
+          </div>
+          
+          <DarkThemeToggle />
+          <div className="flex flex-row gap-2 items-center flex-wrap justify-end">
+            <p className="text-sm text-[#3f3f3f] dark:text-[#F1F2F4]">New to CreatorsLab? </p>
+            <Link
+              href="/signup"
+              className="py-2 px-4 rounded-md border border-[#606060] bg-[#3f3f3f]/10 backdrop-filter backdrop-blur-sm"
+            >
+              Create an account
+            </Link>
+          </div>
+        </div>
+        <div className="border border-[#606060] rounded-lg max-w-[350px] w-full mx-auto p-4 md:p-8 bg-[#3f3f3f]/10 backdrop-filter backdrop-blur-sm z-50 mt-10 md:mt-0">
+          <h2 className="font-syne font-bold text-xl">Login to CreatorsLab</h2>
+          <p className="text-sm text-[#606060]">Welcome back!</p>
           {loginType === 2 ? (
             <div className="flex flex-col my-4 text-sm">Login with wallet</div>
           ) : (
-            <div className="w-full py-2">
+            <div className="w-ful py-2">
               {emailState === "awaiting-code-input" ? (
                 <>
                   <div className="flex items-center justify-center py-4">
@@ -121,7 +134,7 @@ const Login: FC = () => {
                     disabled={emailState !== "awaiting-code-input"}
                   >
                     {emailState !== "awaiting-code-input"
-                      ? "Logging in"
+                      ? "Loging in"
                       : "Login"}
                   </button>
                 </>
@@ -197,6 +210,7 @@ const Login: FC = () => {
                         "metamask",
                       ],
                       walletChainType: "solana-only",
+
                     })
                   }
                   className="flex flex-row p-2 flex-1 bg-gradient-to-r from-[#5D3FD1] to-[#191919] rounded-md items-center gap-2 text-xs max-w-[128px] w-full text-white"
@@ -214,6 +228,29 @@ const Login: FC = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="relative hidden md:block flex-1 h-full">
+        <Image
+          src="/images/login/signin-upbg.png"
+          width={600}
+          height={600}
+          alt="main side image"
+          className="w-full bg-cover h-full -z-20"
+        />
+        <Image
+          src="/images/login/float1.png"
+          width={300}
+          height={300}
+          alt="top image"
+          className="absolute -bottom-10 -left-32"
+        />
+        <Image
+          src="/images/login/float2.png"
+          width={200}
+          height={200}
+          alt="Bottom image"
+          className="absolute top-10 right-0 -rotate-90"
+        />
       </div>
     </div>
   );
