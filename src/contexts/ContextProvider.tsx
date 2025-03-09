@@ -3,9 +3,13 @@ import { PrivyProvider } from "@privy-io/react-auth";
 import { SessionProvider } from "next-auth/react";
 import { FC, ReactNode } from "react";
 import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
+import { useThemeMode } from "flowbite-react";
 const solanaConnectors = toSolanaWalletConnectors();
 
 export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const { computedMode } = useThemeMode()
+  
+  const theme = computedMode
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
@@ -19,7 +23,7 @@ export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
             "solflare",
             "metamask",
           ],
-          theme: "dark",
+          theme: computedMode === "dark" ? "dark" : "light",
           accentColor: "#5D3FD1",
           landingHeader: "CreatorsLab",
           walletChainType: "solana-only",

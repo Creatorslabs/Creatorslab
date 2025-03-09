@@ -96,7 +96,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className="dark:bg-[#101214] dark:text-white">
       <head>
         <script
           type="application/ld+json"
