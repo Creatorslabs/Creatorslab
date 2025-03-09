@@ -5,7 +5,7 @@ import LogoutButton from "../components/logout-button"
 import LoginButton from '../components/login-button';
 
 export default function User() {
-  const {ready, authenticated, user, login} = usePrivy();
+  const {ready, authenticated, user } = usePrivy();
 
   if (!(ready && authenticated) || !user) {
     return <LoginButton/>;
