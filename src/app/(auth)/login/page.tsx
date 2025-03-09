@@ -112,7 +112,7 @@ const Login: FC = () => {
             <div className="flex flex-col my-4 text-sm">Login with wallet</div>
           ) : (
             <div className="w-ful py-2">
-              {emailState !== "awaiting-code-input" |  emailState !== "awaiting-code-input"? (
+              {emailState === "awaiting-code-input" ? (
                 <>
                   <div className="flex items-center justify-center py-4">
                     <InputOtp
@@ -125,11 +125,11 @@ const Login: FC = () => {
                   <button
                     className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md"
                     onClick={() => loginWithCodeEmail({ code: codeEmail })}
-                    disabled={emailState === "submitting-code"}
+                    disabled={emailState !== "awaiting-code-input"}
                   >
-                    {emailState !== "submitting-code"
-                      ? "Login"
-                      : "Loging in..."}
+                    {emailState !== "awaiting-code-input"
+                      ? "Loging in"
+                      : "Login"}
                   </button>
                 </>
               ) : (
