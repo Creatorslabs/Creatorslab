@@ -19,6 +19,16 @@ export interface IUser extends Document {
   verificationCode?: string | null;
   discordVerified: boolean;
   twitterVerified: boolean;
+  discord: {
+    username: string,
+    accessToken: string,
+    refreshToken: string,
+  },
+  twitter: {
+    username: string,
+    accessToken: string,
+    refreshToken: string,
+  },
   emailVerified: boolean;
   lastLoginDate: Date | null;
   followingCreators: Types.ObjectId[];
@@ -112,6 +122,16 @@ const UserSchema = new Schema<IUser>(
     twitterVerified: {
       type: Boolean,
       default: false,
+    },
+    discord: {
+      username: String,
+      accessToken: String,
+      refreshToken: String
+    },
+    twitter: {
+      username: String,
+      accessToken: String,
+      refreshToken: String
     },
     emailVerified: {
       type: Boolean,

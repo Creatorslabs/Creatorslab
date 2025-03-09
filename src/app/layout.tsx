@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import ParentComponent from "./components/ParentComponent";
 import { ThemeModeScript } from "flowbite-react";
 import { HeroUIProvider } from "@heroui/system";
+import { Flowbite } from "flowbite-react";
 
 // Load Inter Variable Font Locally
 const inter = localFont({
@@ -95,7 +96,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="bg-[#161616] text-white">
+    <html lang="en">
       <head>
         <script
           type="application/ld+json"
@@ -105,10 +106,11 @@ export default function RootLayout({
       </head>
       <body
         className={`${inter.variable} ${syne.variable} antialiased w-full overflow-x-hidden max-w-[1440px] mx-auto md:px-10 lg:px-14`}
-      >
+      ><Flowbite>
         <HeroUIProvider>
           <ParentComponent>{children}</ParentComponent>
         </HeroUIProvider>
+        </Flowbite>
       </body>
     </html>
   );

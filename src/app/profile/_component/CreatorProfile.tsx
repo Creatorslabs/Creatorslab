@@ -9,7 +9,7 @@ import Skeleton from "../../components/skeleton-loader";
 import { MdCameraEnhance, MdVerified } from "react-icons/md";
 import { GoUnverified } from "react-icons/go";
 import CopyButton from "../../components/copy-button";
-import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoMdArrowRoundBack, IoMdArrowRoundForward } from "react-icons/io";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import CreatorTasksTable from "./creator-task-table";
 
@@ -81,7 +81,7 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
     return () => {
       isMounted = false;
     };
-  }, [createdTasks, userId]);
+  }, [createdTasks, userId, router]);
 
   return (
     <div className="bg-[#161616] w-full max-w-[1440px] mx-auto">
@@ -184,7 +184,7 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                                 width={30}
                                 className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
                               />
-                              babriexy
+                              {user?.twitterVerified ? user?.twitter?.username : "Not linked"}
                             </div>
                           </div>
                           <div className="flex justify-between items-center border-[#606060] border rounded-lg py-2 px-4">
@@ -196,7 +196,7 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                                 width={30}
                                 className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
                               />
-                              babexy
+                             {user?.discordVerified ? user?.discord?.username : "Not linked"}
                             </div>
                           </div>
                         </div>
@@ -225,7 +225,11 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                       <button
                         onClick={() => setIsBalanceVisible(!isBalanceVisible)}
                       >
-                        {isBalanceVisible ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
+                        {isBalanceVisible ? (
+                          <IoEyeOff size={20} />
+                        ) : (
+                          <IoEye size={20} />
+                        )}
                       </button>
                     </p>
                     <div className="flex gap-2 font-semibold text-base">
@@ -263,11 +267,21 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                             height={30}
                             width={30}
                           />
-                          babriexy
+                          {user?.twitterVerified
+                            ? user?.twitter?.username
+                            : "Link Twitter Account"}
                         </div>
-                        <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
-                          <span className="text-sm text-[#606060]">Linked</span>
-                        </button>
+                        {user?.twitterVerified ? (
+                          <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
+                            <span className="text-sm text-[#606060]">
+                              Linked
+                            </span>
+                          </button>
+                        ) : (
+                          <div className="p-3 rounded-lg bg-white">
+                            <IoMdArrowRoundForward size={20} color="#000" />
+                          </div>
+                        )}
                       </div>
                       <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 ">
                         <div className="flex gap-3 items-center">
@@ -277,16 +291,21 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                             height={35}
                             width={35}
                           />
-                          Link Discord Account
+                          {user?.discordVerified
+                            ? user?.discord?.username
+                            : "Link Discord Account"}
                         </div>
-                        <div className="p-3 rounded-lg bg-white">
-                          <Image
-                            src="/images/forward-arrow.svg"
-                            alt="forward"
-                            width={20}
-                            height={20}
-                          />
-                        </div>
+                        {user?.discordVerified ? (
+                          <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
+                            <span className="text-sm text-[#606060]">
+                              Linked
+                            </span>
+                          </button>
+                        ) : (
+                          <div className="p-3 rounded-lg bg-white">
+                            <IoMdArrowRoundForward size={20} color="#000" />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -304,11 +323,19 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                             height={30}
                             width={30}
                           />
-                          babriexy@gmail.com
+                          {user?.email}
                         </div>
-                        <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
-                          <span className="text-sm text-[#606060]">Linked</span>
-                        </button>
+                        {user?.isVerified ? (
+                          <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
+                            <span className="text-sm text-[#606060]">
+                              Linked
+                            </span>
+                          </button>
+                        ) : (
+                          <button className="p-3 rounded-lg bg-white">
+                            <IoMdArrowRoundForward size={20} color="#000" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

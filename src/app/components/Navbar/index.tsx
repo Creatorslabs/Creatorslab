@@ -1,18 +1,13 @@
-// import { useWallet } from '@solana/wallet-adapter-react';
-
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import TaskModal from "../Modals/CreateTask";
 import { GiHamburgerMenu } from "react-icons/gi";
 import SearchBar from "../search-bar";
-// import { useRouter } from 'next/router';
 
 const Navbar: React.FC = () => {
-  // const { connected } = useWallet();
-  const [menuOpen, setMenuOpen] = useState(false); // State to control the hamburger menu
-  const [modalOpen, setModalOpen] = useState(false); // State to control the modal visibility
+  const [menuOpen, setMenuOpen] = useState(false); 
+  const [modalOpen, setModalOpen] = useState(false); 
 
   return (
     <>
@@ -28,20 +23,14 @@ const Navbar: React.FC = () => {
         </Link>
 
         <div className="flex-1 flex flex-row items-center justify-end gap-2">
-          {/* Search Box */}
           <SearchBar />
-
-          {/* Hamburger Icon and Profile/Button Section */}
           <div className="flex items-center space-x-4">
-            {/* Hamburger Icon (visible on small screens) */}
             <button
               className="md:hidden p-2 bg-gray-800 rounded-lg"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               <GiHamburgerMenu />
             </button>
-
-            {/* Full Menu (hidden on small screens) */}
             <div className="hidden md:flex items-center gap-3">
               <Link
                 href="/auth/login"
@@ -61,20 +50,7 @@ const Navbar: React.FC = () => {
               >
                 Plant Seeds
               </button>
-              <WalletMultiButton
-                style={{
-                  padding: "0.5rem",
-                  borderRadius: "0.375rem",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                  gap: "0.5rem",
-                  fontSize: "0.75rem",
-                  height: "2rem",
-                  backgroundColor: "#222222",
-                }}
-                className="p-2 text-xs rounded-md "
-              ></WalletMultiButton>
-              <Link href="/userprofile">
+                            <Link href="/userprofile">
                 <Image
                   src="/images/profileImg.svg"
                   alt="Profile"
@@ -92,10 +68,7 @@ const Navbar: React.FC = () => {
             <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg">
               Plant Seeds
             </button>
-            <WalletMultiButton className="block w-full text-left p-3 mb-2 bg-blue-500 rounded-lg">
-              Connect Wallet
-            </WalletMultiButton>
-            <div className="flex justify-center">
+                       <div className="flex justify-center">
               <Image
                 src="/images/profileImg.svg"
                 alt="Profile"
@@ -107,7 +80,6 @@ const Navbar: React.FC = () => {
         )}
       </nav>
 
-      {/* Modal Component */}
       <TaskModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   );
