@@ -17,8 +17,8 @@ const Navbar: React.FC = () => {
           <Image
             src="/images/logo.png"
             alt="Creatorslab Logo"
-            width={150}
-            height={200}
+            width={30}
+            height={30}
           />
         </Link>
 
