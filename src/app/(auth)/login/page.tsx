@@ -86,7 +86,7 @@ const Login: FC = () => {
     <div className="w-full h-screen flex flex-col">
       {/** Header section*/}
       <div className="flex justify-between px-6 py-4 md:pl-16 md:py-8 items-start md:items-center w-full">
-        <div className="flex flex-row gap-2 items-center">
+        <Link href="/" className="flex flex-row gap-2 items-center">
           <Image
             src="/images/logo.png"
             width={30}
@@ -94,7 +94,7 @@ const Login: FC = () => {
             alt="CreatorsLab logo"
           />
           <p className="text-lg">Creatorslab</p>
-        </div>
+        </Link>
         <DarkThemeToggle />
       </div>
       <div className="flex-grow flex items-center justify-center md:pt-10">

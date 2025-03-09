@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
@@ -8,32 +10,41 @@ import { IoIosRocket, IoIosShareAlt } from "react-icons/io";
 import { FaComment, FaLink } from "react-icons/fa";
 import { IoMdArrowBack } from "react-icons/io";
 import { IoArrowForward } from "react-icons/io5";
+import { DarkThemeToggle, useThemeMode } from "flowbite-react";
 
 function LandingPage() {
+  const { computedMode } = useThemeMode()
+
   return (
     <div className="relative w-full">
       {/** background overlay */}
       {/* <div className="absolute top-0 bottom-0 left-0 right-0 -z-50 bg-black backdrop:blur-lg opacity-20"></div> */}
       {/** Header section*/}
       <div className="flex justify-between px-6 py-4 md:px-16 md:py-8 items-center">
-        <Image
-          src="/images/logo.png"
-          width={150}
-          height={150}
-          alt="CreatorslLab lgo"
-        />
-        <Link
+        <Link href="/" className="flex flex-row gap-2 items-center">
+          <Image
+            src="/images/logo.png"
+            width={30}
+            height={30}
+            alt="CreatorsLab logo"
+          />
+          <p className="text-lg">Creatorslab</p>
+        </Link>
+        <div className="flex items-center justify-center gap-2 flex-row">
+          <DarkThemeToggle />
+          <Link
           href="/tasks"
-          className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
+          className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
         >
           Get started
         </Link>
-      </div>
+        </div>
+              </div>
 
       {/** Hero section */}
       <div className="flex flex-col md:flex-row py-6 md:py-8 max-w-full overflow-hidden place-items-center place-content-center">
         <div className="flex-1 md:pl-14 flex flex-col justify-center items-center md:items-start gap-4 px-6 text-center md:text-left md:px-0">
-          <h1 className="text-6xl font-syne lg:text-8xl">
+          <h1 className="text-6xl font-syne lg:text-8xl text-extrabold">
             Empowering Global Creativity with{" "}
             <span className="bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] bg-clip-text text-transparent">
               Web3
@@ -46,7 +57,7 @@ function LandingPage() {
 
           <Link
             href="/tasks"
-            className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
+            className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
           >
             Get started
           </Link>
@@ -90,9 +101,9 @@ function LandingPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
           <div className="relative text-center rounded-lg">
-            {/* Green Box Behind the Card */}
+            {/* Blue Box Behind the Card */}
             <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#03ABFF] rounded-sm -z-40"></div>
-            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border border-[#606060] bg-[#161616]/90 backdrop-filter backdrop-blur-sm">
+            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
               <IoIosRocket size={30} />
               <p className="text-xl">Fast & Smooth Transactions</p>
               <p className="text-sm text-gray-500">
@@ -105,7 +116,7 @@ function LandingPage() {
           <div className="relative text-center rounded-lg">
             {/* Green Box Behind the Card */}
             <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#4CDE86] rounded-sm -z-40"></div>
-            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border border-[#606060] bg-[#161616]/90 backdrop-filter backdrop-blur-sm">
+            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
               <FaHeart size={30} />
               <p className="text-xl">Earn & Grow</p>
               <p className="text-sm text-gray-500">
@@ -118,7 +129,7 @@ function LandingPage() {
           <div className="relative text-center rounded-lg">
             {/* Green Box Behind the Card */}
             <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#7985FF] rounded-sm -z-40"></div>
-            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border border-[#606060] bg-[#161616]/90 backdrop-filter backdrop-blur-sm">
+            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
               <FaLink size={30} />
               <p className="text-xl">Wallet Integration</p>
               <p className="text-sm text-gray-500">
@@ -150,7 +161,7 @@ function LandingPage() {
           </div>
           <Link
             href="/tasks"
-            className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
+            className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
           >
             Get started
           </Link>
@@ -172,14 +183,14 @@ function LandingPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(3)].map((_, index) => (
-              <div key={index} className="w-full flex-1">
+              <div key={index} className="w-full flex-1 shadow-md p-2 pb-0 rounded-lg dark:border-[#FFFFFF]">
                 <div className="relative">
                   <Image
                     src="/images/landing-page/Rectangle 3.png"
                     width={300}
                     height={250}
                     alt="image"
-                    className="w-full"
+                    className="w-full rounded-md"
                   />
                   <Image
                     src="/images/user01.jpeg"
@@ -194,8 +205,8 @@ function LandingPage() {
                   <p className="text-sm text-gray-500">
                     Task description goes here.
                   </p>
-                  <div className="flex flex-row gap-2">
-                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white p-1 text-sm items-center">
+                  <div className="flex justify-between">
+                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white p-1 text-sm items-center whitespace-no-wrap">
                       100 $CLS
                       <Image
                         src="/images/coin.svg"
@@ -246,15 +257,33 @@ function LandingPage() {
       </div>
 
       {/** Powered By Section */}
-      <div className="text-center text-gray-500 text-lg p-4 flex flex-col py-6 items-center justify-center gap-4">
-        <p>Powered By:</p>
-        <Image
-          src="/images/landing-page/Frame 165.png"
-          alt="powered by"
-          height={100}
-          width={100}
-        />
-      </div>
+                  <div className="text-center text-gray-500 text-lg p-4 flex flex-col py-6 items-center justify-center gap-4">
+                    <p>Powered By:</p>
+              <div className="flex items-center justify-center gap-4">
+                <Image
+                  src="/images/landing-page/Group.png"
+                  width={70}
+                  height={70}
+                  alt="coin sack"
+                  className="w-[100px] h-auto object-cover rounded-md"
+                />
+                {
+                            computedMode === "dark" ? <Image
+                            src="/images/landing-page/st-light.png"
+                            width={70}
+                            height={70}
+                            alt="coin sack"
+                            className="w-[100px] h-auto object-cover rounded-md"
+                          /> : <Image
+                            src="/images/landing-page/st-dark.png"
+                            width={70}
+                            height={70}
+                            alt="coin sack"
+                            className="w-[100px] h-auto object-cover rounded-md"
+                          />
+                          }
+                    </div>
+                  </div>
 
       {/** Footer */}
       <div className="text-center text-gray-500 text-sm p-4">

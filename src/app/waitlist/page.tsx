@@ -8,12 +8,15 @@ import Link from "next/link";
 import { FaHeart } from "react-icons/fa6";
 import { IoIosRocket } from "react-icons/io";
 import { FaLink } from "react-icons/fa";
+import { DarkThemeToggle, useThemeMode } from "flowbite-react";
 
 function Waitlist() {
   const [email, setEmail] = useState("");
   const [modalMessage, setModalMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { computedMode } = useThemeMode()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,19 +45,24 @@ function Waitlist() {
       {/* <div className="absolute top-0 bottom-0 left-0 right-0 -z-50 bg-black backdrop:blur-lg opacity-20"></div> */}
       {/** Header section*/}
       <div className="flex justify-between px-6 py-4 md:px-16 md:py-8 items-center">
-        <Image
-          src="/images/logo.png"
-          width={150}
-          height={150}
-          alt="CreatorslLab lgo"
-          loading="lazy"
-        />
-        <Link
-          href="#waitlist"
-          className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
-        >
-          Join Waitlist
+        <Link href="/" className="flex flex-row gap-2 items-center">
+          <Image
+            src="/images/logo.png"
+            width={30}
+            height={30}
+            alt="CreatorsLab logo"
+          />
+          <p className="text-lg">Creatorslab</p>
         </Link>
+        <div className="flex items-center justify-center gap-2 flex-row">
+          <DarkThemeToggle />
+          <Link
+          href="/tasks"
+          className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
+        >
+          Get started
+        </Link>
+        </div>
       </div>
 
       {/** Hero section */}
@@ -73,7 +81,7 @@ function Waitlist() {
 
           <Link
             href="#waitlist"
-            className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
+            className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
           >
             Join Waitlist
           </Link>
@@ -106,7 +114,7 @@ function Waitlist() {
           className="absolute -left-20 -z-10"
         />
         <div className="text-center p-4 flex flex-col justify-center items-center gap-3">
-          <h2 className="md:w-[80%] text-5xl font-syne">
+          <h2 className="md:w-[80%] text-5xl font-syne text-extrabold">
             Built on the lightning-fast, low-fee Solana blockchain
           </h2>
           <p className="text-center text-sm text-gray-500 md:w-[50%]">
@@ -116,46 +124,46 @@ function Waitlist() {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-          <div className="relative text-center rounded-lg">
-            {/* Green Box Behind the Card */}
-            <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#03ABFF] rounded-sm -z-40"></div>
-            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border border-[#606060] bg-[#161616]/90 backdrop-filter backdrop-blur-sm">
-              <IoIosRocket size={30} />
-              <p className="text-xl">Fast & Smooth Transactions</p>
-              <p className="text-sm text-gray-500">
-                {
-                  "Solana's speed means no waiting around, transactions happen in the blink of an eye."
-                }
-              </p>
-            </div>
-          </div>
-          <div className="relative text-center rounded-lg">
-            {/* Green Box Behind the Card */}
-            <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#4CDE86] rounded-sm -z-40"></div>
-            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border border-[#606060] bg-[#161616]/90 backdrop-filter backdrop-blur-sm">
-              <FaHeart size={30} />
-              <p className="text-xl">Earn & Grow</p>
-              <p className="text-sm text-gray-500">
-                {
-                  "Every like, comment, and share earns you Seeds. More Seeds = more visibility!"
-                }
-              </p>
-            </div>
-          </div>
-          <div className="relative text-center rounded-lg">
-            {/* Green Box Behind the Card */}
-            <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#7985FF] rounded-sm -z-40"></div>
-            <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border border-[#606060] bg-[#161616]/90 backdrop-filter backdrop-blur-sm">
-              <FaLink size={30} />
-              <p className="text-xl">Wallet Integration</p>
-              <p className="text-sm text-gray-500">
-                {
-                  "Seamless sign-ins with Solflare, Phantom, or even your email—your call!"
-                }
-              </p>
-            </div>
-          </div>
-        </div>
+                  <div className="relative text-center rounded-lg">
+                    {/* Blue Box Behind the Card */}
+                    <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#03ABFF] rounded-sm -z-40"></div>
+                    <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
+                      <IoIosRocket size={30} />
+                      <p className="text-xl">Fast & Smooth Transactions</p>
+                      <p className="text-sm text-gray-500">
+                        {
+                          "Solana's speed means no waiting around, transactions happen in the blink of an eye."
+                        }
+                      </p>
+                    </div>
+                  </div>
+                  <div className="relative text-center rounded-lg">
+                    {/* Green Box Behind the Card */}
+                    <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#4CDE86] rounded-sm -z-40"></div>
+                    <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
+                      <FaHeart size={30} />
+                      <p className="text-xl">Earn & Grow</p>
+                      <p className="text-sm text-gray-500">
+                        {
+                          "Every like, comment, and share earns you Seeds. More Seeds = more visibility!"
+                        }
+                      </p>
+                    </div>
+                  </div>
+                  <div className="relative text-center rounded-lg">
+                    {/* Green Box Behind the Card */}
+                    <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#7985FF] rounded-sm -z-40"></div>
+                    <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
+                      <FaLink size={30} />
+                      <p className="text-xl">Wallet Integration</p>
+                      <p className="text-sm text-gray-500">
+                        {
+                          "Seamless sign-ins with Solflare, Phantom, or even your email—your call!"
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
       </div>
 
       <div
@@ -187,13 +195,13 @@ function Waitlist() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="px-4 py-2 rounded-md bg-gray-800 border border-gray-700 text-white focus:outline-none w-full sm:w-1/2"
+              className="px-4 py-2 rounded-md dark:bg-gray-800 border border-gray-700 dark:text-white focus:outline-none w-full sm:w-1/2"
               required
             />
             <button
               disabled={loading}
               type="submit"
-              className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm"
+              className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
             >
               {loading ? "Joining..." : "Join Waitlist"}
             </button>
@@ -233,7 +241,7 @@ function Waitlist() {
           </p>
           <Link
             href="#waitlist"
-            className="p-2 rounded-md bg-white bg-opacity-15"
+            className="p-2 rounded-md bg-white bg-opacity-15 text-white"
           >
             Become a member
           </Link>
@@ -254,12 +262,31 @@ function Waitlist() {
        {/** Powered By Section */}
             <div className="text-center text-gray-500 text-lg p-4 flex flex-col py-6 items-center justify-center gap-4">
               <p>Powered By:</p>
-              <Image
-                src="/images/landing-page/Frame 165.png"
-                alt="powered by"
-                height={100}
-                width={100}
-              />
+        <div className="flex items-center justify-center gap-4">
+          <Image
+            src="/images/landing-page/Group.png"
+            width={70}
+            height={70}
+            alt="coin sack"
+            className="w-[100px] h-auto object-cover rounded-md"
+          />
+
+          {
+            computedMode === "dark" ? <Image
+            src="/images/landing-page/st-light.png"
+            width={70}
+            height={70}
+            alt="coin sack"
+            className="w-[100px] h-auto object-cover rounded-md"
+          /> : <Image
+            src="/images/landing-page/st-dark.png"
+            width={70}
+            height={70}
+            alt="coin sack"
+            className="w-[100px] h-auto object-cover rounded-md"
+          />
+          }
+              </div>
             </div>
 
       {/** Footer */}
