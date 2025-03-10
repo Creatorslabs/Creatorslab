@@ -12,7 +12,6 @@ import discord from "../../../../public/images/discord.svg";
 import paper from "../../../../public/images/thxjoin.svg";
 import { IoIosLock, IoMdArrowRoundBack } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
-import { FaLink } from "react-icons/fa6";
 import { Progress } from "@heroui/progress";
 import CustomModal from "../../components/Modals/custom-modal";
 import { HiLightBulb } from "react-icons/hi";
@@ -98,8 +97,9 @@ const Page = () => {
           </Link>
         </div>
         <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4">
-          <Skeleton />
-          <Skeleton />
+          {loading || task && <><Skeleton />
+          <Skeleton /></>}
+          
           <div className="w-full md:flex-1 p-4 md:px-20 md:py-14 bg-[#F7F8F9] dark:bg-[#1c1c1c] rounded-xl flex flex-col gap-4">
             <div className="rounded-lg w-full bg-gradient-to-r from-blue-700 via-blue-400 to-blue-900
                   sm:bg-gradient-to-r sm:from-blue-700 sm:via-blue-300 sm:to-blue-900 
