@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "@solana/wallet-adapter-react-ui/styles.css";
@@ -86,6 +86,7 @@ const Login: FC = () => {
   }, [stateEmail]);
 
   return (
+    <Suspense>
     <div className="w-full h-screen flex flex-col">
       {/** Header section*/}
       <div className="flex justify-between px-6 py-4 md:pl-16 md:py-8 items-start md:items-center w-full">
@@ -218,7 +219,8 @@ const Login: FC = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+      </Suspense>
   );
 };
 
