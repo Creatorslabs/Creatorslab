@@ -1,12 +1,12 @@
 "use client";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { TiSocialTwitter } from "react-icons/ti";
 import { FaDiscord, FaWallet } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { InputOtp } from "@heroui/input-otp";
 
 import {
@@ -16,9 +16,12 @@ import {
 } from "@privy-io/react-auth";
 import { DarkThemeToggle } from "flowbite-react";
 
-const Login: FC = () => {
+const Comp: FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/tasks";
 
   const {
     sendCode: sendCodeEmail,
@@ -32,7 +35,7 @@ const Login: FC = () => {
         wasAlreadyAuthenticated,
         loginMethod,
       });
-      router.push("/tasks");
+      router.push(redirectTo);
     },
     onError: (error) => {
       console.log(error);
@@ -48,7 +51,7 @@ const Login: FC = () => {
         wasAlreadyAuthenticated,
         loginMethod,
       });
-      router.push("/tasks");
+      router.push(redirectTo);
     },
     onError: (error) => {
       console.log(error);
@@ -59,7 +62,7 @@ const Login: FC = () => {
   const { connectWallet } = useConnectWallet({
     onSuccess: ({ wallet }) => {
       console.log(wallet.address);
-      router.push("/tasks");
+      router.push(redirectTo);
     },
     onError: (error) => {
       console.log(error);
@@ -215,8 +218,13 @@ const Login: FC = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
   );
 };
+
+const Login: FC = () => { 
+  return (<Suspense fallback={<div>Loading...</div>}><Comp />
+      </Suspense>)
+}
 
 export default Login;

@@ -9,7 +9,6 @@ const solanaConnectors = toSolanaWalletConnectors();
 export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { computedMode } = useThemeMode()
   
-  const theme = computedMode
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
