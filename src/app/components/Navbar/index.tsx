@@ -4,6 +4,7 @@ import Link from "next/link";
 import TaskModal from "../Modals/CreateTask";
 import { GiHamburgerMenu } from "react-icons/gi";
 import SearchBar from "../search-bar";
+import { DarkThemeToggle } from "flowbite-react";
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false); 
@@ -13,13 +14,14 @@ const Navbar: React.FC = () => {
     <>
       <nav className="flex justify-between items-center py-6 md:px-14 gap-4">
         {/* Logo */}
-        <Link href="/">
+         <Link href="/" className="flex flex-row gap-2 items-center">
           <Image
             src="/images/logo.png"
-            alt="Creatorslab Logo"
             width={30}
             height={30}
+            alt="CreatorsLab logo"
           />
+          <p className="text-lg">Creatorslab</p>
         </Link>
 
         <div className="flex-1 flex flex-row items-center justify-end gap-2">
@@ -32,6 +34,7 @@ const Navbar: React.FC = () => {
               <GiHamburgerMenu />
             </button>
             <div className="hidden md:flex items-center gap-3">
+              <DarkThemeToggle />
               <Link
                 href="/auth/login"
                 className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs"
@@ -45,7 +48,7 @@ const Navbar: React.FC = () => {
                 Earn $CLS
               </Link>
               <button
-                className="p-2 text-xs rounded-md bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"
+                className="p-2 text-white text-xs rounded-md bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"
                 onClick={() => setModalOpen(true)}
               >
                 Plant Seeds

@@ -39,6 +39,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 # Task
 
+- POST      /api/tasks/get - DONE
 - POST      /api/tasks/create - DONE
 - POST      /api/tasks/available - DONE
 - POST      /api/tasks/start - DONE

@@ -6,7 +6,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import { TiSocialTwitter } from "react-icons/ti";
 import { FaDiscord, FaWallet } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { InputOtp } from "@heroui/input-otp";
 
 import {
@@ -20,6 +20,9 @@ const Login: FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/tasks";
+
   const {
     sendCode: sendCodeEmail,
     loginWithCode: loginWithCodeEmail,
@@ -32,7 +35,7 @@ const Login: FC = () => {
         wasAlreadyAuthenticated,
         loginMethod,
       });
-      router.push("/tasks");
+      router.push(redirectTo);
     },
     onError: (error) => {
       console.log(error);
@@ -48,7 +51,7 @@ const Login: FC = () => {
         wasAlreadyAuthenticated,
         loginMethod,
       });
-      router.push("/tasks");
+      router.push(redirectTo);
     },
     onError: (error) => {
       console.log(error);
@@ -59,7 +62,7 @@ const Login: FC = () => {
   const { connectWallet } = useConnectWallet({
     onSuccess: ({ wallet }) => {
       console.log(wallet.address);
-      router.push("/tasks");
+      router.push(redirectTo);
     },
     onError: (error) => {
       console.log(error);
