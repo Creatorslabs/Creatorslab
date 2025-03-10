@@ -17,7 +17,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Allow static files, images, and metadata files
-  const exemptPaths = ["/favicon.ico", "/sitemap.xml", "/robots.txt"];
+  const exemptPaths = ["/favicon.ico", "/sitemap.xml", "/robots.txt", "/creatorslab-token-metadata.json"];
   const fileExtensionRegex =
     /\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|woff2|woff|ttf)$/;
 
