@@ -16,7 +16,7 @@ import {
 } from "@privy-io/react-auth";
 import { DarkThemeToggle } from "flowbite-react";
 
-const Login: FC = () => {
+const Comp: FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -86,7 +86,6 @@ const Login: FC = () => {
   }, [stateEmail]);
 
   return (
-    <Suspense>
     <div className="w-full h-screen flex flex-col">
       {/** Header section*/}
       <div className="flex justify-between px-6 py-4 md:pl-16 md:py-8 items-start md:items-center w-full">
@@ -220,8 +219,12 @@ const Login: FC = () => {
         </div>
       </div>
       </div>
-      </Suspense>
   );
 };
+
+const Login: FC = () => { 
+  return (<Suspense fallback={<div>Loading...</div>}><Comp />
+      </Suspense>)
+}
 
 export default Login;
