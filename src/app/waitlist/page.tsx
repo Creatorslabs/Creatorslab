@@ -57,10 +57,10 @@ function Waitlist() {
         <div className="flex items-center justify-center gap-2 flex-row">
           <DarkThemeToggle />
           <Link
-          href="/tasks"
+          href="#waitlist"
           className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
         >
-          Get started
+          Join waitlist
         </Link>
         </div>
       </div>
