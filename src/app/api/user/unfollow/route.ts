@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { User } from "@/models/user";
 import connectDB from "@/utils/connectDB";
-import mongoose from "mongoose";
 
 export async function DELETE(req: NextRequest) {
   try {
@@ -15,54 +14,41 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    // Fetch user balance
+    const user = await User.findOne({ _id: userId });
 
-    try {
-      // Fetch user balance
-      const user = await User.findById(userId).session(session);
-      if (!user) {
-        throw new Error("User not found");
-      }
-
-      if (user.balance < 20) {
-        await session.abortTransaction();
-        session.endSession();
-        return NextResponse.json(
-          { error: "Insufficient balance to unfollow" },
-          { status: 400 }
-        );
-      }
-
-      // Perform unfollow operation
-      await Promise.all([
-        User.findByIdAndUpdate(
-          userId,
-          {
-            $pull: { followingCreators: creatorId },
-            $inc: { balance: -20 },
-          },
-          { session }
-        ),
-
-        User.findByIdAndUpdate(
-          creatorId,
-          {
-            $pull: { followers: userId },
-          },
-          { session }
-        ),
-      ]);
-
-      await session.commitTransaction();
-      session.endSession();
-
-      return NextResponse.json({ success: true });
-    } catch (error) {
-      await session.abortTransaction();
-      session.endSession();
-      throw error;
+    if (!user) {
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 404 }
+      );
     }
+
+    if (user.balance < 20) {
+      return NextResponse.json(
+        { error: "Insufficient balance to unfollow" },
+        { status: 400 }
+      );
+    }
+
+    // Perform unfollow operation
+    await Promise.all([
+      User.updateOne(
+        { _id: userId },
+        {
+          $pull: { followingCreators: creatorId },
+          $inc: { balance: -20 },
+        }
+      ),
+      User.updateOne(
+        { _id: creatorId },
+        {
+          $pull: { followers: userId },
+        }
+      ),
+    ]);
+
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error unfollowing creator:", error);
     return NextResponse.json(

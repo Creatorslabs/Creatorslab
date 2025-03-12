@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { User } from "@/models/user";
 import connectDB from "@/utils/connectDB";
+import mongoose from "mongoose";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
+    const { userId, taskId } = await req.json();
 
-    // Extract query parameters
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId");
-    const taskId = searchParams.get("taskId");
-
+    // Validate required fields
     if (!userId || !taskId) {
       return NextResponse.json(
         { message: "Missing userId or taskId in request" },
@@ -18,10 +16,27 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Fetch user
-    const user = await User.findById(userId).select("participatedTasks");
+    // Validate `taskId` as a MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+      return NextResponse.json(
+        { message: "Invalid taskId format" },
+        { status: 400 }
+      );
+    }
+
+    // Fetch user using `userId` directly (no conversion)
+    const user = await User.findOne({ _id: userId }).select("participatedTasks");
+
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    // Ensure participatedTasks exists and is an array
+    if (!Array.isArray(user.participatedTasks)) {
+      return NextResponse.json(
+        { message: "User data is invalid" },
+        { status: 500 }
+      );
     }
 
     // Find the task in participatedTasks

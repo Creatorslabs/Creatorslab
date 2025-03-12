@@ -1,42 +1,70 @@
-import { Task, User } from "@/models/user";
+import { NextRequest, NextResponse } from "next/server";
+import { User } from "@/models/user";
 import connectDB from "@/utils/connectDB";
-import { NextResponse } from "next/server";
+import { generateReferralCode } from "@/actions/generate-referal-code";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    await connectDB();
+    const { privyId, referrerCode } = await req.json();
 
-    const { userId } = await req.json();
-    if (!userId) {
+    // Validate request
+    if (!privyId) {
       return NextResponse.json(
-        { success: false, message: "User ID is required" },
+        { error: "Privy ID is required" },
         { status: 400 }
       );
     }
 
-    const user = await User.findById(userId)
-      .populate({
-        path: "participatedTasks.task",
-        model: Task,
-        populate: {
-          path: "creator",
-          select: "username", // Only fetch the creator's name
-        },
-      })
-      .populate("createdTasks");
+    await connectDB();
+
+    // Check if user already exists
+    let user = await User.findOne({ _id: privyId });
 
     if (!user) {
-      return NextResponse.json(
-        { success: false, message: "User not found" },
-        { status: 404 }
-      );
+      user = new User({
+        _id: privyId,
+        referralCode: generateReferralCode(),
+      });
+
+      await user.save();
+
+      // Handle referral system if referrerCode is provided
+      if (referrerCode) {
+        // Find referrer by referralCode
+        const referrer = await User.findOne({ referralCode: referrerCode });
+
+        if (!referrer) {
+          return NextResponse.json(
+            { error: "Invalid referral code" },
+            { status: 404 }
+          );
+        }
+
+        // Prevent self-referral
+        if (referrer._id.toString() === privyId) {
+          return NextResponse.json(
+            { error: "You cannot refer yourself" },
+            { status: 400 }
+          );
+        }
+
+        // Increment referrer's balance by 3
+        await User.findByIdAndUpdate(
+          referrer._id,
+          { $inc: { balance: 3 } },
+          { new: true }
+        );
+      }
     }
 
-    return NextResponse.json({ success: true, user }, { status: 200 });
-  } catch (error) {
-    console.error("Error fetching user:", error);
     return NextResponse.json(
-      { success: false, message: "Internal Server Error" },
+      { message: "User authenticated", user },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error during authentication:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }

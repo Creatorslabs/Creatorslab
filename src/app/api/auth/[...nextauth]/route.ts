@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   }
 
   // Redirect to the dashboard after login
-  return NextResponse.redirect(new URL("/dashboard?auth=success", req.url));
+  return NextResponse.redirect(new URL("/tasks?auth=success", req.url));
 }
 
 export async function POST(req: NextRequest) {

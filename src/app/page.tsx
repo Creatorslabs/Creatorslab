@@ -235,14 +235,17 @@ function LandingPage() {
       </div>
 
       {/** Bottom banner section */}
-      <div className="m-6 md:m-8 rounded-md p-4 flex flex-row justify-between bg-blue-500">
-        <div className="flex flex-col gap-3 w-[60%] md:w-[40%] items-start justify-center">
-          <h3 className="text-2xl font-syne">
+      <div className="relative m-6 md:m-8 rounded-md p-4 flex flex-row flex-wrap justify-between bg-gradient-to-br from-[#5D3FD1] via-yellow-500 via-[#03ABFF] to-[#F4B30C gap-4">
+        <div className="absolute inset-0 bg-black opacity-10 mix-blend-overlay pointer-events-none"></div>
+        <div className="flex flex-col gap-3 w-full md:w-[40%] items-start justify-center text-white">
+          <h3 className="text-2xl font-syne text-bold">
             Earn, Engage and Expand with Creatorslab.
           </h3>
           <p className="text-sm">
-            Creating a long term relationship among builders and content
-            creators, to a wider global web3 communities.
+            We are building more than just a platform, we&apos;re creating a decentralized social network where builders and content creators thrive.
+          </p>
+          <p className="text-sm">
+            Expand your reach, grow your influence, and connect with a global Web3 community that values engagement.
           </p>
           <Link href="/tasks" className="p-2 rounded-md bg-white bg-opacity-15">
             Become a member
@@ -250,9 +253,10 @@ function LandingPage() {
         </div>
         <Image
           src="/images/landing-page/Group 11.png"
-          width={100}
+          width={200}
           height={100}
           alt="coin sack"
+          className="w-[200px] h-auto"
         />
       </div>
 

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Fetch user
+    // Fetch user by _id
     const user = await User.findById(userId);
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -30,8 +30,9 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error toggling role:", error);
     return NextResponse.json(
-      { error: (error as Error).message },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
