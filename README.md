@@ -39,13 +39,14 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 # Task
 
-- POST      /api/tasks/get - DONE
-- POST      /api/tasks/create - DONE
-- POST      /api/tasks/available - DONE
-- POST      /api/tasks/start - DONE
-- POST      /api/tasks/complete - DONE - remain verification logic
-- POST      /api/tasks/claim - DONE - remain login for onchain claim
-- GET       /api/tasks/get-status?taskId={taskId}&userId={userId} - DONE
+- GET /api/tasks/get-all - DONE
+- POST /api/tasks/get-task - DONE
+- POST /api/tasks/create - DONE - creators
+- POST /api/tasks/available - DONE
+- POST /api/tasks/start - DONE
+- POST /api/tasks/complete - DONE - remain verification logic
+- POST /api/tasks/claim - DONE - remain login for onchain claim
+- POST /api/tasks/get-status - DONE
 
 # Auth
 
@@ -53,10 +54,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 # User
 
-- POST      /api/user/follow - DONE
-- DELETE    /api/user/unfollow - DONE
-- POST      /api/user/switch-role - DONE
-- PUT       /api/user/update - DONE
-- POST      /api/user/user-exist - DONE
-- POST      /api/user/request-otp - DONE - Creates user if not registered
-- POST      /api/user/verify-otp - DONE -n Not necessary because OAuth handles it
+- POST /api/user/get-user (get or creates a new user, pass referrer code for referral) - DONE
+- POST /api/user/follow - DONE
+- DELETE /api/user/unfollow - DONE
+- POST /api/user/switch-role - DONE
+- POST /api/user/login-bonus - DONE
+- PUT /api/user/update - DONE

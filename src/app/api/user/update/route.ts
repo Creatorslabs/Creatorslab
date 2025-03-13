@@ -18,8 +18,8 @@ export async function PUT(req: NextRequest) {
     }
 
     // Update user
-    const user = await User.findByIdAndUpdate(
-      userId,
+    const user = await User.findOneAndUpdate(
+      { _id: userId },
       { $set: updates },
       { new: true }
     );

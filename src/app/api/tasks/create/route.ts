@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
       "creatorId",
       "type",
       "platform",
+      "description",
       "target",
       "rewardPoints",
       "status",
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
       creatorId,
       type,
       platform,
+      description,
       target,
       rewardPoints,
       maxParticipants,
@@ -41,7 +43,7 @@ export async function POST(req: NextRequest) {
     } = body;
 
     // Ensure only creators can create tasks
-    const creator = await User.findById(creatorId);
+    const creator = await User.findOne({ _id: creatorId });
     if (!creator || creator.role !== "creator") {
       return NextResponse.json(
         { error: "Unauthorized: You must be a creator." },
@@ -51,9 +53,10 @@ export async function POST(req: NextRequest) {
 
     // Create new task
     const task = await Task.create({
-      creator: creatorId,
+      creator: creator._id,
       type,
       platform,
+      description,
       target,
       rewardPoints,
       maxParticipants,
@@ -61,9 +64,10 @@ export async function POST(req: NextRequest) {
     });
 
     // Add task to creator's createdTasks list
-    await User.findByIdAndUpdate(creatorId, {
-      $push: { createdTasks: task._id },
-    });
+    await User.updateOne(
+      { _id: creator._id },
+      { $push: { createdTasks: task._id } }
+    );
 
     return NextResponse.json(task);
   } catch (error) {

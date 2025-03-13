@@ -3,12 +3,17 @@
 import { usePathname } from "next/navigation";
 import Navbar from "../Navbar";
 import { ContextProvider } from "@/src/contexts/ContextProvider";
+import { Bounce, ToastContainer } from "react-toastify";
+import { useThemeMode } from "flowbite-react";
 
 const ParentComponent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   // Define routes where you don't want the Navbar to appear
-  const hideNavbarRoutes = ["/login", "/signup", "/", "/waitlist"];
+  const hideNavbarRoutes = ["/login", "/signup", "/", "/waitlist", "/terms", "/privacy", "_not-found"];
+
+  const { computedMode } = useThemeMode()
+
 
   return (
     <>
@@ -18,6 +23,19 @@ const ParentComponent = ({ children }: { children: React.ReactNode }) => {
 
         {/* Render the page content */}
         {children}
+        <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme={ computedMode === "dark" ? "dark" : "light"}
+              transition={Bounce}
+            />
       </ContextProvider>
     </>
   );

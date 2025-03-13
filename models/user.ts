@@ -1,72 +1,47 @@
 import { generateReferralCode } from "@/actions/generate-referal-code";
-import { Schema, model, Document, models, Types } from "mongoose";
+import { Schema, model, Document, models } from "mongoose";
 
 // User Interface
 export interface IUser extends Document {
-  providers: string[];
-  providerIds: { [provider: string]: string };
-  photo?: string;
-  name?: string;
+  _id: string;
+  photo: string;
+  name: string;
   username?: string;
   role: "user" | "creator";
-  email?: string; // Made optional for OAuth compatibility
-  otpExpires: Date | null;
   referralCode?: string;
-  referredBy?: Schema.Types.ObjectId | null;
+  referredBy?: string | null; 
   referralCount: number;
   balance: number;
-  isVerified: boolean;
-  verificationCode?: string | null;
-  discordVerified: boolean;
-  twitterVerified: boolean;
-  discord: {
-    username: string,
-    accessToken: string,
-    refreshToken: string,
-  },
-  twitter: {
-    username: string,
-    accessToken: string,
-    refreshToken: string,
-  },
-  emailVerified: boolean;
   lastLoginDate: Date | null;
-  followingCreators: Types.ObjectId[];
-  followers: Types.ObjectId[];
-  createdTasks: Types.ObjectId[];
+  followingCreators: string[];
+  followers: string[];
+  createdTasks: string[];
   participatedTasks: {
-    task: Types.ObjectId;
+    task: string;
     status: "pending" | "completed" | "claimed";
+    proof: string;
   }[];
 }
 
-export interface ITask {
-  creator: Types.ObjectId;
+// Task Interface
+export interface ITask extends Document {
+  creator: string; // Privy user ID as string
   type: "like" | "follow" | "comment" | "repost" | "quote";
   platform: "twitter" | "youtube" | "tiktok" | "facebook";
-  target: string; // e.g., Twitter post URL, YouTube channel ID
+  description: string;
+  target: string;
   rewardPoints: number;
   maxParticipants: number;
-  participants: Types.ObjectId[]; // Optional array of participant IDs
-  status?: "active" | "completed"; // Default is "active"
-  expiration?: Date; // Optional
+  participants: string[];
+  status?: "active" | "completed";
+  expiration?: Date;
   createdAt: string;
 }
 
 // User Schema
 const UserSchema = new Schema<IUser>(
   {
-    providers: {
-      type: [String],
-      default: [],
-      required: true,
-    },
-    providerIds: {
-      type: Map,
-      of: String,
-      default: {},
-      required: true,
-    },
+    _id: { type: String, required: true }, // Privy ID stored as a string
     photo: String,
     name: String,
     username: {
@@ -76,99 +51,51 @@ const UserSchema = new Schema<IUser>(
       maxlength: [30, "Username cannot exceed 30 characters"],
       index: true,
     },
-    email: {
-      type: String,
-      trim: true,
-      lowercase: true,
-      match: [/^\S+@\S+\.\S+$/, "Invalid email format"],
-      index: true,
-      sparse: true, // Allows null/undefined for OAuth providers without email
-    },
-    otpExpires: { type: Date, default: null },
     referralCode: {
       type: String,
       unique: true,
       sparse: true,
-      default: function () {
-        return generateReferralCode();
-      },
+      default: generateReferralCode,
     },
     referredBy: {
-      type: Schema.Types.ObjectId,
+      type: String, // Reference another user by Privy ID
       ref: "User",
       default: null,
     },
-    referralCount: {
-      type: Number,
-      default: 0,
-    },
+    referralCount: { type: Number, default: 0 },
     balance: {
       type: Number,
       default: 3,
       min: [0, "Balance cannot be negative"],
     },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    verificationCode: {
-      type: String,
-      default: null,
-    },
-    discordVerified: {
-      type: Boolean,
-      default: false,
-    },
-    twitterVerified: {
-      type: Boolean,
-      default: false,
-    },
-    discord: {
-      username: String,
-      accessToken: String,
-      refreshToken: String
-    },
-    twitter: {
-      username: String,
-      accessToken: String,
-      refreshToken: String
-    },
-    emailVerified: {
-      type: Boolean,
-      default: false,
-    },
-    lastLoginDate: {
-      type: Date,
-      default: null,
-    },
+    lastLoginDate: { type: Date, default: null },
     role: {
       type: String,
       enum: ["user", "creator"],
       default: "user",
-      required: [true, "User role is required"],
+      required: true,
     },
-    followingCreators: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    createdTasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
+    followingCreators: [{ type: String, ref: "User" }], // Store as string
+    followers: [{ type: String, ref: "User" }], // Store as string
+    createdTasks: [{ type: String, ref: "Task" }],
     participatedTasks: [
       {
-        task: { type: Schema.Types.ObjectId, ref: "Task", required: true },
+        task: { type: String, ref: "Task", required: true },
         status: {
           type: String,
           enum: ["pending", "completed", "claimed"],
           default: "pending",
         },
+        proof: String,
       },
     ],
   },
-  {
-    timestamps: true, // Adds createdAt and updatedAt fields
-  }
+  { timestamps: true }
 );
 
 // Task Schema
 const TaskSchema = new Schema<ITask>({
-  creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  creator: { type: String, ref: "User", required: true }, // Privy ID as string
   type: {
     type: String,
     enum: ["like", "follow", "comment", "repost", "quote"],
@@ -177,12 +104,13 @@ const TaskSchema = new Schema<ITask>({
     type: String,
     enum: ["twitter", "youtube", "tiktok", "facebook"],
   },
-  target: { type: String, required: true }, // e.g., Twitter post URL, YouTube channel ID
+  description: { type: String, required: true },
+  target: { type: String, required: true },
   rewardPoints: { type: Number, required: true },
   maxParticipants: { type: Number, required: true },
-  participants: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
+  participants: [{ type: String, ref: "User", default: [] }], // Store as string
   status: { type: String, enum: ["active", "completed"], default: "active" },
-  expiration: Date, // Optional
+  expiration: Date,
 });
 
 // Pre-save hook to check if task is filled
@@ -193,7 +121,6 @@ TaskSchema.pre("save", function (next) {
   next();
 });
 
-// Create and export models
 const User = models.User || model<IUser>("User", UserSchema);
 const Task = models.Task || model<ITask>("Task", TaskSchema);
 

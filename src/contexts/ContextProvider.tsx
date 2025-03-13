@@ -26,7 +26,7 @@ export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
           accentColor: "#5D3FD1",
           landingHeader: "CreatorsLab",
           walletChainType: "solana-only",
-          // logo: "https://creatorslab.cc/images/logo.png",
+          logo: "https://creatorslab.cc/images/logo.png",
         },
         loginMethods: ["email", "discord", "twitter", "wallet"],
         fundingMethodConfig: {

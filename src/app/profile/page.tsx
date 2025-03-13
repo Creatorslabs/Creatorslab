@@ -1,32 +1,83 @@
-import React from "react";
+"use client";
+
+import React, { Suspense, useEffect, useState } from "react";
 import UserProfile from "./_component/UserProfile";
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/utils/authoptions";
 import CreatorProfile from "./_component/CreatorProfile";
 
-export default async function Page() {
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      redirect("/login");
+import { useRouter } from "next/navigation";
+import { usePrivy } from "@privy-io/react-auth";
+import Skeleton from "../components/skeleton-loader";
+import { IUser } from "@/models/user";
+import { clipBeforeLastColon } from "@/actions/clip-privy-id";
+
+export default function MyComponent() {
+  const { ready, authenticated, user } = usePrivy();
+  const router = useRouter();
+  const [dbUser, setDbUser] = useState<IUser>();
+
+  const fetchUser = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_URL}api/user/get-user`,
+        {
+          method: "POST",
+          body: JSON.stringify({privyId: clipBeforeLastColon(user?.id)})
+        }
+      );
+
+      if (!res.ok) return null;
+
+      const data = await res.json();
+      return data.user;
+    } catch (error) {
+      console.error("Error fetching user:", error);
       return null;
     }
+  };
 
-    const { id: userId, role } = session.user;
-
-    switch (role) {
-      case "creator":
-        return <CreatorProfile userId={userId} />;
-      case "user":
-        return <UserProfile userId={userId} />;
-      default:
-        redirect("/login");
-        return null;
+  useEffect(() => {
+    if (ready && authenticated) {
+      fetchUser().then(setDbUser);
     }
-  } catch (error) {
-    console.error("Error fetching session:", error);
-    redirect("/login");
-    return null;
+  }, [ready, authenticated]);
+
+  if (!ready) {
+    return <div className="creator-content"> <>
+                <Skeleton height="220px" />
+                <Skeleton height="220px" />
+              </></div>;
   }
+
+  if (ready && !authenticated) {
+    router.push("/login");
+    return null; // Avoid rendering anything after redirect
+  }
+
+  if (ready && authenticated && dbUser) {
+    console.log("Role:", dbUser.role);
+    console.log("User ID: Privy:", clipBeforeLastColon(user?.id));
+    
+    if (dbUser.role === "creator") {
+      return <Suspense fallback={<div className="creator-content"> <>
+                <Skeleton height="220px" />
+                <Skeleton height="220px" />
+              </></div>}><CreatorProfile dbUser={dbUser} user={user} /></Suspense>;
+    } else if (dbUser.role === "user") {
+      return <Suspense fallback={<div className="creator-content"> <>
+                <Skeleton height="220px" />
+                <Skeleton height="220px" />
+              </></div>}><UserProfile dbUser={dbUser} user={user}/></Suspense>;
+    } else {
+      router.refresh();
+      return <div className="creator-content"> <>
+                <Skeleton height="220px" />
+                <Skeleton height="220px" />
+              </></div>;
+    }
+  }
+
+  return <div className="creator-content"> <>
+                <Skeleton height="220px" />
+                <Skeleton height="220px" />
+              </></div>; 
 }

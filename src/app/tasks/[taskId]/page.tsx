@@ -28,11 +28,11 @@ const Page = () => {
   const pathname = usePathname(); // Get current URL path
   const router = useRouter();
 
-  useEffect(() => {
-    if (pathname) {
-      setRedirectUrl(pathname); // Store current path for redirection
-    }
-  }, [pathname]);
+  // useEffect(() => {
+  //   if (pathname) {
+  //     setRedirectUrl(pathname); // Store current path for redirection
+  //   }
+  // }, [pathname]);
   
   const { ready, authenticated, user } = usePrivy();
   
@@ -42,13 +42,13 @@ const Page = () => {
   
 
   if (!(ready && authenticated) || !user) {
-    setLoading(true)
+    // setLoading(true)
 
-    setTimeout(() => {
-      if (!(ready && authenticated) || !user) { 
-        router.push(`/login?next=${redirectUrl}`)
-      }
-    }, 3000);
+    // setTimeout(() => {
+    //   if (!(ready && authenticated) || !user) { 
+    //     // router.push(`/login?next=${redirectUrl}`)
+    //   }
+    // }, 3000);
   }
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,37 +56,37 @@ const Page = () => {
 
   const { taskId } = useParams();
 
-  useEffect(() => {
-    const fetchTask = async () => {
-      try {
-        const res = await fetch("/api/task", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ taskId }),
-        });
+  // useEffect(() => {
+  //   const fetchTask = async () => {
+  //     try {
+  //       const res = await fetch("/api/task", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ taskId }),
+  //       });
 
-        if (res.status === 404) {
-          router.push("/tasks"); // Redirect if task not found
-          return;
-        }
+  //       if (res.status === 404) {
+  //         router.push("/tasks"); // Redirect if task not found
+  //         return;
+  //       }
 
-        if (res.status === 500) {
-          router.refresh() // Refresh page on server error
-          return;
-        }
+  //       if (res.status === 500) {
+  //         router.refresh() // Refresh page on server error
+  //         return;
+  //       }
 
-        const data = await res.json();
-        setTask(data);
-      } catch (error) {
-        console.error("Error fetching task:", error);
-        router.refresh() // Refresh if an unexpected error occurs
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       const data = await res.json();
+  //       setTask(data);
+  //     } catch (error) {
+  //       console.error("Error fetching task:", error);
+  //       router.refresh() // Refresh if an unexpected error occurs
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchTask();
-  }, [taskId, router]);
+  //   fetchTask();
+  // }, [taskId, router]);
 
   return (
     <div className="px-6 md:px-14">
