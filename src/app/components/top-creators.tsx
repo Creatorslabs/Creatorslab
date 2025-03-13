@@ -19,7 +19,7 @@ const avatars = [
 const TopCreators: React.FC = () => {
 
   return (
-   <div className="flex flex-col gap-4 border border-[#3F3F3F] rounded-md p-4 bg-[#222222] w-full md:w-[370px]">
+   <div className="flex flex-col gap-4 border border-[#3F3F3F] rounded-md p-4 w-full md:w-[370px]">
           <p className="flex flex-row justify-between text-sm">
             Top Creators<span className="text-[#5D3FD1]">View all</span>
           </p>

@@ -8,6 +8,7 @@ import Link from "next/link";
 import { IoArrowForward } from "react-icons/io5";
 import { ITask } from "@/models/user";
 import TopCreators from "../components/top-creators";
+import CardGrid from "../components/card-grid";
 
 const avatars = [
   "/images/user01.jpeg",
@@ -87,6 +88,8 @@ export default function Page() {
         <TopCreators />
       </div>
 
+      <CardGrid />
+
       {/** New tasks section */}
       <div className="relative py-6 flex flex-col gap-4">
         <div>
@@ -96,10 +99,10 @@ export default function Page() {
               <Link href="#" className="text-gray-500 text-sm underline">
                 {"Show all (20)"}
               </Link>
-              <div className="rounded-full bg-gray-700 text-gray-400 w-6 h-6 flex justify-center items-center">
+              <div className="rounded-full bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-6 h-6 flex justify-center items-center">
                 <IoMdArrowBack />
               </div>
-              <div className="rounded-full bg-gray-700 text-gray-400 w-6 h-6 flex justify-center items-center">
+              <div className="rounded-full bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-6 h-6 flex justify-center items-center">
                 <IoArrowForward />
               </div>
             </div>
@@ -206,10 +209,10 @@ export default function Page() {
               <Link href="#" className="text-gray-500 text-sm underline">
                 {"Show all (20)"}
               </Link>
-              <div className="rounded-full bg-gray-700 text-gray-400 w-6 h-6 flex justify-center items-center">
+              <div className="rounded-full bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-6 h-6 flex justify-center items-center">
                 <IoMdArrowBack />
               </div>
-              <div className="rounded-full bg-gray-700 text-gray-400 w-6 h-6 flex justify-center items-center">
+              <div className="rounded-full bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-6 h-6 flex justify-center items-center">
                 <IoArrowForward />
               </div>
             </div>

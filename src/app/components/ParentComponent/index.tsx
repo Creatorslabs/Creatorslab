@@ -1,10 +1,10 @@
 "use client"; // since we're using Next.js 13 app router
 
 import { usePathname } from "next/navigation";
-import Navbar from "../Navbar";
 import { ContextProvider } from "@/src/contexts/ContextProvider";
 import { Bounce, ToastContainer } from "react-toastify";
 import { useThemeMode } from "flowbite-react";
+import Navbar from "../nav-bar";
 
 const ParentComponent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();

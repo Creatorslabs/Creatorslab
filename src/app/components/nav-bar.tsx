@@ -1,14 +1,19 @@
+"use client"
+
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import TaskModal from "../Modals/CreateTask";
 import { GiHamburgerMenu } from "react-icons/gi";
-import SearchBar from "../search-bar";
 import { DarkThemeToggle } from "flowbite-react";
+import SearchBar from "./search-bar";
+import TaskModal from "./Modals/CreateTask";
+import { usePrivy } from "@privy-io/react-auth";
 
 const Navbar: React.FC = () => {
-  const [menuOpen, setMenuOpen] = useState(false); 
-  const [modalOpen, setModalOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    
+    const {authenticated, user, login, ready} = usePrivy()
 
   return (
     <>
@@ -25,14 +30,15 @@ const Navbar: React.FC = () => {
         </Link>
 
         <div className="flex-1 flex flex-row items-center justify-end gap-2">
-          <SearchBar />
-          <div className="flex items-center space-x-4">
-            <button
-              className="md:hidden p-2 bg-gray-800 rounded-lg"
+                  <SearchBar />
+                  {ready && authenticated ? <div className="flex items-center space-x-4">
+                      <button
+              className="md:hidden p-2 bg-[#F7F8F9] dark:bg-[#242424] dark:text-white rounded-lg"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               <GiHamburgerMenu />
             </button>
+            
             <div className="hidden md:flex items-center gap-3">
               <DarkThemeToggle />
               <Link
@@ -53,7 +59,7 @@ const Navbar: React.FC = () => {
               >
                 Plant Seeds
               </button>
-                            <Link href="/userprofile">
+                            <Link href="/profile">
                 <Image
                   src="/images/profileImg.svg"
                   alt="Profile"
@@ -62,7 +68,13 @@ const Navbar: React.FC = () => {
                 />
               </Link>
             </div>
-          </div>
+          </div> : <button
+                className="p-2 text-white text-xs rounded-md bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"
+                onClick={() => login()}
+              >
+                Connect wallet
+              </button> }
+          
         </div>
 
         {/* Mobile Menu (visible when hamburger is clicked) */}
@@ -70,8 +82,10 @@ const Navbar: React.FC = () => {
           <div className="absolute top-16 right-4 bg-gray-800 flex flex-col gap-2 text-white p-4 rounded-lg md:hidden z-50">
             <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg">
               Plant Seeds
-            </button>
-                       <div className="flex justify-center">
+                      </button>
+                      <div className="flex gap-2 justify-between">
+                          <DarkThemeToggle />
+                          <div className="flex justify-center">
               <Image
                 src="/images/profileImg.svg"
                 alt="Profile"
@@ -79,6 +93,8 @@ const Navbar: React.FC = () => {
                 height={30}
               />
             </div>
+                      </div>
+            
           </div>
         )}
       </nav>
