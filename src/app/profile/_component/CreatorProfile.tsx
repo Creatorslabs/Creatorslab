@@ -1,53 +1,49 @@
 "use client";
-import { ITask, IUser } from "@/models/user";
-import { useSession } from "next-auth/react";
+import { ITask } from "@/models/user";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Skeleton from "../../components/skeleton-loader";
 import { MdCameraEnhance, MdVerified } from "react-icons/md";
 import { GoUnverified } from "react-icons/go";
 import CopyButton from "../../components/copy-button";
-import { IoMdArrowRoundBack, IoMdArrowRoundForward } from "react-icons/io";
-import { IoEye, IoEyeOff } from "react-icons/io5";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoArrowForward, IoEye, IoEyeOff } from "react-icons/io5";
 import CreatorTasksTable from "./creator-task-table";
+import { isVerified } from "@/actions/isUserVerified";
+import { useUser, useLogout, useLinkAccount } from "@privy-io/react-auth";
+import { toast } from "react-toastify";
+import { FaDiscord } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
 
-const CreatorProfile = ({ userId }: { userId: string }) => {
-  const [user, setUser] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const CreatorProfile = ({ dbUser, user }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(false);
   const [createdTasks, setCreatedTasks] = useState<ITask[] | null>(null);
-
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  console.log(loading, error, session, status);
+ 
+  
+  const router = useRouter()
+  
+  const {refreshUser} = useUser()
+  const { logout } = useLogout({
+    onSuccess() {
+      router.push("/login")
+    },
+  })
+  const { linkDiscord, linkTwitter, linkEmail } = useLinkAccount({
+    onSuccess: ({ linkMethod }) => {
+      toast.success(`${linkMethod} linked successfully!`)
+      refreshUser()
+    },
+    onError: (error, details) => {
+      toast.success(`Failed to link ${details.linkMethod}`)
+      console.log("Failed to link:", error);
+    }
+  })
 
   useEffect(() => {
-    if (!userId) router.push("login"); // Prevent unnecessary calls
-
-    let isMounted = true;
-
     const fetchUser = async () => {
-      setLoading(true);
-      setError(null);
-
       try {
-        const response = await fetch("/api/user/get-user", {
-          method: "POST",
-          body: JSON.stringify({ userId }),
-        });
-
-        if (!response.ok) throw new Error("Failed to fetch user data");
-
-        const data = await response.json();
-
-        console.log("User:", data);
-
-        setUser(data.user);
-        const remappedTasks = data.user.createdTasks.map((task) => {
+        const remappedTasks = dbUser.createdTasks.map((task) => {
           console.log("Created Task:", task);
           return {
             type: task.type,
@@ -67,56 +63,41 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
         // remove in full in production
         if (!createdTasks) setCreatedTasks(remappedTasks);
       } catch (err) {
-        if (isMounted) {
-          setError("Failed to fetch user.");
+       
           console.error("Error fetching user:", err);
-        }
-      } finally {
-        if (isMounted) setLoading(false);
-      }
+      } 
     };
 
     fetchUser();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [createdTasks, userId, router]);
+  }, [createdTasks, router]);
 
   return (
-    <div className="bg-[#161616] w-full max-w-[1440px] mx-auto">
+    <div className="w-full">
       <div className="w-[88%] mx-auto py-4 min-h-screen">
         {/* header navigation section */}
         <div className="sm:flex justify-between items-center my-6 block">
-          <div className="p-3 rounded-lg bg-[#242424] w-fit">
+          <div  className="p-3 rounded-lg bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-fit">
             <Link href={"/"}>
               <IoMdArrowRoundBack />
             </Link>
           </div>
           <div className="flex justify-between items-center flex-1 sm:ml-5 sm:text-xl font-medium mt-4 sm:mt-0">
             <p>Creator profile</p>
-            <button className="border border-[#606060] rounded-lg p-2 sm:px-4 sm:py-2 bg-[#242424] text-white flex justify-center items-center gap-2 text-xs sm:text-base">
-              <Image
-                src="/images/coin.svg"
-                alt="coin"
-                width={30}
-                height={30}
-                className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
-              />
-              Earn $CLS
-            </button>
+            <button className="dark:border border-[#606060] rounded-lg p-2 sm:px-4 sm:py-2 bg-[#F7F8F9] dark:bg-[#242424] dark:text-white flex justify-center items-center gap-2 text-xs sm:text-base">
+                          <Image
+                            src="/images/coin.svg"
+                            alt="coin"
+                            width={30}
+                            height={30}
+                            className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
+                          />
+                          Earn $CLS
+                        </button>
           </div>
         </div>
         {/* details section */}
         <div>
           <div className="creator-content">
-            {status === "loading" ? (
-              <>
-                <Skeleton height="220px" />
-                <Skeleton height="220px" />
-              </>
-            ) : (
-              <>
                 <div className="relative">
                   <Image
                     src="/images/creator-bg.svg"
@@ -137,7 +118,7 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                     <div className="creator-profile-img">
                       <div className="relative">
                         <Image
-                          src={user?.photo || "/images/dp.svg"}
+                          src={dbUser?.photo || "/images/dp.svg"}
                           alt="profile"
                           width={136}
                           height={136}
@@ -149,55 +130,39 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                       </div>
                       <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center sm:justify-start sm:items-start">
                         <div className="flex xl:flex-col flex-row xl: gap-5">
-                          <p className="sm:text-xl my-0">{user?.username}</p>
-                          {user?.isVerified ? (
-                            <p className="bg-[#2D2D2D] w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
-                              <MdVerified
-                                height={30}
-                                width={30}
-                                color="#1a56db"
-                              />
-                              <span className="text-xs sm:text-sm">
-                                Verified
-                              </span>
-                            </p>
-                          ) : (
-                            <p className="bg-[#2D2D2D] w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
-                              <GoUnverified
-                                height={30}
-                                width={30}
-                                color="#e02424"
-                              />
-                              <span className="text-xs sm:text-sm">
-                                Not verified
-                              </span>
-                            </p>
-                          )}
+                          <p className="sm:text-xl my-0 text-white font-bold">{dbUser?.username}</p>
+                          {isVerified(user) ? (
+                                            <p className="bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
+                                              <MdVerified
+                                                height={30}
+                                                width={30}
+                                                color="#1a56db"
+                                              />
+                                              <span className="text-xs sm:text-sm">
+                                                Verified
+                                              </span>
+                                            </p>
+                                          ) : (
+                                            <p className="bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
+                                              <GoUnverified
+                                                height={30}
+                                                width={30}
+                                                color="#e02424"
+                                              />
+                                              <span className="text-xs sm:text-sm">
+                                                Not verified
+                                              </span>
+                                            </p>
+                                          )}
                         </div>
                         <div className="flex gap-2">
-                          <div className="flex justify-between items-center border-[#606060] border rounded-lg py-1 px-2 sm:py-2 sm:px-4">
-                            <div className="flex gap-1 sm:gap-3 items-center text-xs sm:text-base">
-                              <Image
-                                src="/images/x-icon.svg"
-                                alt="x-icon"
-                                height={30}
-                                width={30}
-                                className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
-                              />
-                              {user?.twitterVerified ? user?.twitter?.username : "Not linked"}
-                            </div>
+                          <div className="flex justify-between items-center border-[#606060] border rounded-lg p-2 gap-1 text-xs text-white">
+                              <FaSquareXTwitter size={20}/>
+                              {user?.twitter ? user?.twitter?.username : "Not linked"}
                           </div>
-                          <div className="flex justify-between items-center border-[#606060] border rounded-lg py-2 px-4">
-                            <div className="flex gap-2 sm:gap-3 items-center">
-                              <Image
-                                src="/images/discord.svg"
-                                alt="discord"
-                                height={30}
-                                width={30}
-                                className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
-                              />
-                             {user?.discordVerified ? user?.discord?.username : "Not linked"}
-                            </div>
+                          <div className="flex justify-between items-center border-[#606060] border rounded-lg p-2 gap-1 text-xs text-white">
+                              <FaDiscord size={20}/>
+                             {user?.discord ? user?.discord?.username : "Not linked"}
                           </div>
                         </div>
                         <button className="bg-white bg-opacity-20 w-fit h-fit p-2 sm:px-4 rounded-lg flex gap-2 items-center xl:hidden text-sm">
@@ -210,7 +175,7 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                     </div>
                   </div>
                 </div>
-                <div className="relative">
+                <div className="relative relative bg-[#F7F8F9] dark:bg-[#101214] dark:text-white rounded-md overflow-hidden w-fit">
                   <Image
                     src="/images/walletcard.svg"
                     alt="walletcard"
@@ -221,7 +186,7 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                   <div className="absolute top-0 p-5 sm:p-8">
                     <span className="text-[#606060]">Wallet Balance</span>
                     <p className="text-xl sm:text-4xl flex gap-8 items-center my-3 sm:mt-3 sm:mb-6">
-                      $CLS {isBalanceVisible ? user?.balance : "****"}
+                      $CLS {isBalanceVisible ? dbUser?.balance : "****"}
                       <button
                         onClick={() => setIsBalanceVisible(!isBalanceVisible)}
                       >
@@ -242,71 +207,67 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                     </div>
                   </div>
                 </div>
-              </>
-            )}
           </div>
           <div className="creator-content">
-            {status === "loading" ? (
-              <>
-                <Skeleton height="300px" className="mt-8" />
-                <Skeleton height="300px" className="mt-8" />
-              </>
-            ) : (
-              <>
-                {" "}
                 <CreatorTasksTable />
                 <div className="border-[0.5px] border-[#606060] p-4 sm:p-8 rounded-xl mt-8">
                   <div className="mb-8">
                     <p className="text-lg mb-2">Social Media Accounts</p>
                     <div className="flex flex-col gap-6">
-                      <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5">
-                        <div className="flex gap-3 items-center">
-                          <Image
-                            src="/images/x-icon.svg"
-                            alt="x-icon"
-                            height={30}
-                            width={30}
-                          />
-                          {user?.twitterVerified
-                            ? user?.twitter?.username
-                            : "Link Twitter Account"}
-                        </div>
-                        {user?.twitterVerified ? (
-                          <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
-                            <span className="text-sm text-[#606060]">
-                              Linked
-                            </span>
-                          </button>
-                        ) : (
-                          <div className="p-3 rounded-lg bg-white">
-                            <IoMdArrowRoundForward size={20} color="#000" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 ">
-                        <div className="flex gap-3 items-center">
-                          <Image
-                            src="/images/discord.svg"
-                            alt="discord"
-                            height={35}
-                            width={35}
-                          />
-                          {user?.discordVerified
-                            ? user?.discord?.username
-                            : "Link Discord Account"}
-                        </div>
-                        {user?.discordVerified ? (
-                          <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
-                            <span className="text-sm text-[#606060]">
-                              Linked
-                            </span>
-                          </button>
-                        ) : (
-                          <div className="p-3 rounded-lg bg-white">
-                            <IoMdArrowRoundForward size={20} color="#000" />
-                          </div>
-                        )}
-                      </div>
+                      {user.twitter ? <div className="flex justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 w-full max-w-[450px]">
+                                        <div className="flex gap-3 items-center">
+                                          <Image
+                                            src="/images/x-icon.svg"
+                                            alt="x-icon"
+                                            height={30}
+                                            width={30}
+                                          />
+                                          {user.twitter.username}
+                                        </div>
+                                        <button className="bg-[#F7F8F9] dark:bg-[#242424] dark:text-whiteh-fit py-1 px-2 rounded-sm flex gap-2 items-center" disabled>
+                                          <span className="text-sm">Linked</span>
+                                        </button>
+                                      </div> : <div className="flex justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 w-full max-w-[450px]">
+                                        <div className="flex gap-3 items-center">
+                                          <Image
+                                            src="/images/x-icon.svg"
+                                            alt="x-icon"
+                                            height={30}
+                                            width={30}
+                                          />
+                                          Link twitter
+                                        </div>
+                                        <button className="p-3 rounded-lg bg-[#F7F8F9] dark:bg-[#242424] dark:text-white" onClick={linkTwitter}>
+                                          <IoArrowForward />
+                                        </button>
+                                      </div>}
+                                      {user.discord ? <div className="flex justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 w-full max-w-[450px]">
+                                        <div className="flex gap-3 items-center">
+                                          <Image
+                                            src="/images/discord.svg"
+                                            alt="discord"
+                                            height={35}
+                                            width={35}
+                                          />
+                                          {user.discord.username}
+                                        </div>
+                                        <button className="bg-[#F7F8F9] dark:bg-[#242424] dark:text-white h-fit py-1 px-2 rounded-sm flex gap-2 items-center" disabled>
+                                          <span className="text-sm">Linked</span>
+                                        </button>
+                                      </div> : <div className="flex justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 w-full max-w-[450px]">
+                                        <div className="flex gap-3 items-center">
+                                          <Image
+                                            src="/images/discord.svg"
+                                            alt="discord"
+                                            height={35}
+                                            width={35}
+                                          />
+                                          Link Discord Account
+                                        </div>
+                                        <button className="p-3 rounded-lg bg-[#F7F8F9] dark:bg-[#242424] dark:text-white" onClick={linkDiscord}>
+                                          <IoArrowForward />
+                                        </button>
+                                      </div>}
                     </div>
                   </div>
                   <div className="mb-8">
@@ -315,33 +276,36 @@ const CreatorProfile = ({ userId }: { userId: string }) => {
                       Link your Email to get latest updates on Creatorslab
                     </span>
                     <div className="flex gap-6">
-                      <div className="flex justify-between items-center border-[#606060] border rounded-lg p-5 w-full">
-                        <div className="flex gap-3 items-center">
-                          <Image
-                            src="/images/email.svg"
-                            alt="email"
-                            height={30}
-                            width={30}
-                          />
-                          {user?.email}
-                        </div>
-                        {user?.isVerified ? (
-                          <button className="bg-[#272727] h-fit py-1 px-2 rounded-sm flex gap-2 items-center">
-                            <span className="text-sm text-[#606060]">
-                              Linked
-                            </span>
-                          </button>
-                        ) : (
-                          <button className="p-3 rounded-lg bg-white">
-                            <IoMdArrowRoundForward size={20} color="#000" />
-                          </button>
-                        )}
-                      </div>
+                      {user.email ? <div className="flex gap-2 justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 w-full max-w-[450px]">
+                                        <div className="flex gap-3 items-center">
+                                          <Image
+                                            src="/images/email.svg"
+                                            alt="email"
+                                            height={30}
+                                            width={30}
+                                          />
+                                          {user.email.address}
+                                        </div>
+                                        <button className="bg-[#F7F8F9] dark:bg-[#242424] dark:text-white dark:bg-[#242424] dark:text-white h-fit py-1 px-2 rounded-sm flex gap-2 items-center" disabled>
+                                          <span className="text-sm">Linked</span>
+                                        </button>
+                                      </div> : <div className="flex flex-wrap gap-2 justify-between items-center border-[#606060] border rounded-lg p-2 sm:p-5 md:w-[320px]">
+                                        <div className="flex gap-3 items-center">
+                                          <Image
+                                            src="/images/email.svg"
+                                            alt="email"
+                                            height={30}
+                                            width={30}
+                                          />
+                                          Email not linked
+                                        </div>
+                                        <button className="p-3 rounded-lg bg-[#F7F8F9] dark:bg-[#242424] dark:text-white" onClick={linkEmail}>
+                                          <IoArrowForward />
+                                        </button>
+                                      </div>}
                     </div>
                   </div>
                 </div>
-              </>
-            )}
           </div>
         </div>
       </div>

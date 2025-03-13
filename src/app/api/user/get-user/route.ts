@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { User } from "@/models/user";
 import connectDB from "@/utils/connectDB";
 import { generateReferralCode } from "@/actions/generate-referal-code";
+import { generateRandomUsername } from "@/actions/generate-username";
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,6 +24,7 @@ export async function POST(req: NextRequest) {
     if (!user) {
       user = new User({
         _id: privyId,
+        username: generateRandomUsername(),
         referralCode: generateReferralCode(),
       });
 

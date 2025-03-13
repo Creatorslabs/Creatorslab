@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { MdContentCopy } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const CopyButton: React.FC<{ link: string }> = ({ link }) => {
   const [copied, setCopied] = useState(false);
@@ -10,6 +11,7 @@ const CopyButton: React.FC<{ link: string }> = ({ link }) => {
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);
+      toast.success("Copied to clipboard!")
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy:", err);

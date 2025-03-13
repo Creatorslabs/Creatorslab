@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const CreatorTasksTable = () => {
   return (
-    <div className="creator-tasks-table  max-h-[500px] overflow-hidden w-full">
+    <div className="creator-tasks-table max-h-[500px] overflow-hidden w-full bg-white dark:bg-[#161616] text-black dark:text-white">
       {/* Header with Search */}
       <div className="flex flex-wrap justify-between items-center p-4 gap-2">
         <p className="text-lg font-medium">All Tasks</p>
@@ -16,7 +16,7 @@ const CreatorTasksTable = () => {
           />
           <input
             type="text"
-            className="w-full bg-[#222] text-white pl-10 pr-3 py-2 border border-[#3F3F3F] rounded-xl outline-none placeholder-gray-400"
+            className="w-full bg-gray-200 dark:bg-[#222] text-black dark:text-white pl-10 pr-3 py-2 border border-gray-300 dark:border-[#3F3F3F] rounded-xl outline-none placeholder-gray-500 dark:placeholder-gray-400"
             placeholder="Search projects, quests, creators"
           />
         </div>
@@ -26,7 +26,7 @@ const CreatorTasksTable = () => {
       <div className="w-full overflow-x-hidden max-h-[400px] h-full overflow-y-scroll">
         <table className="w-full table-fixed text-center border-collapse">
           <thead>
-            <tr className="bg-[#222] text-white">
+            <tr className="bg-gray-300 dark:bg-[#222] text-black dark:text-white">
               <th className="p-2 w-[15%]">S/N</th>
               <th className="p-2 w-[40%]">Platform</th>
               <th className="p-2 w-[20%] hidden md:table-cell">Amount</th>
@@ -57,7 +57,7 @@ const CreatorTasksTable = () => {
                   Ongoing
                 </td>
                 <td className="p-4">
-                  <button className="bg-[#03ABFF] bg-opacity-10 border border-[#03ABFF] text-[#03ABFF] py-1 px-4 rounded-md text-sm md:text-base">
+                  <button className="bg-blue-500 dark:bg-[#03ABFF] bg-opacity-10 border border-blue-500 dark:border-[#03ABFF] text-blue-500 dark:text-[#03ABFF] py-1 px-4 rounded-md text-sm md:text-base">
                     View
                   </button>
                 </td>

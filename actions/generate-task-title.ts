@@ -15,8 +15,7 @@ interface ITask {
   expiration?: Date;
 }
 
-export const generateTaskTitle = (task: ITask) => {
-  const { type, platform, creator } = task;
+export const generateTaskTitle = (type: string, platform: string) => {
   const platformMap = {
     twitter: "Twitter",
     youtube: "YouTube",
@@ -30,7 +29,7 @@ export const generateTaskTitle = (task: ITask) => {
     repost: "Repost",
     quote: "Quote",
   };
-  return `${typeMap[type]} ${creator.username}'s ${platformMap[platform]} ${
+  return `${typeMap[type]} a creator on a ${platformMap[platform]} ${
     type === "follow" ? "account" : "post"
   }`;
 };

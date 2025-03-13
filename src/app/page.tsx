@@ -1,19 +1,46 @@
 "use client"
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 // Icons
 import { FaHeart } from "react-icons/fa6";
-import { IoIosRocket, IoIosShareAlt } from "react-icons/io";
-import { FaComment, FaLink } from "react-icons/fa";
+import { IoIosRocket } from "react-icons/io";
+import { FaLink } from "react-icons/fa";
 import { IoMdArrowBack } from "react-icons/io";
 import { IoArrowForward } from "react-icons/io5";
 import { DarkThemeToggle, useThemeMode } from "flowbite-react";
+import { ITask } from "@/models/user";
+import { generateTaskTitle } from "@/actions/generate-task-title";
+import Skeleton from "./components/skeleton-loader";
 
 function LandingPage() {
   const { computedMode } = useThemeMode()
+  const [tasks, setTasks] = useState<ITask[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchTasks = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/tasks/get-all`, {
+        method: "GET",
+      });
+
+      if (!res.ok) return;
+
+      const data = await res.json();
+      setTasks(data.slice(0, 3));
+
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      console.error("Error fetching tasks:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   return (
     <div className="relative w-full">
@@ -182,8 +209,8 @@ function LandingPage() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(3)].map((_, index) => (
-              <div key={index} className="w-full flex-1 shadow-md p-2 pb-0 rounded-lg dark:border-[#FFFFFF]">
+            {loading ? <><Skeleton height="200px"/><Skeleton height="200px"/><Skeleton height="200px"/></>: tasks.map((task, index) => (
+              <Link href={`/tasks/${task._id}`} key={index} className="w-full flex-1 shadow-md p-2 pb-0 rounded-lg dark:border-[#FFFFFF]">
                 <div className="relative">
                   <Image
                     src="/images/landing-page/Rectangle 3.png"
@@ -201,13 +228,13 @@ function LandingPage() {
                   />
                 </div>
                 <div className="flex flex-col py-3 gap-2">
-                  <h3 className="font-syne text-xl">Task/Article Title Here</h3>
+                  <h3 className="font-syne text-xl">{ generateTaskTitle(task.type, task.platform)}</h3>
                   <p className="text-sm text-gray-500">
-                    Task description goes here.
+                    {task.description}
                   </p>
                   <div className="flex justify-between">
-                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white p-1 text-sm items-center whitespace-no-wrap">
-                      100 $CLS
+                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white py-1  px-2 text-sm items-center whitespace-no-wrap">
+                      {task.rewardPoints} $CLS
                       <Image
                         src="/images/coin.svg"
                         width={20}
@@ -215,27 +242,19 @@ function LandingPage() {
                         alt="CLS coin image"
                       />
                     </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <FaHeart /> 1.5K
-                    </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <FaComment />
-                      10K
-                    </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <IoIosShareAlt />
-                      120
+                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-2 text-sm items-center">
+                      <FaHeart /> {task.participants.length} of {task.maxParticipants} Joined
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
       </div>
 
       {/** Bottom banner section */}
-      <div className="relative m-6 md:m-8 rounded-md p-4 flex flex-row flex-wrap justify-between bg-gradient-to-br from-[#5D3FD1] via-yellow-500 via-[#03ABFF] to-[#F4B30C gap-4">
+      <div className="relative m-6 md:m-8 rounded-md p-4 flex flex-row flex-wrap justify-between bg-gradient-to-br from-[#5D3FD1] via-[#5D3FD1] via-[#03ABFF] to-[#F4B30C gap-4">
         <div className="absolute inset-0 bg-black opacity-10 mix-blend-overlay pointer-events-none"></div>
         <div className="flex flex-col gap-3 w-full md:w-[40%] items-start justify-center text-white">
           <h3 className="text-2xl font-syne text-bold">
