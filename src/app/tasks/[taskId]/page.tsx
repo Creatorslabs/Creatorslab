@@ -85,6 +85,12 @@ const Page = () => {
     fetchTask();
   }, [taskId]);
 
+  useEffect(() => {
+  if (ready && !authenticated) {
+    router.replace(`/login?next=${redirectUrl}`);
+  }
+}, [ready, authenticated, redirectUrl, router]);
+
   if (!ready) {
     return (
       <div className="creator-content">
@@ -96,12 +102,6 @@ const Page = () => {
       </div>
     );
   }
-
-  useEffect(() => {
-  if (ready && !authenticated) {
-    router.replace(`/login?next=${redirectUrl}`);
-  }
-}, [ready, authenticated, redirectUrl]);
 
   if (ready && authenticated) { return (
     <div className="px-6 md:px-14">

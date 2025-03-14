@@ -12,7 +12,6 @@ import { IoMdArrowBack } from "react-icons/io";
 import { IoArrowForward } from "react-icons/io5";
 import { DarkThemeToggle, useThemeMode } from "flowbite-react";
 import { ITask } from "@/models/user";
-import { generateTaskTitle } from "@/actions/generate-task-title";
 import Skeleton from "./components/skeleton-loader";
 import TaskCard from "./tasks/_comp/task-card";
 

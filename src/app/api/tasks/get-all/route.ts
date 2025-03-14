@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { Task } from "@/models/user";
 import connectDB from "@/utils/connectDB";
 

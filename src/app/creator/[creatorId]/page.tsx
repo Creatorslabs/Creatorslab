@@ -5,7 +5,7 @@ import Image from "next/image";
 import { IoMdArrowBack, IoMdArrowRoundBack } from "react-icons/io";
 import { MdCameraEnhance, MdVerified } from "react-icons/md";
 import { IoArrowForward } from "react-icons/io5";
-import { FaDiscord, FaHeart, FaSquareXTwitter } from "react-icons/fa6";
+import { FaDiscord, FaSquareXTwitter } from "react-icons/fa6";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi";
 import { usePrivy } from "@privy-io/react-auth";
 import Skeleton from "../../components/skeleton-loader";
@@ -164,7 +164,7 @@ const unfollow = async () => {
         fetchUser().then(setDbUser);
         fetchMainUser().then(setMainUser);
       }
-    }, [ready, authenticated]);
+    }, [ready, authenticated,fetchMainUser, fetchUser]);
   
     if (!ready) {
       return (
@@ -353,7 +353,7 @@ const unfollow = async () => {
             </p>
             </div>
             <button
-            onClick={follow}
+            onClick={unfollow}
             className="w-full bg-gradient-to-b from-[#F44336] to-[#F44336] p-2 rounded-md text-white"
           >
             Unfollow

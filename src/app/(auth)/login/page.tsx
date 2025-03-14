@@ -48,14 +48,16 @@ const Comp: FC = () => {
       }
     };
 
-  const authCallback = ({ user, isNewUser }) => {
-    if (isNewUser) {
-      const newUser = fetchUser(user)
-      setIsModalOpen(true)
-    } else {
-      router.push(redirectTo);
+  const authCallback = async ({ user, isNewUser }) => {
+  if (isNewUser) {
+    const newUser = await fetchUser(user);
+    if (newUser) {
+      setIsModalOpen(true);
     }
+  } else {
+    router.push(redirectTo);
   }
+};
 
   const {
     sendCode: sendCodeEmail,

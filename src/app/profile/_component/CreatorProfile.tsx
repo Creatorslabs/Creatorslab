@@ -69,7 +69,7 @@ const CreatorProfile = ({ dbUser, user }) => {
     };
 
     fetchUser();
-  }, [createdTasks, router]);
+  }, [createdTasks, router, dbUser.createdTasks]);
 
   return (
     <div className="w-full">

@@ -2,14 +2,11 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { FaComment, FaHeart } from "react-icons/fa";
-import { IoIosShareAlt, IoMdArrowBack } from "react-icons/io";
+import { IoMdArrowBack } from "react-icons/io";
 import Link from "next/link";
 import { IoArrowForward } from "react-icons/io5";
 import { ITask } from "@/models/user";
 import TopCreators from "../components/top-creators";
-import CardGrid from "../components/card-grid";
-import { generateTaskTitle } from "@/actions/generate-task-title";
 import TaskCard from "./_comp/task-card";
 import Skeleton from "../components/skeleton-loader";
 
