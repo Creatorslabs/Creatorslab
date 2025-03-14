@@ -7,8 +7,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { DarkThemeToggle } from "flowbite-react";
 import SearchBar from "./search-bar";
 import TaskModal from "./Modals/CreateTask";
-import { useConnectWallet, useLinkAccount, usePrivy } from "@privy-io/react-auth";
-import { toast } from "react-toastify";
+import {  usePrivy } from "@privy-io/react-auth";
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);

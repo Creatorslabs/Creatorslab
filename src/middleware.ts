@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
+export function middleware() {
   // Allow everything in development mode
   // if (process.env.NODE_ENV === "development") {
   //   return NextResponse.next();

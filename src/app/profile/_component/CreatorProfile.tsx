@@ -19,7 +19,6 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 const CreatorProfile = ({ dbUser, user }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(false);
   const [createdTasks, setCreatedTasks] = useState<ITask[] | null>(null);
-  const [followers, setFollowers] = useState<number>(0)
  
   
   const router = useRouter()
