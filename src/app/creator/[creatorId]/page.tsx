@@ -216,7 +216,7 @@ useEffect(() => {
               <Image
                 src="/images/profile-bkg.svg"
                 alt="creator-bg"
-                width={380}
+                width={380} 
                 height={200}
                 className="w-full h-[244px] object-cover rounded-2xl block sm:hidden"
               />

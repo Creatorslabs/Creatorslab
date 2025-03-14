@@ -108,7 +108,7 @@ const CreatorProfile = ({ dbUser, user }) => {
                   />
 
                   <Image
-                    src="/images/profile-bkg.svg"
+                    src="/images/profile-bkg.svg" 
                     alt="creator-bg"
                     width={380}
                     height={200}
