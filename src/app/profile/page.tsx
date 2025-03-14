@@ -39,7 +39,7 @@ export default function MyComponent() {
     if (ready && authenticated) {
       fetchUser().then(setDbUser);
     }
-  }, [ready, authenticated]);
+  }, [ready, authenticated, fetchUser]);
 
   if (!ready) {
     return (
