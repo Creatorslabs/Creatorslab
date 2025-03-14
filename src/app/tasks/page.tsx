@@ -10,19 +10,6 @@ import TopCreators from "../components/top-creators";
 import TaskCard from "./_comp/task-card";
 import Skeleton from "../components/skeleton-loader";
 
-const avatars = [
-  "/images/user01.jpeg",
-  "/images/user02.jpeg",
-  "/images/user03.jpeg",
-  "/images/user04.jpeg",
-  "/images/user05.jpeg",
-  "/images/user06.jpeg",
-  "/images/user07.jpeg",
-  "/images/user08.jpeg",
-  "/images/user09.jpeg",
-  "/images/Frame 10.png",
-];
-
 export default function Page() {
   const [tasks, setTasks] = useState<ITask[]>([])
   const [loading, setLoading] = useState(true)

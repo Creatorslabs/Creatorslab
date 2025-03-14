@@ -19,6 +19,8 @@ import TaskCard from "../../tasks/_comp/task-card";
 import { toast } from "react-toastify";
 import CustomModal from "../../components/Modals/custom-modal";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_URL;
+
 function AllTask({tasks}) {
   return tasks.map((task, i) => (
     <TaskCard task={task} key={i}/>
@@ -90,81 +92,77 @@ const unfollow = async () => {
   }
 };
 
-  const fetchUser = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_URL}api/creator/get`,
-          {
-            method: "POST",
-            body: JSON.stringify({ userId: creatorId }),
-          }
-        );
-  
-        if (!res.ok) return null;
-  
-        const data = await res.json();
-        console.log("Creator:", data);
-        
-        return data;
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        return null;
-      }
-  };
-  
-  const fetchMainUser = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_URL}api/creator/get`,
-          {
-            method: "POST",
-            body: JSON.stringify({ userId: clipBeforeLastColon(user?.id) }),
-          }
-        );
-  
-        if (!res.ok) return null;
-  
-        const data = await res.json();
-        console.log("Creator:", data);
-        
-        return data;
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        return null;
-      }
-  };
-  
-  useEffect(() => {
-    const checkFollowingStatus = async () => {
-      try {
-        const response = await fetch("/api/user/isfollowing", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: clipBeforeLastColon(user?.id), creatorId }),
-        });
+  const fetchUser = async (userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}api/creator/get`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
 
-        const data = await response.json();
-        if (response.ok) {
-          setIsFollowing(data.isFollowing);
-        } else {
-          console.error("Error:", data.error);
-        }
-      } catch (error) {
-        console.error("Request failed:", error);
-      }
-    };
+    if (!response.ok) throw new Error(`Failed to fetch user: ${response.statusText}`);
 
-    if (user && creatorId) {
-      checkFollowingStatus();
+    const data = await response.json();
+    console.log("Fetched User:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+};
+
+const fetchMainUser = async (userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}api/creator/get`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+
+    if (!response.ok) throw new Error(`Failed to fetch main user: ${response.statusText}`);
+
+    const data = await response.json();
+    console.log("Fetched Main User:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching main user:", error);
+    return null;
+  }
+};
+
+const checkFollowingStatus = async (userId, creatorId, setIsFollowing) => {
+  try {
+    const response = await fetch("/api/user/isfollowing", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, creatorId }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      setIsFollowing(data.isFollowing);
+    } else {
+      console.error("Error checking follow status:", data.error);
     }
-  }, [user, creatorId]);
-  
-    useEffect(() => {
-      if (ready && authenticated) {
-        fetchUser().then(setDbUser);
-        fetchMainUser().then(setMainUser);
-      }
-    }, [ready, authenticated,fetchMainUser, fetchUser]);
+  } catch (error) {
+    console.error("Request failed:", error);
+  }
+};
+
+useEffect(() => {
+  if (user && creatorId) {
+    checkFollowingStatus(clipBeforeLastColon(user?.id), creatorId, setIsFollowing);
+  }
+}, [user, creatorId]);
+
+useEffect(() => {
+  if (ready && authenticated) {
+    const userId = clipBeforeLastColon(user?.id);
+    
+    fetchUser(creatorId).then(setDbUser);
+    fetchMainUser(userId).then(setMainUser);
+  }
+}, [ready, authenticated, user, creatorId]);
   
     if (!ready) {
       return (
