@@ -135,7 +135,7 @@ body {
   @media (max-width: 550px) {
     margin-left: auto;
     margin-right: auto;
-    gap: 8px !important;
+    gap: 16px !important;
     flex-direction: column !important;
   }
 }
