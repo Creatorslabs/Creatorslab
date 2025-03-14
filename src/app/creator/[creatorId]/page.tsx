@@ -36,7 +36,7 @@ const Page = () => {
   const router = useRouter();
   const { creatorId } = useParams()
   const [unfollowModal, setUnfollowModal] = useState(false)
-  const [followModal, setFollowModal] = useState(true)
+  const [followModal, setFollowModal] = useState(false)
 
   const follow = async () => {
   if (!user || !creatorId) return;

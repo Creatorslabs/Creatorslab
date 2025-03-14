@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import UserProfile from "./_component/UserProfile";
 import CreatorProfile from "./_component/CreatorProfile";
 
@@ -15,31 +15,40 @@ export default function MyComponent() {
   const router = useRouter();
   const [dbUser, setDbUser] = useState<IUser>();
 
-  const fetchUser = async () => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}api/user/get-user`,
-        {
-          method: "POST",
-          body: JSON.stringify({ privyId: clipBeforeLastColon(user?.id) }),
-        }
-      );
+const fetchUser = useCallback(async () => {
+  if (!user?.id) return null; 
 
-      if (!res.ok) return null;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}api/user/get-user`,
+      {
+        method: "POST",
+        body: JSON.stringify({ privyId: clipBeforeLastColon(user.id) }),
+      }
+    );
 
-      const data = await res.json();
-      return data.user;
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      return null;
-    }
-  };
+    if (!res.ok) return null;
 
-  useEffect(() => {
-    if (ready && authenticated) {
-      fetchUser().then(setDbUser);
-    }
-  }, [ready, authenticated, fetchUser]);
+    const data = await res.json();
+    return data.user;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+}, [user?.id]);
+
+useEffect(() => {
+  if (ready && authenticated) {
+    fetchUser().then((fetchedUser) => {
+      setDbUser((prevUser) => {
+        return JSON.stringify(prevUser) === JSON.stringify(fetchedUser)
+          ? prevUser
+          : fetchedUser;
+      });
+    });
+  }
+}, [ready, authenticated, fetchUser]); 
+
 
   if (!ready) {
     return (

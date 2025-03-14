@@ -83,7 +83,7 @@ const Comp: FC = () => {
     onSuccess: ({ wallet }) => {
       console.log(wallet.address);
       router.push(redirectTo);
-    },
+    }, 
     onError: (error) => {
       console.log(error);
       setError(error);

@@ -42,39 +42,32 @@ const UserProfile = ({ dbUser, user }) => {
 
 
   useEffect(() => {
-     const fetchUser = async () => {
-      try {
-       const remappedTasks = dbUser.participatedTasks.map((task) => {
-          return {
-            creator: {
-              username: task.task.creator.username,
-              id: task.task.creator._id.toString(), // ensure it's a string
-            },
-            type: task.task.type,
-            platform: task.task.platform,
-            target: task.task.target,
-            rewardPoints: task.task.rewardPoints,
-            maxParticipants: task.task.maxParticipants,
-            // Convert each participant ObjectId to a string
-            participants: task.task.participants.map((participant: any) =>
-              participant.toString()
-            ),
-            status: task.status,
-            expiration: task.task.expiration
-              ? new Date(task.task.expiration)
-              : undefined,
-          };
-        });
+  if (!dbUser?.participatedTasks) return;
 
-        setParticipatedTasks(remappedTasks);
-      } catch (err) {
-                 console.error("Error fetching user:", err);
-        
-      } 
-    };
+  const remappedTasks = dbUser.participatedTasks.map((task) => ({
+    creator: {
+      username: task.task.creator.username,
+      id: task.task.creator._id.toString(), 
+    },
+    type: task.task.type,
+    platform: task.task.platform,
+    target: task.task.target,
+    rewardPoints: task.task.rewardPoints,
+    maxParticipants: task.task.maxParticipants,
+    participants: task.task.participants.map((participant: any) =>
+      participant.toString()
+    ),
+    status: task.status,
+    expiration: task.task.expiration ? new Date(task.task.expiration) : undefined,
+  }));
 
-    fetchUser();
-  }, [dbUser]);
+  setParticipatedTasks((prevTasks) => {
+    // Avoid unnecessary state updates
+    const isSame = JSON.stringify(prevTasks) === JSON.stringify(remappedTasks);
+    return isSame ? prevTasks : remappedTasks;
+  });
+}, [dbUser]);
+
 
   return (
     <div className="w-full">

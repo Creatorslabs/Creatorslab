@@ -8,8 +8,6 @@ import creator from "../../../../public/images/user03.jpeg";
 import coin from "../../../../public/images/coin.svg";
 import X from "../../../../public/images/X.svg";
 import telegram from "../../../../public/images/telegram.svg";
-import discord from "../../../../public/images/discord.svg";
-import paper from "../../../../public/images/thxjoin.svg";
 import { IoIosLock, IoMdArrowRoundBack } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { Progress } from "@heroui/progress";
@@ -22,14 +20,24 @@ import Skeleton from "../../components/skeleton-loader";
 import { generateTaskTitle } from "@/actions/generate-task-title";
 import { ITask } from "@/models/user";
 import { toast } from "react-toastify";
+import { clipBeforeLastColon } from "@/actions/clip-privy-id";
+import CountdownTimer, { calculateTimeLeft } from "../../components/countdonw-timer";
+import PlatformIcon from "../_comp/platform-image";
+import FollowUnfollowButton from "../../components/followbutton";
 
 const returnCreatorUsername = (creator) => {
   return creator.username
 }
 
+const returnCreatorid = (creator) => {
+  return creator._id
+}
+
 const Page = () => {
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
   const [task, setTask] = useState<ITask>();
+  const [otherTasks, setOtherTasks] = useState<ITask[]>([]);
+  const [totalTasks, setTotalTasks] = useState<number>(0)
   const [loading, setLoading] = useState(true);
 
   const pathname = usePathname(); // Get current URL path
@@ -55,7 +63,7 @@ const Page = () => {
         refreshUser()
       },
       onError: (error, details) => {
-        toast.success(`Failed to link ${details.linkMethod}`)
+        toast.error(`Failed to link ${details.linkMethod}`)
         console.log("Failed to link:", error);
       }
     })
@@ -82,8 +90,34 @@ const Page = () => {
       }
     };
 
-    fetchTask();
-  }, [taskId]);
+    async function getOtherTasks(userId) {
+      try {
+        const response = await fetch("/api/tasks/get-other-task", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ taskId, userId }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        setOtherTasks(data.otherTasks)
+        setTotalTasks(data.totalTasksByCreator)
+      } catch (error) {
+        console.error("Failed to fetch other tasks:", error);
+      }
+    }
+
+    if (ready && authenticated) {
+        const userId = clipBeforeLastColon(user?.id);
+        
+        fetchTask();
+        getOtherTasks(userId)
+      }
+  }, [ready, authenticated, user, taskId]);
 
   useEffect(() => {
   if (ready && !authenticated) {
@@ -141,17 +175,15 @@ const Page = () => {
                     height={30}
                     className="rounded-full aspect-square"
                   />
-                    <p className="font-bold text-sm">{ returnCreatorUsername(task.creator) }</p>
+                    <Link href={`/creator/${returnCreatorid(task.creator)}`} className="font-bold text-sm">{ returnCreatorUsername(task.creator) }</Link>
                 </div>
               </div>
-              <button className=" px-4 py-2 bg-[#222222] rounded-lg text-sm text-white">
-                Follow
-              </button>
+                {task && <FollowUnfollowButton user={user} creator={task.creator}/> }
             </div>
 
             <div className="border border-[#606060] p-3 md:px-6 md:py-4 flex items-center justify-between rounded-lg bg-[#5D3FD126] text-sm gap-2">
               <p className="text-[#5d3fd1] flex-1">
-                Ending In <span>12</span>h:<span>40</span>m:<span>24</span>s
+                  Ending In: <CountdownTimer expirationDate={task.expiration} />
               </p>
               <button className="p-2 bg-gradient-to-br from-[#5d3fd1] to-[#03abff] rounded-lg flex items-center justify-between gap-1 flex-nowrap text-xs text-white">
                 <IoIosLock />
@@ -236,9 +268,10 @@ const Page = () => {
 
             <button
               className="p-4 bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] text-white rounded-md w-full md:w-[40%] self-end"
-              onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsModalOpen(true)}
+                disabled={calculateTimeLeft(task.expiration) === "Task has ended"}
             >
-              Complete
+              {calculateTimeLeft(task.expiration) === "Task has ended" ? "Task has ended" : "Complete"}
             </button>
           </div>
           <div className="w-full md:w-[35%]  p-4 md:py-14 md:px-8  bg-[#F7F8F9] dark:bg-[#1c1c1c] rounded-xl flex flex-col gap-4">
@@ -247,54 +280,28 @@ const Page = () => {
               <p className="text-[#787878] text-xs">
                 Get started with more task to earn more $CLS
               </p>
-              <p className="text-xs">0/3</p>
+                  <p className="text-xs">{ (totalTasks - otherTasks?.length) } / { totalTasks }</p>
               <Progress
                 aria-label="Task progress"
                 className="w-full"
-                value={Math.floor((1 / 3) * 100)}
+                value={Math.floor(((totalTasks - otherTasks?.length) / totalTasks) * 100)}
                 size="sm"
               />
-            </div>
+                </div>
+                
+               {otherTasks.slice(0,6).map((task, index) => (
+  <Link href={`/tasks/${task._id}`} key={index} className="my-4 border border-[#606060] rounded-md flex items-center justify-between p-3 md:px-6 md:py-4 gap-3 flex-wrap">
+    <div className="flex flex-col gap-2 text-sm flex-1">
+      <p>{task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}</p>
+      <PlatformIcon platform={task.platform} />
+    </div>
 
-            <div className="my-4 border border-[#606060] rounded-md flex items-center justify-between p-3 md:px-6 md:py-4 gap-3 flex-wrap">
-              <div className="flex flex-col gap-2 text-sm flex-1">
-                <p>Follow CEO Abayomi Chukwudi on X</p>
-                <Image
-                  src={X}
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="rounded-md bg-white p-1"
-                />
-              </div>
-
-              <button className="p-2 bg-gradient-to-br from-[#5d3fd1] to-[#03abff] rounded-lg flex items-center justify-between gap-1 flex-nowrap text-xs text-white">
-                $CLS 0.8
-                <Image src={coin} alt="" width={20} height={20} />
-              </button>
-            </div>
-            <div className="my-4 border border-[#606060] rounded-md flex items-center justify-between p-3 md:px-6 md:py-4 gap-3">
-              <div className="flex flex-col gap-2 text-sm flex-1">
-                <p>Join the TH community Discord server</p>
-                <Image src={discord} alt="" width={24} height={24} />
-              </div>
-
-              <button className="p-2 bg-gradient-to-br from-[#5d3fd1] to-[#03abff] rounded-lg flex items-center justify-between gap-1 flex-nowrap text-xs text-white">
-                $CLS 0.5
-                <Image src={coin} alt="" width={20} height={20} />
-              </button>
-            </div>
-            <div className="my-4 border border-[#606060] rounded-md flex items-center justify-between p-3 md:px-6 md:py-4 gap-3">
-              <div className="flex flex-col gap-2 text-sm flex-1">
-                <p>Sign up for THX</p>
-                <Image src={paper} alt="" width={24} height={24} />
-              </div>
-
-              <button className="p-2 bg-gradient-to-br from-[#5d3fd1] to-[#03abff] rounded-lg flex items-center justify-between gap-1 flex-nowrap text-xs text-white">
-                $CLS 0.7
-                <Image src={coin} alt="" width={20} height={20} />
-              </button>
-            </div>
+    <button className="p-2 bg-gradient-to-br from-[#5d3fd1] to-[#03abff] rounded-lg flex items-center justify-between gap-1 flex-nowrap text-xs text-white">
+      $CLS {task.rewardPoints}
+      <Image src={coin} alt="" width={20} height={20} />
+    </button>
+  </Link>
+))}
           </div></>}
         </div>
       </div>

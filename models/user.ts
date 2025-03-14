@@ -25,9 +25,9 @@ export interface IUser extends Document {
 
 // Task Interface
 export interface ITask extends Document {
-  creator: string; // Privy user ID as string
-  type: "like" | "follow" | "comment" | "repost" | "quote";
-  platform: "twitter" | "youtube" | "tiktok" | "facebook";
+  creator: string;
+  type: "like" | "follow" | "comment" | "repost" | "quote" | "referral";
+  platform: "twitter" | "youtube" | "tiktok" | "facebook" | "referral";
   description: string;
   target: string;
   rewardPoints: number;
@@ -98,11 +98,11 @@ const TaskSchema = new Schema<ITask>({
   creator: { type: String, ref: "User", required: true }, // Privy ID as string
   type: {
     type: String,
-    enum: ["like", "follow", "comment", "repost", "quote"],
+    enum: ["like", "follow", "comment", "repost", "quote", "referral"],
   },
   platform: {
     type: String,
-    enum: ["twitter", "youtube", "tiktok", "facebook"],
+    enum: ["twitter", "youtube", "tiktok", "facebook", "referral"],
   },
   description: { type: String, required: true },
   target: { type: String, required: true },

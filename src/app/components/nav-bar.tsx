@@ -7,13 +7,16 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { DarkThemeToggle } from "flowbite-react";
 import SearchBar from "./search-bar";
 import TaskModal from "./Modals/CreateTask";
-import { usePrivy } from "@privy-io/react-auth";
+import { useConnectWallet, useLinkAccount, usePrivy } from "@privy-io/react-auth";
+import { toast } from "react-toastify";
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   const { authenticated, user, login, ready } = usePrivy();
+
+  const { linkWallet} = usePrivy()
 
   return (
     <>
@@ -48,9 +51,22 @@ const Navbar: React.FC = () => {
                 >
                   Plant Seeds
                 </button>
-                <button className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs">
+                {user?.wallet ? <button className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs">
                   {user?.wallet?.address.slice(0, 6)}
-                </button>
+                </button> : <button className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs" onClick={() =>
+                    linkWallet({
+                      walletList: [
+                        "detected_solana_wallets",
+                        "backpack",
+                        "phantom",
+                        "solflare",
+                        "metamask",
+                      ],
+                      walletChainType: "solana-only",
+                    })
+                  }>
+                  Connect
+                </button>}
                 <Link href="/profile">
                   <Image
                     src="/images/profileImg.svg"
@@ -76,9 +92,23 @@ const Navbar: React.FC = () => {
           <div className="absolute top-16 right-4 bg-gray-800 flex flex-col gap-2 text-white p-4 rounded-lg md:hidden z-50">
             {ready && authenticated ? (
               <>
-                <button className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs">
+                {user?.wallet ? <button className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs">
                   {user?.wallet?.address.slice(0, 6)}
-                </button>
+                </button> : <button className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs" onClick={() =>
+                    linkWallet({
+                      walletList: [
+                        "detected_solana_wallets",
+                        "backpack",
+                        "phantom",
+                        "solflare",
+                        "metamask",
+                      ],
+                      walletChainType: "solana-only",
+                    })
+                  }>
+                  Connect
+                </button>}
+                
                 <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg">
                   Plant Seeds
                 </button>

@@ -3,33 +3,35 @@ import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   // Allow everything in development mode
-  if (process.env.NODE_ENV === "development") {
+  // if (process.env.NODE_ENV === "development") {
+  //   return NextResponse.next();
+  // }
+
+  // // Allow access to the waitlist page
+  // if (req.nextUrl.pathname === "/waitlist") {
+  //   return NextResponse.next();
+  // }
+
+  // if (req.nextUrl.pathname === "/sitemap.xml") {
+  //   return NextResponse.next();
+  // }
+
+  // // Allow static files, images, and metadata files
+  // const exemptPaths = ["/favicon.ico", "/sitemap.xml", "/robots.txt", "/creatorslab-token-metadata.json"];
+  // const fileExtensionRegex =
+  //   /\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|woff2|woff|ttf)$/;
+
+  // if (
+  //   exemptPaths.includes(req.nextUrl.pathname) ||
+  //   fileExtensionRegex.test(req.nextUrl.pathname)
+  // ) {
+  //   return NextResponse.next();
+  // }
+
+  // // Redirect everything else to /waitlist
+  // return NextResponse.redirect(new URL("/waitlist", req.url));
+
     return NextResponse.next();
-  }
-
-  // Allow access to the waitlist page
-  if (req.nextUrl.pathname === "/waitlist") {
-    return NextResponse.next();
-  }
-
-  if (req.nextUrl.pathname === "/sitemap.xml") {
-    return NextResponse.next();
-  }
-
-  // Allow static files, images, and metadata files
-  const exemptPaths = ["/favicon.ico", "/sitemap.xml", "/robots.txt", "/creatorslab-token-metadata.json"];
-  const fileExtensionRegex =
-    /\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|woff2|woff|ttf)$/;
-
-  if (
-    exemptPaths.includes(req.nextUrl.pathname) ||
-    fileExtensionRegex.test(req.nextUrl.pathname)
-  ) {
-    return NextResponse.next();
-  }
-
-  // Redirect everything else to /waitlist
-  return NextResponse.redirect(new URL("/waitlist", req.url));
 }
 
 export const config = {
