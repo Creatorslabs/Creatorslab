@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     const task = await Task.findOne({
       _id: taskId,
       status: "active",
-    }).populate("creator", "_id username email");
+    }).populate("creator", "_id username email photo");
 
     if (!task) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });

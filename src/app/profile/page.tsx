@@ -21,7 +21,7 @@ export default function MyComponent() {
         `${process.env.NEXT_PUBLIC_URL}api/user/get-user`,
         {
           method: "POST",
-          body: JSON.stringify({privyId: clipBeforeLastColon(user?.id)})
+          body: JSON.stringify({ privyId: clipBeforeLastColon(user?.id) }),
         }
       );
 
@@ -42,42 +42,76 @@ export default function MyComponent() {
   }, [ready, authenticated]);
 
   if (!ready) {
-    return <div className="creator-content"> <>
-                <Skeleton height="220px" />
-                <Skeleton height="220px" />
-              </></div>;
+    return (
+      <div className="creator-content">
+        {" "}
+        <>
+          <Skeleton height="440px" />
+          <Skeleton height="440px" />
+        </>
+      </div>
+    );
   }
 
   if (ready && !authenticated) {
     router.push("/login");
-    return null; // Avoid rendering anything after redirect
+    return null;
   }
 
   if (ready && authenticated && dbUser) {
-    console.log("Role:", dbUser.role);
-    console.log("User ID: Privy:", clipBeforeLastColon(user?.id));
-    
     if (dbUser.role === "creator") {
-      return <Suspense fallback={<div className="creator-content"> <>
-                <Skeleton height="220px" />
-                <Skeleton height="220px" />
-              </></div>}><CreatorProfile dbUser={dbUser} user={user} /></Suspense>;
+      return (
+        <Suspense
+          fallback={
+            <div className="creator-content">
+              {" "}
+              <>
+                <Skeleton height="440px" />
+                <Skeleton height="440px" />
+              </>
+            </div>
+          }
+        >
+          <CreatorProfile dbUser={dbUser} user={user} />
+        </Suspense>
+      );
     } else if (dbUser.role === "user") {
-      return <Suspense fallback={<div className="creator-content"> <>
-                <Skeleton height="220px" />
-                <Skeleton height="220px" />
-              </></div>}><UserProfile dbUser={dbUser} user={user}/></Suspense>;
+      return (
+        <Suspense
+          fallback={
+            <div className="creator-content">
+              {" "}
+              <>
+                <Skeleton height="440px" />
+                <Skeleton height="440px" />
+              </>
+            </div>
+          }
+        >
+          <UserProfile dbUser={dbUser} user={user} />
+        </Suspense>
+      );
     } else {
       router.refresh();
-      return <div className="creator-content"> <>
-                <Skeleton height="220px" />
-                <Skeleton height="220px" />
-              </></div>;
+      return (
+        <div className="creator-content">
+          {" "}
+          <>
+            <Skeleton height="440px" />
+            <Skeleton height="440px" />
+          </>
+        </div>
+      );
     }
   }
 
-  return <div className="creator-content"> <>
-                <Skeleton height="220px" />
-                <Skeleton height="220px" />
-              </></div>; 
+  return (
+    <div className="creator-content">
+      {" "}
+      <>
+        <Skeleton height="440px" />
+        <Skeleton height="440px" />
+      </>
+    </div>
+  );
 }

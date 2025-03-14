@@ -8,7 +8,7 @@ const SearchBar = () => {
     <div
       className={`border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white 
                   p-1 flex gap-2 rounded-md items-center transition-all duration-300 
-                  ${isExpanded ? "w-full" : "w-12"} sm:w-full md:max-w-[450px] md:w-full`}
+                  ${isExpanded ? "w-full" : "w-12"} sm:w-full md:max-w-[370px] md:w-full`}
     >
       <FiSearch
         className="cursor-pointer text-gray-500 dark:text-gray-300"

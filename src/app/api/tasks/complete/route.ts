@@ -1,4 +1,4 @@
-import { User } from "@/models/user";
+import { Task, User } from "@/models/user";
 import connectDB from "@/utils/connectDB";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
     await connectDB(); // Ensure DB is connected
     const { userId, taskId } = await req.json();
 
-    // Validate required fields
     if (!userId || !taskId) {
       return NextResponse.json(
         { message: "User ID and Task ID are required" },
@@ -16,7 +15,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate `taskId` as a MongoDB ObjectId (but NOT `userId`)
     if (!mongoose.Types.ObjectId.isValid(taskId)) {
       return NextResponse.json(
         { message: "Invalid Task ID format" },
@@ -24,7 +22,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Find the user using `userId` directly (without conversion)
     const user = await User.findOne({ _id: userId }).select(
       "_id username email participatedTasks balance"
     );
@@ -33,7 +30,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    // Check if the user participated in the task
+    // Fetch the task
+    const task = await Task.findOne({ _id: taskId });
+    if (!task) {
+      return NextResponse.json(
+        { message: "Task not found" },
+        { status: 404 }
+      );
+    }
+
     const taskIndex = user.participatedTasks.findIndex(
       (t) => t.task.toString() === taskId
     );
@@ -45,7 +50,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate task status
     const taskStatus = user.participatedTasks[taskIndex]?.status;
     if (!["pending", "claimed"].includes(taskStatus)) {
       return NextResponse.json(
@@ -54,14 +58,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Update task status & increment balance
     user.participatedTasks[taskIndex].status = "completed";
     user.balance += 0.3;
 
-    await user.save(); // Save changes without a session
+    if (!task.participants.includes(userId)) {
+      task.participants.push(userId);
+    }
+
+    await user.save(); 
+    await task.save(); 
 
     return NextResponse.json(
-      { message: "Task marked as completed", user },
+      { message: "Task marked as completed", user, task },
       { status: 200 }
     );
   } catch (error) {

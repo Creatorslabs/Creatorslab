@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { User } from "@/models/user";
 import connectDB from "@/utils/connectDB";
 
-export async function DELETE(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
+
     const { userId, creatorId } = await req.json();
 
     if (!userId || !creatorId) {
@@ -14,7 +15,6 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Fetch user balance
     const user = await User.findOne({ _id: userId });
 
     if (!user) {
@@ -24,33 +24,11 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    if (user.balance < 20) {
-      return NextResponse.json(
-        { error: "Insufficient balance to unfollow" },
-        { status: 400 }
-      );
-    }
+    const isFollowing = user.followingCreators.includes(creatorId);
 
-    // Perform unfollow operation
-    await Promise.all([
-      User.updateOne(
-        { _id: userId },
-        {
-          $pull: { followingCreators: creatorId },
-          $inc: { balance: -5 },
-        }
-      ),
-      User.updateOne(
-        { _id: creatorId },
-        {
-          $pull: { followers: userId },
-        }
-      ),
-    ]);
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ isFollowing }, { status: 200 });
   } catch (error) {
-    console.error("Error unfollowing creator:", error);
+    console.error("Error checking follow status:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

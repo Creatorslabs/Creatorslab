@@ -13,30 +13,56 @@ import {
   useLoginWithEmail,
   useLoginWithOAuth,
   useConnectWallet,
+  User,
 } from "@privy-io/react-auth";
 import { DarkThemeToggle } from "flowbite-react";
+import { clipBeforeLastColon } from "@/actions/clip-privy-id";
+import CustomModal from "../../components/Modals/custom-modal";
+import Skeleton from "../../components/skeleton-loader";
 
 const Comp: FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/tasks";
+  const redirectTo = searchParams.get("next") || "/tasks";
+
+  const fetchUser = async (user: User) => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_URL}api/user/get-user`,
+          {
+            method: "POST",
+            body: JSON.stringify({ privyId: clipBeforeLastColon(user?.id) }),
+          }
+        );
+  
+        if (!res.ok) return null;
+  
+        const data = await res.json();
+        return data.user;
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        return null;
+      }
+    };
+
+  const authCallback = ({ user, isNewUser }) => {
+    if (isNewUser) {
+      const newUser = fetchUser(user)
+      setIsModalOpen(true)
+    } else {
+      router.push(redirectTo);
+    }
+  }
 
   const {
     sendCode: sendCodeEmail,
     loginWithCode: loginWithCodeEmail,
     state: stateEmail,
   } = useLoginWithEmail({
-    onComplete: ({ user, isNewUser , wasAlreadyAuthenticated, loginMethod }) => {
-      console.log("🔑 ✅ User successfully logged in with email", {
-        user,
-        isNewUser ,
-        wasAlreadyAuthenticated,
-        loginMethod,
-      });
-      router.push(redirectTo);
-    },
+    onComplete: authCallback,
     onError: (error) => {
       console.log(error);
       setError(error);
@@ -44,15 +70,7 @@ const Comp: FC = () => {
   });
 
   const { initOAuth } = useLoginWithOAuth({
-    onComplete: ({ user, isNewUser , wasAlreadyAuthenticated, loginMethod }) => {
-      console.log("🔑 ✅ User successfully logged in with email", {
-        user,
-        isNewUser ,
-        wasAlreadyAuthenticated,
-        loginMethod,
-      });
-      router.push(redirectTo);
-    },
+    onComplete: authCallback,
     onError: (error) => {
       console.log(error);
       setError(error);
@@ -69,6 +87,8 @@ const Comp: FC = () => {
       setError(error);
     },
   });
+
+
 
   const [loginType, setLoginType] = useState(1);
   const [email, setEmail] = useState("");
@@ -218,12 +238,52 @@ const Comp: FC = () => {
           </div>
         </div>
       </div>
+       <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="w-full flex flex-col gap-4 justify-center items-center">
+          <Image
+            src="/images/signup/noto_confetti-ball.png"
+            width={50}
+            height={50}
+            alt="CreatorslLab lgo"
+          />
+          <div className="flex flex-col gap-2 p-4 bg-[#FFFFFF] bg-opacity-5 text-xs w-[80%] rounded-md">
+            <p className="font-bold">As a Newbie you can earn:</p>
+            <p>
+              0.3 labseeds for{" "}
+              <span className="text-[#03ABFF]">Daily login</span>
+            </p>
+            <p>
+              0.3 labseeds for <span className="text-[#03ABFF]">Comments</span>
+            </p>
+            <p>
+              0.3 labseeds for <span className="text-[#03ABFF]">Repost</span>
+            </p>
+            <p>
+              0.3 labseeds to{" "}
+              <span className="text-[#03ABFF]">Read stories & Blog post</span>
+            </p>
+            <p>
+              1 CLS for a Referral{" "}
+              <span className="text-[#03ABFF]">Referral</span>
+            </p>
+            <p className="p-2 text-center w-full bg-[#03ABFF] rounded-md bg-opacity-20 border border-[#03ABFF]">
+              50CLS = $1
+            </p>
+          </div>
+          <button
+            onClick={() => router.push("/tasks")}
+            className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md"
+          >
+            Lets go!
+          </button>
+        </div>
+      </CustomModal>
       </div>
   );
 };
 
 const Login: FC = () => { 
-  return (<Suspense fallback={<div>Loading...</div>}><Comp />
+  return (<Suspense fallback={<Skeleton height="440px"/>}><Comp />
       </Suspense>)
 }
 

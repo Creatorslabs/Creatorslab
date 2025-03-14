@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { FaComment, FaHeart } from "react-icons/fa";
 import { IoIosShareAlt, IoMdArrowBack } from "react-icons/io";
@@ -9,6 +9,9 @@ import { IoArrowForward } from "react-icons/io5";
 import { ITask } from "@/models/user";
 import TopCreators from "../components/top-creators";
 import CardGrid from "../components/card-grid";
+import { generateTaskTitle } from "@/actions/generate-task-title";
+import TaskCard from "./_comp/task-card";
+import Skeleton from "../components/skeleton-loader";
 
 const avatars = [
   "/images/user01.jpeg",
@@ -25,16 +28,37 @@ const avatars = [
 
 export default function Page() {
   const [tasks, setTasks] = useState<ITask[]>([])
+  const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+    const fetchTasks = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/tasks/get-all`);
+
+      if (!res.ok) throw new Error("Failed to fetch tasks")
+      
+      const data = await res.json();
+      console.log("Tasks:", data);
+      
+      setTasks(data);
+      setLoading(false)
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      setLoading(false)
+    }
+  };
+
+  fetchTasks();
+  }, []);
+
   const { newTasks, trendingTasks } = useMemo(() => {
     const sortedTasks = [...tasks];
 
-    // Sort New Tasks by creation date (most recent first)
     const newTasks = sortedTasks.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
-    // Sort Trending Tasks by most participants (highest first)
     const trendingTasks = [...sortedTasks].sort(
       (a, b) => b.participants.length - a.participants.length
     );
@@ -88,16 +112,14 @@ export default function Page() {
         <TopCreators />
       </div>
 
-      <CardGrid />
-
       {/** New tasks section */}
       <div className="relative py-6 flex flex-col gap-4">
         <div>
           <div className="flex items-center justify-between py-4">
-            <p className="flex-1 text-lg">New tasks</p>
+            <p className="flex-1 text-lg font-bold">New tasks</p>
             <div className="flex flex-row gap-2 items-center">
               <Link href="#" className="text-gray-500 text-sm underline">
-                {"Show all (20)"}
+                {`Show all (${newTasks.length})`}
               </Link>
               <div className="rounded-full bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-6 h-6 flex justify-center items-center">
                 <IoMdArrowBack />
@@ -108,95 +130,55 @@ export default function Page() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {newTasks.map((_, index) => (
-              <div key={index} className="w-full flex-1">
-                <div className="relative">
-                  <Image
-                    src="/images/landing-page/Rectangle 3.png"
-                    width={300}
-                    height={250}
-                    alt="image"
-                    className="w-full"
-                  />
-                  <Image
-                    src="/images/user01.jpeg"
-                    width={10}
-                    height={10}
-                    alt="image"
-                    className="w-10 h-10 absolute right-0 -bottom-4 rounded-full"
-                  />
-                </div>
-                <div className="flex flex-col py-3 gap-2">
-                  <h3 className="font-syne text-xl">Task/Article Title Here</h3>
-                  <p className="text-sm text-gray-500">
-                    Task description goes here.
-                  </p>
-                  <div className="flex flex-row gap-2">
-                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white p-1 text-sm items-center">
-                      100 $CLS
-                      <Image
-                        src="/images/coin.svg"
-                        width={20}
-                        height={20}
-                        alt="CLS coin image"
-                      />
-                    </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <FaHeart /> 1.5K
-                    </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <FaComment />
-                      10K
-                    </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <IoIosShareAlt />
-                      120
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+            {loading ? <><Skeleton height="200px"/><Skeleton height="200px"/><Skeleton height="200px"/></>: newTasks.slice(0,6).map((task, index) => (
+          <React.Fragment key={index}>
+            {/* Render the card */}
+            <TaskCard task={task} key={index}/>
 
-      {/** Features section */}
-      <div className="py-6 md:py-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="relative flex-1 rounded-md p-4 flex flex-row justify-between overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/images/button-bg05.jpeg')] bg-cover bg-center -z-30"></div>
-          <div className="flex flex-col gap-3 flex-1 items-start justify-center">
-            <h3 className="text-lg font-syne">Purchase $CLS</h3>
-            <p className="text-xs">
-              Buy creatorslab seeds to boost content visibility and engagement.
-            </p>
-            <button className="p-2 rounded-md bg-white bg-opacity-15 text-xs">
-              Buy $CLS
-            </button>
+            {/* Insert full-width iframe after the 3rd card */}
+            {index === 2 && (
+              <div className="py-6 md:py-8 grid grid-cols-1 sm:grid-cols-2 gap-4 col-span-full w-full">
+                      <div className="relative flex-1 rounded-md p-4 flex flex-row justify-between overflow-hidden">
+                        <div className="absolute inset-0 bg-[url('/images/button-bg05.jpeg')] bg-cover bg-center -z-30"></div>
+                        <div className="flex flex-col gap-3 flex-1 items-start justify-center">
+                          <h3 className="text-lg font-syne">Purchase $CLS</h3>
+                          <p className="text-xs">
+                            Buy creatorslab seeds to boost content visibility and engagement.
+                          </p>
+                          <button className="p-2 rounded-md bg-white bg-opacity-15 text-xs">
+                            Buy $CLS
+                          </button>
+                        </div>
+                        <Image
+                          src="/images/landing-page/Group 11.png"
+                          width={200}
+                          height={200}
+                          alt="coin sack"
+                          className="h-28 w-auto"
+                        />
+                      </div>
+                      <div className="relative flex-1 rounded-md p-4 flex flex-row justify-between overflow-hidden">
+                        <div className="absolute inset-0 bg-[url('/images/button-bg02.jpeg')] bg-cover bg-center -z-30 "></div>
+                        <div className="flex flex-col gap-3 flex-1 items-start justify-center">
+                          <h3 className="text-lg font-syne">Burn $CLS</h3>
+                          <p className="text-xs">Burn CLS to earn SOL. (Coming Soon)</p>
+                          <button className="p-2 rounded-md bg-white bg-opacity-15 text-xs">
+                            Burn now
+                          </button>
+                        </div>
+                        <Image
+                          src="/images/landing-page/Group 11.png"
+                          width={200}
+                          height={200}
+                          alt="coin sack"
+                          className="h-auto w-auto"
+                        />
+                      </div>
+                    </div>
+            )}
+          </React.Fragment>
+        ))}
           </div>
-          <Image
-            src="/images/landing-page/Group 11.png"
-            width={200}
-            height={200}
-            alt="coin sack"
-            className="h-28 w-auto"
-          />
-        </div>
-        <div className="relative flex-1 rounded-md p-4 flex flex-row justify-between overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/images/button-bg02.jpeg')] bg-cover bg-center -z-30 "></div>
-          <div className="flex flex-col gap-3 flex-1 items-start justify-center">
-            <h3 className="text-lg font-syne">Burn $CLS</h3>
-            <p className="text-xs">Burn CLS to earn SOL. (Coming Soon)</p>
-            <button className="p-2 rounded-md bg-white bg-opacity-15 text-xs">
-              Burn now
-            </button>
-          </div>
-          <Image
-            src="/images/landing-page/Group 11.png"
-            width={200}
-            height={200}
-            alt="coin sack"
-            className="h-auto w-auto"
-          />
         </div>
       </div>
 
@@ -204,10 +186,10 @@ export default function Page() {
       <div className="relative py-6 md:py-8 flex flex-col gap-4">
         <div>
           <div className="flex items-center justify-between py-4">
-            <p className="flex-1 text-lg">Trending tasks</p>
+            <p className="flex-1 text-lg font-bold">Trending tasks</p>
             <div className="flex flex-row gap-2 items-center">
               <Link href="#" className="text-gray-500 text-sm underline">
-                {"Show all (20)"}
+                {`Show all (${trendingTasks.length})`}
               </Link>
               <div className="rounded-full bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-6 h-6 flex justify-center items-center">
                 <IoMdArrowBack />
@@ -218,54 +200,11 @@ export default function Page() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trendingTasks.map((_, index) => (
-              <div key={index} className="w-full flex-1">
-                <div className="relative">
-                  <Image
-                    src="/images/landing-page/Rectangle 3.png"
-                    width={300}
-                    height={250}
-                    alt="image"
-                    className="w-full"
-                  />
-                  <Image
-                    src="/images/user01.jpeg"
-                    width={10}
-                    height={10}
-                    alt="image"
-                    className="w-10 h-10 absolute right-0 -bottom-4 rounded-full"
-                  />
-                </div>
-                <div className="flex flex-col py-3 gap-2">
-                  <h3 className="font-syne text-xl">Task/Article Title Here</h3>
-                  <p className="text-sm text-gray-500">
-                    Task description goes here.
-                  </p>
-                  <div className="flex flex-row gap-2">
-                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white p-1 text-sm items-center">
-                      100 $CLS
-                      <Image
-                        src="/images/coin.svg"
-                        width={20}
-                        height={20}
-                        alt="CLS coin image"
-                      />
-                    </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <FaHeart /> 1.5K
-                    </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <FaComment />
-                      10K
-                    </div>
-                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-1 text-sm items-center">
-                      <IoIosShareAlt />
-                      120
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+            {loading ? <><Skeleton height="200px"/><Skeleton height="200px"/><Skeleton height="200px"/></>: trendingTasks.slice(0,6).map((task, index) => (
+          <React.Fragment key={index}>
+            <TaskCard task={task} key={index}/>
+          </React.Fragment>
+        ))}
           </div>
         </div>
       </div>

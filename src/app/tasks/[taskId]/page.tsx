@@ -17,78 +17,93 @@ import CustomModal from "../../components/Modals/custom-modal";
 import { HiLightBulb } from "react-icons/hi";
 import CopyButton from "../../components/copy-button";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { usePrivy } from "@privy-io/react-auth";
+import { useLinkAccount, usePrivy, useUser } from "@privy-io/react-auth";
 import Skeleton from "../../components/skeleton-loader";
+import { generateTaskTitle } from "@/actions/generate-task-title";
+import { ITask } from "@/models/user";
+import { toast } from "react-toastify";
+
+const returnCreatorUsername = (creator) => {
+  return creator.username
+}
 
 const Page = () => {
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
-  const [task, setTask] = useState(null);
+  const [task, setTask] = useState<ITask>();
   const [loading, setLoading] = useState(true);
 
   const pathname = usePathname(); // Get current URL path
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (pathname) {
-  //     setRedirectUrl(pathname); // Store current path for redirection
-  //   }
-  // }, [pathname]);
+  useEffect(() => {
+    if (pathname) {
+      setRedirectUrl(pathname);
+    }
+  }, [pathname]);
   
   const { ready, authenticated, user } = usePrivy();
-  
-  console.log("Ready:", ready);
-  console.log("Authenticated:", authenticated);
-  console.log("User:", user);
-  
-
-  if (!(ready && authenticated) || !user) {
-    // setLoading(true)
-
-    // setTimeout(() => {
-    //   if (!(ready && authenticated) || !user) { 
-    //     // router.push(`/login?next=${redirectUrl}`)
-    //   }
-    // }, 3000);
-  }
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
   const { taskId } = useParams();
 
-  // useEffect(() => {
-  //   const fetchTask = async () => {
-  //     try {
-  //       const res = await fetch("/api/task", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({ taskId }),
-  //       });
+  const {refreshUser} = useUser()
+    const { linkTwitter, linkTelegram } = useLinkAccount({
+      onSuccess: ({ linkMethod }) => {
+        toast.success(`${linkMethod} linked successfully!`)
+        refreshUser()
+      },
+      onError: (error, details) => {
+        toast.success(`Failed to link ${details.linkMethod}`)
+        console.log("Failed to link:", error);
+      }
+    })
 
-  //       if (res.status === 404) {
-  //         router.push("/tasks"); // Redirect if task not found
-  //         return;
-  //       }
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/tasks/get-task`, {
+          method: "POST",
+          body: JSON.stringify({ taskId }),
+        });
 
-  //       if (res.status === 500) {
-  //         router.refresh() // Refresh page on server error
-  //         return;
-  //       }
+        if (!res.ok) throw new Error("Failed to fetch.")
 
-  //       const data = await res.json();
-  //       setTask(data);
-  //     } catch (error) {
-  //       console.error("Error fetching task:", error);
-  //       router.refresh() // Refresh if an unexpected error occurs
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        const data = await res.json();
+        console.log("Task:", data);
+        
+        setTask(data);
+      } catch (error) {
+        console.error("Error fetching task:", error);
+        // router.refresh()
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchTask();
-  // }, [taskId, router]);
+    fetchTask();
+  }, [taskId]);
 
-  return (
+  if (!ready) {
+    return (
+      <div className="creator-content">
+        {" "}
+        <>
+          <Skeleton height="440px" className="w-full"/>
+          <Skeleton height="440px" className="w-[30%]"/>
+        </>
+      </div>
+    );
+  }
+
+  useEffect(() => {
+  if (ready && !authenticated) {
+    router.replace(`/login?next=${redirectUrl}`);
+  }
+}, [ready, authenticated, redirectUrl]);
+
+  if (ready && authenticated) { return (
     <div className="px-6 md:px-14">
       <div className="w-full pb-10">
         <div className="flex items-center justify-start my-6">
@@ -97,10 +112,9 @@ const Page = () => {
           </Link>
         </div>
         <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4">
-          {loading || task && <><Skeleton />
-          <Skeleton /></>}
+          {loading || !task  ? <><Skeleton height="440px" className="flex-1"/><Skeleton height="440px" className="w-[35%]"/></> :
           
-          <div className="w-full md:flex-1 p-4 md:px-20 md:py-14 bg-[#F7F8F9] dark:bg-[#1c1c1c] rounded-xl flex flex-col gap-4">
+          <><div className="w-full md:flex-1 p-4 md:px-20 md:py-14 bg-[#F7F8F9] dark:bg-[#1c1c1c] rounded-xl flex flex-col gap-4">
             <div className="rounded-lg w-full bg-gradient-to-r from-blue-700 via-blue-400 to-blue-900
                   sm:bg-gradient-to-r sm:from-blue-700 sm:via-blue-300 sm:to-blue-900 
                   md:bg-gradient-to-r md:from-blue-900 md:via-blue-400 md:to-blue-900 md:via-40% md:to-pink-500 md:to-80% 
@@ -113,7 +127,7 @@ const Page = () => {
                 className="rounded-xl"
               />
               <h2 className="text-lg font-bold tracking-widest text-white">
-                Follow CEO Abayaomi Chukwudi on X
+                {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}
               </h2>
             </div>
             <div className="border border-[#606060] rounded-lg flex items-center justify-between p-3 md:px-6 md:py-4">
@@ -127,7 +141,7 @@ const Page = () => {
                     height={30}
                     className="rounded-full aspect-square"
                   />
-                  <p className="font-bold text-sm">Barbie_xy</p>
+                    <p className="font-bold text-sm">{ returnCreatorUsername(task.creator) }</p>
                 </div>
               </div>
               <button className=" px-4 py-2 bg-[#222222] rounded-lg text-sm text-white">
@@ -148,15 +162,8 @@ const Page = () => {
 
             <div className="flex flex-col gap-10 py-4 text-sm">
               <p>
-                Follow TH CEO Abayomi Chukwudi on X! If you are already
-                following Abayomi, simply complete the quest again to claim the
+                {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}! If you are done that, simply complete the quest again to claim the
                 $CLS.
-              </p>
-              <p>
-                To learn more:{" "}
-                <a href="" className="text-[#2aabee]">
-                  https://www.CreatorsLab?node-id=80-586&node-type=frame&t=Myuuav
-                </a>
               </p>
             </div>
 
@@ -164,15 +171,11 @@ const Page = () => {
               <div className="flex items-center flex-1 gap-1">
                 <FaCheckCircle size={30} className="pr-1 aspect-square h-8" />
                 <p>
-                  Follow{" "}
-                  <a href="" className="text-[#2aabee]">
-                    CEO Abayomi Chukwudi
-                  </a>{" "}
-                  on X
+                  {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}
                 </p>
               </div>
               <button className="p-2 bg-[#222222] rounded-lg text-white">
-                Link & Verify
+                Verify
               </button>
             </div>
 
@@ -195,7 +198,7 @@ const Page = () => {
                     className="mr-4"
                   />
                   Linked to @{user.twitter?.username}
-                </button> : <button className=" flex items-center justify-center p-2 rounded-lg w-full bg-white text-black font-bold">
+                </button> : <button className=" flex items-center justify-center p-2 rounded-lg w-full bg-white text-black font-bold" onClick={linkTwitter}>
                   <Image
                     src={X}
                     alt=""
@@ -218,7 +221,7 @@ const Page = () => {
                     className="mr-4"
                   />
                   Linked to {user.telegram.username}
-                </button> : <button className="flex items-center justify-center p-2 rounded-lg w-full bg-gradient-to-tr from-[#2aabee] to-[#229ed9] font-bold">
+                </button> : <button className="flex items-center justify-center p-2 rounded-lg w-full bg-gradient-to-tr from-[#2aabee] to-[#229ed9] font-bold" onClick={() => linkTelegram({ launchParams: { initDataRaw: "this is telegram login" } })}>
                   <Image
                     src={telegram}
                     alt=""
@@ -292,7 +295,7 @@ const Page = () => {
                 <Image src={coin} alt="" width={20} height={20} />
               </button>
             </div>
-          </div>
+          </div></>}
         </div>
       </div>
 
@@ -341,7 +344,9 @@ const Page = () => {
         </div>
       </CustomModal>
     </div>
-  );
+  );}
+
+  
 };
 
 export default Page;

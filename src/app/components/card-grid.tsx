@@ -1,18 +1,54 @@
 import React from "react";
 import Image from "next/image"
+import { generateTaskTitle } from "@/actions/generate-task-title";
+import Link from "next/link";
+import { FaHeart } from "react-icons/fa6";
 
-const cards = Array.from({ length: 10 }, (_, i) => `Card ${i + 1}`);
-
-const CardGrid = () => {
+const CardGrid = ({tasks}) => {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 flex justify-center">
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {cards.map((card, index) => (
+        {tasks.map((task, index) => (
           <React.Fragment key={index}>
             {/* Render the card */}
-            <div className="bg-white dark:bg-gray-800 dark:text-white shadow-md p-6 rounded-lg text-center">
-              {card}
-            </div>
+            <Link href={`/tasks/${task._id}`} key={index} className="w-full flex-1 shadow-md p-2 pb-0 rounded-lg dark:border-[#FFFFFF]">
+                <div className="relative">
+                  <Image
+                    src="/images/landing-page/Rectangle 3.png"
+                    width={300}
+                    height={250}
+                    alt="image"
+                    className="w-full rounded-md"
+                  />
+                  <Image
+                    src="/images/user01.jpeg"
+                    width={10}
+                    height={10}
+                    alt="image"
+                    className="w-10 h-10 absolute right-0 -bottom-4 rounded-full"
+                  />
+                </div>
+                <div className="flex flex-col py-3 gap-2">
+                  <h3 className="font-syne text-xl">{ generateTaskTitle(task.type, task.platform, task.creator.username)}</h3>
+                  <p className="text-sm text-gray-500">
+                    {task.description}
+                  </p>
+                  <div className="flex justify-between">
+                    <div className="flex flex-row gap-1 rounded-md bg-[#5D3FD1] text-white py-1  px-2 text-sm items-center whitespace-no-wrap">
+                      {task.rewardPoints} $CLS
+                      <Image
+                        src="/images/coin.svg"
+                        width={20}
+                        height={20}
+                        alt="CLS coin image"
+                      />
+                    </div>
+                    <div className="flex flex-row gap-1 rounded-md bg-[#222222] text-white px-2 text-sm items-center">
+                      <FaHeart /> {task.participants.length} of {task.maxParticipants} Joined
+                    </div>
+                  </div>
+                </div>
+              </Link>
 
             {/* Insert full-width iframe after the 5th card */}
             {index === 2 && (

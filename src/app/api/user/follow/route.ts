@@ -16,6 +16,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Prevent self-following
+    if (userId === creatorId) {
+      return NextResponse.json(
+        { error: "You cannot follow yourself" },
+        { status: 400 }
+      );
+    }
+
     // Ensure both users exist
     const [user, creator] = await Promise.all([
       User.findOne({ _id: userId }),

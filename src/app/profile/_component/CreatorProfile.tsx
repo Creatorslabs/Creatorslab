@@ -308,6 +308,14 @@ const CreatorProfile = ({ dbUser, user }) => {
                 </div>
           </div>
         </div>
+        <div className="w-full flex py-4 px-2">
+          <button
+            onClick={() => logout()}
+            className="p-4 bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] text-white rounded-md w-full md:w-[40%] self-end"
+          >
+            Log out
+          </button>
+        </div>
       </div>
     </div>
   );
