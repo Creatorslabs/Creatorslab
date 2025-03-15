@@ -51,7 +51,7 @@ const FollowUnfollowButton = ({
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id, creatorId: creator._id }),
+        body: JSON.stringify({ userId: clipBeforeLastColon(user.id), creatorId: creator._id }),
       });
 
       if (!res.ok)
