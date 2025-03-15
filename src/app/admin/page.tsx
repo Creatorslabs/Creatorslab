@@ -224,7 +224,7 @@ const Dashboard = () => {
                 columns={taskColumns}
                 pageSize={10}
                 pageIndex={page}
-                totalCount={data.length}
+                totalCount={taskData.length}
                 onPageChange={handlePageChange}
               />
             </div>
