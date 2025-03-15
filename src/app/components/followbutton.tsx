@@ -49,24 +49,29 @@ const FollowUnfollowButton = ({
     const method = isFollowing ? "DELETE" : "POST";
 
     try {
-      const res = await fetch(url, {
-        method: method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: clipBeforeLastColon(user.id), creatorId: creator._id }),
-      });
+  const res = await fetch(url, {
+    method: method,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId: clipBeforeLastColon(user.id), creatorId: creator._id }),
+  });
 
-      if (!res.ok)
-        throw new Error(isFollowing ? "Failed to unfollow creator" : "Failed to follow creator");
+  // Try to parse the response error message
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null); // Prevents crashing if response is not JSON
+    const errorMessage = errorData?.error || 
+                         errorData?.message || 
+                         (isFollowing ? "Failed to unfollow creator" : "Failed to follow creator");
+    throw new Error(errorMessage);
+  }
 
-      setIsFollowing(!isFollowing);
-      toast.success(
-        !isFollowing ? "You just followed the creator!" : "You just unfollowed the creator!"
-      );
-    } catch (error) {
-      toast.error((error as Error).message);
-    } finally {
-      setLoading(false);
-    }
+  setIsFollowing(!isFollowing);
+  toast.success(!isFollowing ? "You just followed the creator!" : "You just unfollowed the creator!");
+} catch (error) {
+  toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+} finally {
+  setLoading(false);
+}
+
   };
 
   if (!user) {
