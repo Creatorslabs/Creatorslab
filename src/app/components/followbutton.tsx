@@ -46,20 +46,21 @@ const FollowUnfollowButton = ({
 
     setLoading(true);
     const url = isFollowing ? "/api/user/unfollow" : "/api/user/follow";
+    const method = isFollowing ? "DELETE" : "POST";
 
     try {
       const res = await fetch(url, {
-        method: "POST",
+        method: method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: clipBeforeLastColon(user.id), creatorId: creator._id }),
       });
 
       if (!res.ok)
-        throw new Error(isFollowing ? "Failed to unfollow user" : "Failed to follow user");
+        throw new Error(isFollowing ? "Failed to unfollow creator" : "Failed to follow creator");
 
       setIsFollowing(!isFollowing);
       toast.success(
-        !isFollowing ? "You just followed the user!" : "You just unfollowed the user!"
+        !isFollowing ? "You just followed the creator!" : "You just unfollowed the creator!"
       );
     } catch (error) {
       toast.error((error as Error).message);
