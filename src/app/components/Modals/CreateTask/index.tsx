@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileInput, HR, Label } from 'flowbite-react';
+import { HR } from 'flowbite-react';
 import { z } from 'zod';
 import { toast } from 'react-toastify';
 import { FaCircleCheck } from 'react-icons/fa6';
@@ -15,7 +15,6 @@ interface TaskModalProps {
 }
 
 const PLATFORMS = ['twitter', 'youtube', 'tiktok', 'facebook', 'referral'] as const;
-type Platform = typeof PLATFORMS[number];
 
 const ENGAGEMENT_TYPES = {
   twitter: ['Like', 'Retweet', 'Follow', 'Comment'],
@@ -102,7 +101,6 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, user }) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   if (!isOpen) return null;
 
@@ -150,22 +148,6 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, user }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
   };
-
-  const uploadImage = async (e) => {
-    e.preventDefault();
-      const file = e.currentTarget.files[0];
-      const doc = await upload(file.name, file, {
-        access: 'public',
-        handleUploadUrl: '/api/upload',
-        onUploadProgress(e) {
-          setProgress(e.percentage);
-        }
-      });
-    
-    const url = doc.url
-    
-      
-  }
 
   const handleSubmit = async () => {
     if (!validateStep()) return;

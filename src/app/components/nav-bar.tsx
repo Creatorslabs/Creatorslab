@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
                   Connect
                 </button>}
                 
-                <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg">
+                <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg"  onClick={() => setModalOpen(true)}>
                   Plant Seeds
                 </button>
                 <div className="flex gap-2 justify-between">
