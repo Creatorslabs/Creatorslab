@@ -7,7 +7,7 @@ const AdminSearchBar = () => {
 
   return (
     <div
-      className={`border border-gray-300 dark:border-gray-600 bg-white dark:bg-transparent text-black dark:text-white 
+      className={`border border-gray-300 dark:border-gray-600 bg-white dark:bg-transparent text-black dark:text-white hidden md:block
                   p-1 flex gap-2 rounded-md items-center transition-all duration-300 
                   ${isExpanded ? "w-full" : "w-12"} sm:w-full md:max-w-[370px] md:w-full`}
     >

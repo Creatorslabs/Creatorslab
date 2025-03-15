@@ -171,7 +171,7 @@ const Dashboard = () => {
         onButtonClick={handleButtonClick}
       />
 
-      <div className='flex items-center gap-4 my-8  p-5'>
+      <div className='flex flex-col md:flex-row items-center gap-4 my-8  p-5'>
         <AdminCard 
           icon='images/admin/totalusers.svg'
           title='Total Users'
@@ -191,7 +191,7 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className='flex items-center justify-between gap-2'>
+      <div className='flex flex-col md:flex-row items-center justify-between gap-2'>
         <div className='rounded-lg p-5 border border-gray-600'>
             <div className='flex justify-between items-center my-5'>
               <h2>Users</h2>
@@ -208,8 +208,6 @@ const Dashboard = () => {
                 // onPageChange={handlePageChange}
               />
             </div>
-
-
         </div>
 
         <div className='rounded-lg p-5 border border-gray-600'>

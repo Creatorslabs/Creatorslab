@@ -9,7 +9,7 @@ interface AdminCardProps {
 
 const AdminCard:React.FC<AdminCardProps> = ({title, value, icon}) => {
   return (
-    <div className='rounded-lg px-5 flex justify-between items-center flex-1 border border-gray-600 py-10 bg-gray-900'>
+    <div className='rounded-lg px-5 flex w-full md:w-1/4 justify-between items-center flex-1 border border-gray-600 py-10 bg-gray-900'>
         <Image 
             src={icon}
             width={50}

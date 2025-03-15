@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 
 interface NavItem {
@@ -14,6 +14,7 @@ interface NavItem {
 const SideBar:React.FC = () => {
 
   const router = useRouter();
+  const pathname = usePathname()
 
     const navItems: NavItem[] = [
         { href: '/admin', label: 'Dashboard', icon: '/images/admin/dashboard.svg' },
@@ -50,19 +51,21 @@ const SideBar:React.FC = () => {
         <div className='flex flex-col items-center justify-between  p-5 h-4/5'>
             <nav className=''>
                 <ul>
-                    {navItems.map((item, index) => (
+                    {navItems.map((item, index) => {
+                      const isActive = pathname === item.href;
+                    return (
                     <li key={index} className="mb-4">
-                        <Link href={item.href} className="flex flex-row gap-2 items-center p-2 hover:bg-gray-700 rounded">
+                        <Link href={item.href} className={`flex flex-row gap-2 items-center p-2 hover:bg-gray-700 rounded ${isActive ? 'font-bold bg-gray-700': 'hover:bg-gray-700'}` }>
                             <Image
                             src={item.icon}
                             width={30} // Adjust size as needed
                             height={30} // Adjust size as needed
                             alt={`${item.label} icon`}
                             />
-                            <span>{item.label}</span>
+                            <span className=''>{item.label}</span>
                         </Link>
                     </li>
-                    ))}    
+                    )})}    
                 </ul>
             </nav>
 

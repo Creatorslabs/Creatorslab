@@ -21,7 +21,7 @@ const AdminHeader:React.FC<AdminHeaderProps> = ({title, buttonText, onButtonClic
           {buttonText && onButtonClick && (
             <button
               onClick={onButtonClick}
-              className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition"
+              className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition hidden md:"
             >
               {buttonText}
             </button>

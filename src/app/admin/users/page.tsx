@@ -106,7 +106,7 @@ const Users = () => {
         title='Users' 
       />
 
-      <div className='flex items-center gap-4 my-8  p-5'>
+      <div className='flex flex-col md:flex-row items-center gap-4 my-8  p-5'>
         <AdminCard 
           icon='images/admin/totalusers.svg'
           title='Total Users'
