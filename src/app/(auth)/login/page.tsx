@@ -23,7 +23,7 @@ import Skeleton from "../../components/skeleton-loader";
 const Comp: FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("next") || "/tasks";

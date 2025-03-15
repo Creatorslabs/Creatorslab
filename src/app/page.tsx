@@ -23,7 +23,7 @@ function LandingPage() {
 
   const fetchTasks = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/tasks/get-all`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/tasks/get-all`, {
         method: "GET",
       });
 
