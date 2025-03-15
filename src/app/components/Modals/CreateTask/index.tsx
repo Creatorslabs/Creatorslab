@@ -3,7 +3,6 @@ import { HR } from 'flowbite-react';
 import { z } from 'zod';
 import { toast } from 'react-toastify';
 import { FaCircleCheck } from 'react-icons/fa6';
-import { upload } from '@vercel/blob/client';
 import ImageUploader from '../../image-upload';
 import { User } from '@privy-io/react-auth';
 import { clipBeforeLastColon } from '@/actions/clip-privy-id';
