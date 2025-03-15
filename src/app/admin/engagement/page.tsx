@@ -86,10 +86,10 @@ const Engagement = () => {
           <DataTable
             data={engagementData}
             columns={engagementColumns}
-            pageSize={10}
-            pageIndex={page}
-            totalCount={engagementData.length}
-            onPageChange={handlePageChange}
+            // pageSize={10}
+            // pageIndex={page}
+            // totalCount={engagementData.length}
+            // onPageChange={handlePageChange}
           />
         </div>
       </div>

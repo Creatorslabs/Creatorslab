@@ -202,10 +202,10 @@ const Dashboard = () => {
               <DataTable
                 data={data}
                 columns={columns}
-                pageSize={10}
-                pageIndex={page}
-                totalCount={data.length}
-                onPageChange={handlePageChange}
+                // pageSize={10}
+                // pageIndex={page}
+                // totalCount={data.length}
+                // onPageChange={handlePageChange}
               />
             </div>
 
@@ -222,10 +222,10 @@ const Dashboard = () => {
               <DataTable
                 data={taskData}
                 columns={taskColumns}
-                pageSize={10}
-                pageIndex={page}
-                totalCount={taskData.length}
-                onPageChange={handlePageChange}
+                // pageSize={10}
+                // pageIndex={page}
+                // totalCount={taskData.length}
+                // onPageChange={handlePageChange}
               />
             </div>
         </div>

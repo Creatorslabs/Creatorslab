@@ -124,10 +124,10 @@ const Tasks = () => {
               <DataTable
                 data={taskData}
                 columns={taskColumns}
-                pageSize={10}
-                pageIndex={page}
-                totalCount={taskData.length}
-                onPageChange={handlePageChange}
+                // pageSize={10}
+                // pageIndex={page}
+                // totalCount={taskData.length}
+                // onPageChange={handlePageChange}
               />
             </div>
       </div>

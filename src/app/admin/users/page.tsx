@@ -136,10 +136,10 @@ const Users = () => {
           <DataTable
             data={data}
             columns={columns}
-            pageSize={10}
-            pageIndex={page}
-            totalCount={data.length}
-            onPageChange={handlePageChange}
+            // pageSize={10}
+            // pageIndex={page}
+            // totalCount={data.length}
+            // onPageChange={handlePageChange}
           />
         </div>
       </div>
