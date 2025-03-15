@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         { _id: userId },
         {
           $addToSet: { followingCreators: creatorId },
-          $inc: { balance: 0.3 },
+          $inc: { balance: 2.2 },
         }
       ),
 

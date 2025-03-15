@@ -11,7 +11,7 @@ import {  usePrivy } from "@privy-io/react-auth";
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(true);
 
   const { authenticated, user, login, ready } = usePrivy();
 
@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
         )}
       </nav>
 
-      <TaskModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <TaskModal isOpen={modalOpen} onClose={() => setModalOpen(false)} user={user} />
     </>
   );
 };

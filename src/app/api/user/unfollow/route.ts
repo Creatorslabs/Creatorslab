@@ -37,7 +37,7 @@ export async function DELETE(req: NextRequest) {
         { _id: userId },
         {
           $pull: { followingCreators: creatorId },
-          $inc: { balance: -5 },
+          $inc: { balance: -50 },
         }
       ),
       User.updateOne(
