@@ -71,7 +71,7 @@ const Page = () => {
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/tasks/get-task`, {
+        const res = await fetch(`/api/tasks/get-task`, {
           method: "POST",
           body: JSON.stringify({ taskId }),
         });

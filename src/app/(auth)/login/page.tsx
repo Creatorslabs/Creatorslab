@@ -31,7 +31,7 @@ const Comp: FC = () => {
   const fetchUser = async (user: User) => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_URL}api/user/get-user`,
+          `/api/user/get-user`,
           {
             method: "POST",
             body: JSON.stringify({ privyId: clipBeforeLastColon(user?.id) }),

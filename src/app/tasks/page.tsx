@@ -17,7 +17,7 @@ export default function Page() {
     useEffect(() => {
     const fetchTasks = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/tasks/get-all`);
+      const res = await fetch(`/api/tasks/get-all`);
 
       if (!res.ok) throw new Error("Failed to fetch tasks")
       
