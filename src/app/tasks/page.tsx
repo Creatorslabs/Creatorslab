@@ -5,6 +5,7 @@ import { IoArrowForward } from "react-icons/io5";
 import { ITask } from "@/models/user";
 import TopCreators from "../components/top-creators";
 import TaskCard from "./_comp/task-card";
+import React from "react";
 
 async function fetchTasks(): Promise<{ newTasks: ITask[]; trendingTasks: ITask[] }> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/tasks/get-all`, {
