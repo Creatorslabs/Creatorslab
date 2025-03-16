@@ -95,7 +95,7 @@ export default async function Page() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {newTasks.slice(0,6).map((task, index) => (
+            {newTasks.slice(0,12).map((task, index) => (
           <React.Fragment key={index}>
             {/* Render the card */}
             <TaskCard task={task} key={index}/>
@@ -165,7 +165,7 @@ export default async function Page() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trendingTasks.slice(0,6).map((task, index) => (
+            {trendingTasks.slice(0,12).map((task, index) => (
           <React.Fragment key={index}>
             <TaskCard task={task} key={index}/>
           </React.Fragment>
