@@ -17,7 +17,6 @@ import CopyButton from "../../components/copy-button";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useLinkAccount, usePrivy, useUser } from "@privy-io/react-auth";
 import Skeleton from "../../components/skeleton-loader";
-import { generateTaskTitle } from "@/actions/generate-task-title";
 import { ITask } from "@/models/user";
 import { toast } from "react-toastify";
 import { clipBeforeLastColon } from "@/actions/clip-privy-id";
@@ -53,6 +52,7 @@ const Page = () => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isNotLoggedIn, setIsNotloggedIn] = useState(true)
 
   const { taskId } = useParams();
 
@@ -120,8 +120,13 @@ const Page = () => {
   }, [ready, authenticated, user, taskId]);
 
   useEffect(() => {
-  if (ready && !authenticated) {
-    router.replace(`/login?next=${redirectUrl}`);
+    if (ready && !authenticated) {
+
+      setIsNotloggedIn(true)
+    
+      setTimeout(() => {
+        router.replace(`/login?next=${redirectUrl}`);
+      }, 5000);
   }
 }, [ready, authenticated, redirectUrl, router]);
 
@@ -135,6 +140,22 @@ const Page = () => {
         </>
       </div>
     );
+  }
+
+  if (ready && !authenticated) {
+    return (
+    <CustomModal onClose={() => setIsNotloggedIn(false)} isOpen={isNotLoggedIn}>
+      <h2 className="text-lg font-bold">Not Logged In</h2>
+          <p>Please log in to continue.</p>
+          <p>Redirecting in 5 secs</p>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+            onClick={() => router.push(`/login?next=${redirectUrl}`)}
+          >
+            Go to Login
+          </button>
+    </CustomModal>
+  )
   }
 
   if (ready && authenticated) { return (
@@ -161,7 +182,7 @@ const Page = () => {
                 className="rounded-xl"
               />
               <h2 className="text-lg font-bold tracking-widest text-white">
-                {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}
+                {task.title}
               </h2>
             </div>
             <div className="border border-[#606060] rounded-lg flex items-center justify-between p-3 md:px-6 md:py-4">
@@ -194,7 +215,7 @@ const Page = () => {
 
             <div className="flex flex-col gap-10 py-4 text-sm">
               <p>
-                {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}! If you are done that, simply complete the quest again to claim the
+                {task.title}! If you are done that, simply complete the quest again to claim the
                 $CLS.
               </p>
             </div>
@@ -203,7 +224,7 @@ const Page = () => {
               <div className="flex items-center flex-1 gap-1">
                 <FaCheckCircle size={30} className="pr-1 aspect-square h-8" />
                 <p>
-                  {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}
+                  {task.title}
                 </p>
               </div>
               <button className="p-2 bg-[#222222] rounded-lg text-white">
@@ -292,7 +313,7 @@ const Page = () => {
                {otherTasks.slice(0,6).map((task, index) => (
   <Link href={`/tasks/${task._id}`} key={index} className="my-4 border border-[#606060] rounded-md flex items-center justify-between p-3 md:px-6 md:py-4 gap-3 flex-wrap">
     <div className="flex flex-col gap-2 text-sm flex-1">
-      <p>{task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}</p>
+      <p>{task.title}</p>
       <PlatformIcon platform={task.platform} />
     </div>
 
@@ -351,8 +372,8 @@ const Page = () => {
         </div>
       </CustomModal>
     </div>
-  );}
-
+  );
+  }
   
 };
 

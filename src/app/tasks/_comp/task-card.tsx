@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
-import { generateTaskTitle } from "@/actions/generate-task-title";
 
 const TaskCard = ({ task }) => {
   return (
@@ -27,7 +26,7 @@ const TaskCard = ({ task }) => {
       </div>
       <div className="flex flex-col py-3 gap-2">
         <h3 className="font-syne text-xl">
-          {generateTaskTitle(task.type, task.platform, task.creator.username)}
+         {task.title}
         </h3>
         <p className="text-sm text-gray-500">
           {task.description.slice(0, 20)}...

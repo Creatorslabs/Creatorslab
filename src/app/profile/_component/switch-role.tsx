@@ -1,4 +1,5 @@
 import { clipBeforeLastColon } from "@/actions/clip-privy-id";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
