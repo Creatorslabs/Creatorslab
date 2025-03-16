@@ -6,8 +6,8 @@ import React, { useEffect, useState } from "react";
 import serif from "../../../../public/images/serif.png";
 import creator from "../../../../public/images/user03.jpeg";
 import coin from "../../../../public/images/coin.svg";
-import X from "../../../../public/images/X.svg";
-import telegram from "../../../../public/images/telegram.svg";
+// import X from "../../../../public/images/X.svg";
+// import telegram from "../../../../public/images/telegram.svg";
 import { IoIosLock, IoMdArrowRoundBack } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { Progress } from "@heroui/progress";
@@ -15,10 +15,10 @@ import CustomModal from "../../components/Modals/custom-modal";
 import { HiLightBulb } from "react-icons/hi";
 import CopyButton from "../../components/copy-button";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useLinkAccount, usePrivy, useUser } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
 import Skeleton from "../../components/skeleton-loader";
 import { ITask } from "@/models/user";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { clipBeforeLastColon } from "@/actions/clip-privy-id";
 import CountdownTimer, { calculateTimeLeft } from "../../components/countdonw-timer";
 import PlatformIcon from "../_comp/platform-image";
@@ -56,17 +56,17 @@ const Page = () => {
 
   const { taskId } = useParams();
 
-  const {refreshUser} = useUser()
-    const { linkTwitter, linkTelegram } = useLinkAccount({
-      onSuccess: ({ linkMethod }) => {
-        toast.success(`${linkMethod} linked successfully!`)
-        refreshUser()
-      },
-      onError: (error, details) => {
-        toast.error(`Failed to link ${details.linkMethod}`)
-        console.log("Failed to link:", error);
-      }
-    })
+  // const {refreshUser} = useUser()
+    // const { linkTwitter, linkTelegram } = useLinkAccount({
+    //   onSuccess: ({ linkMethod }) => {
+    //     toast.success(`${linkMethod} linked successfully!`)
+    //     refreshUser()
+    //   },
+    //   onError: (error, details) => {
+    //     toast.error(`Failed to link ${details.linkMethod}`)
+    //     console.log("Failed to link:", error);
+    //   }
+    // })
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -125,7 +125,8 @@ const Page = () => {
       setIsNotloggedIn(true)
     
       setTimeout(() => {
-        router.replace(`/login?next=${redirectUrl}`);
+        router.replace(`/login`);
+        // router.replace(`/login?next=${redirectUrl}`);
       }, 5000);
   }
 }, [ready, authenticated, redirectUrl, router]);
@@ -150,7 +151,7 @@ const Page = () => {
           <p>Redirecting in 5 secs</p>
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-            onClick={() => router.push(`/login?next=${redirectUrl}`)}
+            onClick={() => router.push(`/login`)}
           >
             Go to Login
           </button>
@@ -352,7 +353,7 @@ const Page = () => {
               </button>
             </>
           ) : (
-            <>
+            <div className="flex flex-col items-center justify-center p-4">
               <HiLightBulb
                 size={50}
                 className="bg-[#5D3FD1] p-2 rounded-full"
@@ -367,7 +368,7 @@ const Page = () => {
               >
                 Okay
               </button>
-            </>
+            </div>
           )}
         </div>
       </CustomModal>

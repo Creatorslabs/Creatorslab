@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
     if (!user?.id) return null; 
   
     try {
-      const res = await fetch("/api/user/is-creator", {
+      const res = await fetch("/api/creator/is-creator", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: clipBeforeLastColon(user?.id) }),
