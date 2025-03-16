@@ -186,7 +186,7 @@ const Comp: FC = () => {
             </div>
           )}
 
-          <div className="flex flex-row gap-2 items-center">
+          {/* <div className="flex flex-row gap-2 items-center">
             <div className="flex-1 border-t border-[#3f3f3f]"></div>
             <p className="text-sm text-[#3f3f3f] font-bold">OR</p>
             <div className="flex-1 border-t border-[#3f3f3f]"></div>
@@ -237,7 +237,7 @@ const Comp: FC = () => {
                 </button>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
        <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

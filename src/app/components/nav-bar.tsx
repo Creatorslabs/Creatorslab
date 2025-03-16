@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -8,14 +8,46 @@ import { DarkThemeToggle } from "flowbite-react";
 import SearchBar from "./search-bar";
 import TaskModal from "./Modals/CreateTask";
 import {  usePrivy } from "@privy-io/react-auth";
+import { clipBeforeLastColon } from "@/actions/clip-privy-id";
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isCreator, setIsCreator] = useState(false)
 
   const { authenticated, user, login, ready } = usePrivy();
 
-  const { linkWallet} = usePrivy()
+  const { linkWallet } = usePrivy()
+  
+
+  const checkCreatorStatus = useCallback(async () => {
+    if (!user?.id) return null; 
+  
+    try {
+      const res = await fetch("/api/user/is-creator", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: clipBeforeLastColon(user?.id) }),
+      });
+  
+      if (!res.ok) return null;
+  
+      const data = await res.json();
+      return data.isCreator;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      return null;
+    }
+  }, [user?.id]);
+
+  
+  useEffect(() => {
+    if (ready && authenticated) {
+      checkCreatorStatus().then((isCreator) => {
+        setIsCreator(isCreator)
+      });
+    }
+  }, [ready, authenticated, checkCreatorStatus]); 
 
   return (
     <>
@@ -44,12 +76,12 @@ const Navbar: React.FC = () => {
                 <GiHamburgerMenu />
               </button>
               <div className="hidden md:flex items-center gap-3">
-                <button
+               {isCreator &&  <button
                   className="p-2 text-white text-xs rounded-md bg-gradient-to-br from-[#5d3fd1] to-[#03abff]"
                   onClick={() => setModalOpen(true)}
                 >
                   Plant Seeds
-                </button>
+                </button>}
                 {user?.wallet ? <button className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs">
                   {user?.wallet?.address.slice(0, 6)}
                 </button> : <button className="p-2 rounded-md bg-[#3f3f3f]/30 backdrop-filter backdrop-blur-sm flex items-center justify-around gap-2 text-xs" onClick={() =>
@@ -108,9 +140,9 @@ const Navbar: React.FC = () => {
                   Connect
                 </button>}
                 
-                <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg"  onClick={() => setModalOpen(true)}>
+                {isCreator && <button className="block w-full text-left p-3 mb-2 font-bold bg-gradient-to-r from-[#5d3fd1] to-[#03abff] rounded-lg"  onClick={() => setModalOpen(true)}>
                   Plant Seeds
-                </button>
+                </button>}
                 <div className="flex gap-2 justify-between">
                   <DarkThemeToggle />
                   <div className="flex justify-center">

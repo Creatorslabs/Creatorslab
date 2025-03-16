@@ -240,7 +240,7 @@ const Page = () => {
                 </Link>
                 <CopyButton link={`${process.env.NEXT_PUBLIC_URL}tasks/${taskId}`} />
               </div>
-              <div className="flex flex-col gap-2">
+              {/* <div className="flex flex-col gap-2">
                 <p className="font-bold">Connect your X</p>
                 {user?.twitter ?  <button className=" flex items-center justify-center p-2 rounded-lg w-full bg-white text-black font-bold" disabled={user.twitter !== null}>
                   <Image
@@ -284,7 +284,7 @@ const Page = () => {
                   />
                   Connect Telegram
                 </button>}
-              </div>
+              </div> */}
             </div>
 
             <button
