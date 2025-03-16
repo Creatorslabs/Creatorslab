@@ -92,7 +92,7 @@ const Comp: FC = () => {
 
 
 
-  const [loginType, setLoginType] = useState(1);
+  // const [loginType, setLoginType] = useState(1);
   const [email, setEmail] = useState("");
   const [codeEmail, setCodeEmail] = useState("");
   const [emailState, setEmailState] = useState(stateEmail.status as string);

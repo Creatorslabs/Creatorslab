@@ -1,4 +1,3 @@
-import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { IoMdArrowBack } from "react-icons/io";
 import Link from "next/link";
@@ -6,7 +5,6 @@ import { IoArrowForward } from "react-icons/io5";
 import { ITask } from "@/models/user";
 import TopCreators from "../components/top-creators";
 import TaskCard from "./_comp/task-card";
-import Skeleton from "../components/skeleton-loader";
 
 async function fetchTasks(): Promise<{ newTasks: ITask[]; trendingTasks: ITask[] }> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/tasks/get-all`, {
