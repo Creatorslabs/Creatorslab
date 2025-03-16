@@ -127,7 +127,7 @@ const CreatorProfile = ({ dbUser, user }) => {
                       <div className="flex flex-col gap-2 sm:gap-4 justify-center items-center sm:justify-start sm:items-start">
                         <div className="flex xl:flex-col flex-row xl: gap-5">
                       <p className="sm:text-xl my-0 text-white font-bold">{dbUser?.username}</p>
-                       {dbUser?.followers?.length ?? 0} {dbUser?.followers?.length === 1 ? "follower" : "followers"}
+                       <p className="text-white">{dbUser?.followers?.length ?? 0} {dbUser?.followers?.length === 1 ? "follower" : "followers"}</p> 
                           {isVerified(user) ? (
                                             <p className="bg-[#F7F8F9] dark:bg-[#242424] dark:text-white w-fit h-fit py-1 px-3 rounded-lg flex gap-1 sm:gap-2 items-center justify-center">
                                               <MdVerified

@@ -6,8 +6,8 @@ import React, { useEffect, useState } from "react";
 import serif from "../../../../public/images/serif.png";
 import creator from "../../../../public/images/user03.jpeg";
 import coin from "../../../../public/images/coin.svg";
-import X from "../../../../public/images/X.svg";
-import telegram from "../../../../public/images/telegram.svg";
+// import X from "../../../../public/images/X.svg";
+// import telegram from "../../../../public/images/telegram.svg";
 import { IoIosLock, IoMdArrowRoundBack } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { Progress } from "@heroui/progress";
@@ -15,11 +15,10 @@ import CustomModal from "../../components/Modals/custom-modal";
 import { HiLightBulb } from "react-icons/hi";
 import CopyButton from "../../components/copy-button";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useLinkAccount, usePrivy, useUser } from "@privy-io/react-auth";
+import { usePrivy } from "@privy-io/react-auth";
 import Skeleton from "../../components/skeleton-loader";
-import { generateTaskTitle } from "@/actions/generate-task-title";
 import { ITask } from "@/models/user";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { clipBeforeLastColon } from "@/actions/clip-privy-id";
 import CountdownTimer, { calculateTimeLeft } from "../../components/countdonw-timer";
 import PlatformIcon from "../_comp/platform-image";
@@ -53,20 +52,21 @@ const Page = () => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isNotLoggedIn, setIsNotloggedIn] = useState(true)
 
   const { taskId } = useParams();
 
-  const {refreshUser} = useUser()
-    const { linkTwitter, linkTelegram } = useLinkAccount({
-      onSuccess: ({ linkMethod }) => {
-        toast.success(`${linkMethod} linked successfully!`)
-        refreshUser()
-      },
-      onError: (error, details) => {
-        toast.error(`Failed to link ${details.linkMethod}`)
-        console.log("Failed to link:", error);
-      }
-    })
+  // const {refreshUser} = useUser()
+    // const { linkTwitter, linkTelegram } = useLinkAccount({
+    //   onSuccess: ({ linkMethod }) => {
+    //     toast.success(`${linkMethod} linked successfully!`)
+    //     refreshUser()
+    //   },
+    //   onError: (error, details) => {
+    //     toast.error(`Failed to link ${details.linkMethod}`)
+    //     console.log("Failed to link:", error);
+    //   }
+    // })
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -120,8 +120,14 @@ const Page = () => {
   }, [ready, authenticated, user, taskId]);
 
   useEffect(() => {
-  if (ready && !authenticated) {
-    router.replace(`/login?next=${redirectUrl}`);
+    if (ready && !authenticated) {
+
+      setIsNotloggedIn(true)
+    
+      setTimeout(() => {
+        router.replace(`/login`);
+        // router.replace(`/login?next=${redirectUrl}`);
+      }, 5000);
   }
 }, [ready, authenticated, redirectUrl, router]);
 
@@ -135,6 +141,22 @@ const Page = () => {
         </>
       </div>
     );
+  }
+
+  if (ready && !authenticated) {
+    return (
+    <CustomModal onClose={() => setIsNotloggedIn(false)} isOpen={isNotLoggedIn}>
+      <h2 className="text-lg font-bold">Not Logged In</h2>
+          <p>Please log in to continue.</p>
+          <p>Redirecting in 5 secs</p>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+            onClick={() => router.push(`/login`)}
+          >
+            Go to Login
+          </button>
+    </CustomModal>
+  )
   }
 
   if (ready && authenticated) { return (
@@ -161,7 +183,7 @@ const Page = () => {
                 className="rounded-xl"
               />
               <h2 className="text-lg font-bold tracking-widest text-white">
-                {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}
+                {task.title}
               </h2>
             </div>
             <div className="border border-[#606060] rounded-lg flex items-center justify-between p-3 md:px-6 md:py-4">
@@ -194,7 +216,7 @@ const Page = () => {
 
             <div className="flex flex-col gap-10 py-4 text-sm">
               <p>
-                {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}! If you are done that, simply complete the quest again to claim the
+                {task.title}! If you are done that, simply complete the quest again to claim the
                 $CLS.
               </p>
             </div>
@@ -203,7 +225,7 @@ const Page = () => {
               <div className="flex items-center flex-1 gap-1">
                 <FaCheckCircle size={30} className="pr-1 aspect-square h-8" />
                 <p>
-                  {task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}
+                  {task.title}
                 </p>
               </div>
               <button className="p-2 bg-[#222222] rounded-lg text-white">
@@ -219,7 +241,7 @@ const Page = () => {
                 </Link>
                 <CopyButton link={`${process.env.NEXT_PUBLIC_URL}tasks/${taskId}`} />
               </div>
-              <div className="flex flex-col gap-2">
+              {/* <div className="flex flex-col gap-2">
                 <p className="font-bold">Connect your X</p>
                 {user?.twitter ?  <button className=" flex items-center justify-center p-2 rounded-lg w-full bg-white text-black font-bold" disabled={user.twitter !== null}>
                   <Image
@@ -263,7 +285,7 @@ const Page = () => {
                   />
                   Connect Telegram
                 </button>}
-              </div>
+              </div> */}
             </div>
 
             <button
@@ -292,7 +314,7 @@ const Page = () => {
                {otherTasks.slice(0,6).map((task, index) => (
   <Link href={`/tasks/${task._id}`} key={index} className="my-4 border border-[#606060] rounded-md flex items-center justify-between p-3 md:px-6 md:py-4 gap-3 flex-wrap">
     <div className="flex flex-col gap-2 text-sm flex-1">
-      <p>{task && generateTaskTitle(task.type, task.platform, returnCreatorUsername(task.creator))}</p>
+      <p>{task.title}</p>
       <PlatformIcon platform={task.platform} />
     </div>
 
@@ -331,7 +353,7 @@ const Page = () => {
               </button>
             </>
           ) : (
-            <>
+            <div className="flex flex-col items-center justify-center p-4">
               <HiLightBulb
                 size={50}
                 className="bg-[#5D3FD1] p-2 rounded-full"
@@ -346,13 +368,13 @@ const Page = () => {
               >
                 Okay
               </button>
-            </>
+            </div>
           )}
         </div>
       </CustomModal>
     </div>
-  );}
-
+  );
+  }
   
 };
 

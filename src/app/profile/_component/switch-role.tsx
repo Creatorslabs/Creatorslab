@@ -23,11 +23,12 @@ const RoleToggleButton: React.FC<RoleToggleButtonProps> = ({ userId, currentRole
         body: JSON.stringify({ userId: clipBeforeLastColon(userId) }),
       });
 
+      
       const data = await res.json();
-
+      
       if (!res.ok) throw new Error(data.error || "Failed to toggle role");
-
-      toast.success(`Role switched to ${data.role}`);
+      
+      toast.success(data.message);
       onRoleSwitch(); // Refresh the client after success
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong");

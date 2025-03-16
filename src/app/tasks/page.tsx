@@ -1,6 +1,3 @@
-"use client";
-
-import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { IoMdArrowBack } from "react-icons/io";
 import Link from "next/link";
@@ -8,47 +5,31 @@ import { IoArrowForward } from "react-icons/io5";
 import { ITask } from "@/models/user";
 import TopCreators from "../components/top-creators";
 import TaskCard from "./_comp/task-card";
-import Skeleton from "../components/skeleton-loader";
+import React from "react";
 
-export default function Page() {
-  const [tasks, setTasks] = useState<ITask[]>([])
-  const [loading, setLoading] = useState(true)
+async function fetchTasks(): Promise<{ newTasks: ITask[]; trendingTasks: ITask[] }> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/tasks/get-all`, {
+    cache: "no-store",
+  });
 
-    useEffect(() => {
-    const fetchTasks = async () => {
-    try {
-      const res = await fetch(`/api/tasks/get-all`);
+  if (!res.ok) throw new Error("Failed to fetch tasks");
+  const tasks: ITask[] = await res.json();
 
-      if (!res.ok) throw new Error("Failed to fetch tasks")
-      
-      const data = await res.json();
-      console.log("Tasks:", data);
-      
-      setTasks(data);
-      setLoading(false)
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
-      setLoading(false)
-    }
-  };
+  // Sorting for "newTasks" (latest created first)
+  const newTasks = [...tasks].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 
-  fetchTasks();
-  }, []);
+  // Sorting for "trendingTasks" (most participants first)
+  const trendingTasks = [...tasks].sort(
+    (a, b) => b.participants.length - a.participants.length
+  );
 
-  const { newTasks, trendingTasks } = useMemo(() => {
-    const sortedTasks = [...tasks];
+  return { newTasks, trendingTasks };
+}
 
-    const newTasks = sortedTasks.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-
-    const trendingTasks = [...sortedTasks].sort(
-      (a, b) => b.participants.length - a.participants.length
-    );
-
-    return { newTasks, trendingTasks };
-  }, [tasks]);
+export default async function Page() {
+  const { newTasks, trendingTasks } = await fetchTasks();
 
   return (
     <div className="flex flex-col gap-4">
@@ -114,7 +95,7 @@ export default function Page() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading ? <><Skeleton height="200px"/><Skeleton height="200px"/><Skeleton height="200px"/></>: newTasks.slice(0,6).map((task, index) => (
+            {newTasks.slice(0,6).map((task, index) => (
           <React.Fragment key={index}>
             {/* Render the card */}
             <TaskCard task={task} key={index}/>
@@ -184,7 +165,7 @@ export default function Page() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading ? <><Skeleton height="200px"/><Skeleton height="200px"/><Skeleton height="200px"/></>: trendingTasks.slice(0,6).map((task, index) => (
+            {trendingTasks.slice(0,6).map((task, index) => (
           <React.Fragment key={index}>
             <TaskCard task={task} key={index}/>
           </React.Fragment>
