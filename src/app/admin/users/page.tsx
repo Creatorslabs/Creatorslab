@@ -80,13 +80,11 @@ const columns: ColumnDef<UserData>[] = [
     header: 'Status',
     cell: ({ row }) => (
       <span
-        style={{
-          color: row.original.status === 'Verified' ? '#00ff00' : '#ff0000',
-          backgroundColor:
-            row.original.status === 'Verified' ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)',
-          padding: '2px 8px',
-          borderRadius: '12px',
-        }}
+        className={`px-2 py-1 rounded-xl text-sm ${
+          row.original.status === 'Verified'
+            ? 'bg-green-500/10 text-green-500'
+            : 'bg-red-500/10 text-red-500'
+        }`}
       >
         {row.original.status}
       </span>
@@ -94,53 +92,50 @@ const columns: ColumnDef<UserData>[] = [
   },
 ];
 
-
 const Users = () => {
   const [page, setPage] = useState(0);
-    const handlePageChange = (newPage: number) => {
-      setPage(newPage);
-    };
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
-    <div>
+    <div className="max-w-[1600px] mx-auto">
       <AdminHeader 
         title='Users' 
       />
 
-      <div className='flex flex-col md:flex-row items-center gap-4 my-8  p-5'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 sm:p-5'>
         <AdminCard 
-          icon='images/admin/totalusers.svg'
+          icon='/images/admin/totalusers.svg'
           title='Total Users'
           value={32001}
         />
 
         <AdminCard 
-          icon='images/admin/verifiedusers.svg'
+          icon='/images/admin/verifiedusers.svg'
           title='Verified Users'
           value={12001}
         />
 
         <AdminCard 
-          icon='images/admin/unverifiedusers.svg'
+          icon='/images/admin/unverifiedusers.svg'
           title='Unverified Users'
           value={25100}
         />
-
       </div>
 
-      <div className='rounded-lg p-5 border border-gray-600'>
-        <div className='flex justify-between items-center my-5'>
-          <h2>Users</h2>
-        </div>
+      <div className='p-4 sm:p-5'>
+        <div className='rounded-lg p-4 sm:p-5 border border-gray-600'>
+          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5'>
+            <h2 className="text-lg font-semibold">Users List</h2>
+          </div>
 
-        <div>
-          <DataTable
-            data={data}
-            columns={columns}
-            // pageSize={10}
-            // pageIndex={page}
-            // totalCount={data.length}
-            // onPageChange={handlePageChange}
-          />
+          <div className="overflow-hidden">
+            <DataTable
+              data={data}
+              columns={columns}
+            />
+          </div>
         </div>
       </div>
     </div>

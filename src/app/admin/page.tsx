@@ -20,7 +20,7 @@ interface TaskData {
   engagementType: string;
 }
 
-const taskData: TaskData[] =[
+const taskData: TaskData[] = [
   {
     title: 'Superteam Bounty',
     platform: 'X',
@@ -51,8 +51,7 @@ const taskData: TaskData[] =[
     platform: 'X',
     engagementType: 'Follow'
   },
-  
-]
+];
 
 const data: UserData[] = [
   {
@@ -99,7 +98,7 @@ const data: UserData[] = [
   },
 ];
 
-const taskColumns: ColumnDef<TaskData>[] =[
+const taskColumns: ColumnDef<TaskData>[] = [
   {
     accessorKey: 'title',
     header: 'Title'
@@ -112,7 +111,7 @@ const taskColumns: ColumnDef<TaskData>[] =[
     accessorKey: 'engagementType',
     header: 'Engagement Type'
   },
-]
+];
 
 const columns: ColumnDef<UserData>[] = [
   {
@@ -136,20 +135,17 @@ const columns: ColumnDef<UserData>[] = [
     header: 'Status',
     cell: ({ row }) => (
       <span
-        style={{
-          color: row.original.status === 'Verified' ? '#00ff00' : '#ff0000',
-          backgroundColor:
-            row.original.status === 'Verified' ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)',
-          padding: '2px 8px',
-          borderRadius: '12px',
-        }}
+        className={`px-2 py-1 rounded-xl text-sm ${
+          row.original.status === 'Verified'
+            ? 'bg-green-500/10 text-green-500'
+            : 'bg-red-500/10 text-red-500'
+        }`}
       >
         {row.original.status}
       </span>
     ),
   },
 ];
-
 
 const Dashboard = () => {
   const [page, setPage] = useState(0);
@@ -164,14 +160,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-[1600px] mx-auto">
       <AdminHeader 
         title='Dashboard' 
         buttonText='Create Engagement value'
         onButtonClick={handleButtonClick}
       />
 
-      <div className='flex flex-col md:flex-row items-center gap-4 my-8  p-5'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 sm:p-5'>
         <AdminCard 
           icon='images/admin/totalusers.svg'
           title='Total Users'
@@ -191,46 +187,40 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className='flex flex-col md:flex-row items-center justify-between gap-2'>
-        <div className='rounded-lg p-5 border border-gray-600'>
-            <div className='flex justify-between items-center my-5'>
-              <h2>Users</h2>
-              <button className='bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition'>View all</button>
-            </div>
+      <div className='space-y-6 p-4 sm:p-5'>
+        <div className='rounded-lg p-4 sm:p-5 border border-gray-600'>
+          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5'>
+            <h2 className="text-lg font-semibold">Users</h2>
+            <button className='bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition text-sm sm:text-base whitespace-nowrap'>
+              View all
+            </button>
+          </div>
 
-            <div>
-              <DataTable
-                data={data}
-                columns={columns}
-                // pageSize={10}
-                // pageIndex={page}
-                // totalCount={data.length}
-                // onPageChange={handlePageChange}
-              />
-            </div>
+          <div className="overflow-hidden">
+            <DataTable
+              data={data}
+              columns={columns}
+            />
+          </div>
         </div>
 
-        <div className='rounded-lg p-5 border border-gray-600'>
-            <div className='flex justify-between items-center my-5'>
-              <h2>Users</h2>
-              <button className='bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition'>View all</button>
-            </div>
+        <div className='rounded-lg p-4 sm:p-5 border border-gray-600'>
+          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5'>
+            <h2 className="text-lg font-semibold">Tasks</h2>
+            <button className='bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition text-sm sm:text-base whitespace-nowrap'>
+              Create Task
+            </button>
+          </div>
 
-            <div>
-              <DataTable
-                data={taskData}
-                columns={taskColumns}
-                // pageSize={10}
-                // pageIndex={page}
-                // totalCount={taskData.length}
-                // onPageChange={handlePageChange}
-              />
-            </div>
+          <div className="overflow-hidden">
+            <DataTable
+              data={taskData}
+              columns={taskColumns}
+            />
+          </div>
         </div>
       </div>
-      
     </div>
-    
   )
 }
 

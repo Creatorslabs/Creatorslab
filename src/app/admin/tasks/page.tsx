@@ -12,36 +12,36 @@ interface TaskData {
   socialPlatform: string;
   engagementType: string;
   status: string;
-};
+}
 
-const taskData: TaskData[] =[
+const taskData: TaskData[] = [
   {
-    title: 'Superteam Bounty',
-    creator: 'Barbie_xy',
-    taskLink: 'Barbie_xy',
-    socialPlatform: 'X',
+    title: 'Follow on Twitter',
+    creator: 'John Doe',
+    taskLink: 'https://twitter.com/johndoe',
+    socialPlatform: 'Twitter',
     engagementType: 'Follow',
     status: 'Active'
   },
   {
-    title: 'Superteam Bounty',
-    creator: 'Barbie_xy',
-    taskLink: 'Barbie_xy',
-    socialPlatform: 'X',
-    engagementType: 'Follow',
-    status: 'Inactive'
+    title: 'Like Facebook Post',
+    creator: 'Jane Smith',
+    taskLink: 'https://facebook.com/post/123',
+    socialPlatform: 'Facebook',
+    engagementType: 'Like',
+    status: 'Completed'
   },
   {
-    title: 'Superteam Bounty',
-    creator: 'Barbie_xy',
-    taskLink: 'Barbie_xy',
-    socialPlatform: 'X',
-    engagementType: 'Follow',
+    title: 'Subscribe YouTube',
+    creator: 'Tech Channel',
+    taskLink: 'https://youtube.com/tech',
+    socialPlatform: 'YouTube',
+    engagementType: 'Subscribe',
     status: 'Active'
-  },
+  }
 ];
 
-const taskColumns: ColumnDef<TaskData>[] =[
+const taskColumns: ColumnDef<TaskData>[] = [
   {
     accessorKey: 'title',
     header: 'Title'
@@ -51,85 +51,78 @@ const taskColumns: ColumnDef<TaskData>[] =[
     header: 'Creator'
   },
   {
-    accessorKey: 'taskLink',
-    header: 'Task Link'
-  },
-  {
     accessorKey: 'socialPlatform',
-    header: 'Social Platform'
+    header: 'Platform'
   },
   {
     accessorKey: 'engagementType',
-    header: 'Engagement Type'
+    header: 'Type'
   },
   {
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => (
       <span
-        style={{
-          color: row.original.status === 'Active' ? '#00ff00' : '#ff0000',
-          backgroundColor:
-            row.original.status === 'Active' ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)',
-          padding: '2px 8px',
-          borderRadius: '12px',
-        }}
+        className={`px-2 py-1 rounded-xl text-sm ${
+          row.original.status === 'Active'
+            ? 'bg-green-500/10 text-green-500'
+            : 'bg-blue-500/10 text-blue-500'
+        }`}
       >
         {row.original.status}
       </span>
     ),
-  },
-]
-
+  }
+];
 
 const Tasks = () => {
   const [page, setPage] = useState(0);
-    const handlePageChange = (newPage: number) => {
-      setPage(newPage);
-    };
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
-    <div>
+    <div className="max-w-[1600px] mx-auto">
       <AdminHeader 
         title='Tasks' 
       />
 
-      <div className='flex flex-col md:flex-row items-center gap-4 my-8  p-5'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 sm:p-5'>
         <AdminCard 
-          icon='images/admin/totaltasks.svg'
+          icon='/images/admin/totaltasks.svg'
           title='Total Tasks'
           value={20000}
         />
 
         <AdminCard 
-          icon='images/admin/completedtasks.svg'
+          icon='/images/admin/completedtasks.svg'
           title='Completed Tasks'
           value={12001}
         />
 
         <AdminCard 
-          icon='images/admin/pendingtasks.svg'
+          icon='/images/admin/pendingtasks.svg'
           title='Pending Tasks'
           value={25100}
         />
-
       </div>
 
-      <div className='rounded-lg p-5 border border-gray-600'>
-          <div className='flex justify-between items-center my-5'>
-            <h2>Users</h2>
-            <button className='bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition'>Create Task</button>
+      <div className='p-4 sm:p-5'>
+        <div className='rounded-lg p-4 sm:p-5 border border-gray-600'>
+          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5'>
+            <h2 className="text-lg font-semibold">Tasks List</h2>
+            <button className='bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition text-sm sm:text-base whitespace-nowrap'>
+              Create Task
+            </button>
           </div>
 
-           <div>
-              <DataTable
-                data={taskData}
-                columns={taskColumns}
-                // pageSize={10}
-                // pageIndex={page}
-                // totalCount={taskData.length}
-                // onPageChange={handlePageChange}
-              />
-            </div>
+          <div className="overflow-hidden">
+            <DataTable
+              data={taskData}
+              columns={taskColumns}
+            />
+          </div>
+        </div>
       </div>
     </div>
   )
