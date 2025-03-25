@@ -9,6 +9,7 @@ interface ICreator {
 
 export interface ITask {
   _id: string;
+  title: string;
   type: "like" | "follow" | "comment" | "repost" | "quote";
   platform: "twitter" | "youtube" | "tiktok" | "facebook";
   target: string;
@@ -17,6 +18,7 @@ export interface ITask {
 }
 
 export interface IParticipatedTask {
+  title: string;
   id: string;
   type: "like" | "follow" | "comment" | "repost" | "quote";
   platform: "twitter" | "youtube" | "tiktok" | "facebook";
@@ -59,34 +61,10 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     );
   }
 
-  console.log("Sorted task:", sortedTasks);
-
-  // Generate a title for each task based on its type, platform, and creator
-  const generateTaskTitle = (task: IParticipatedTask) => {
-    const { type, platform, creator } = task;
-    const platformMap = {
-      twitter: "Twitter",
-      youtube: "YouTube",
-      tiktok: "TikTok",
-      facebook: "Facebook",
-    };
-    const typeMap = {
-      like: "Like",
-      follow: "Follow",
-      comment: "Comment",
-      repost: "Repost",
-      quote: "Quote",
-    };
-    return `${typeMap[type]} ${creator.username}'s ${platformMap[platform]} ${
-      type === "follow" ? "account" : "post"
-    }`;
-  };
-
   return (
     <div className="flex flex-col gap-4">
       {sortedTasks.map((participatedTask: IParticipatedTask) => {
         const task = participatedTask;
-        const title = generateTaskTitle(task);
 
         return (
           <div
@@ -109,7 +87,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
               width={30}
               height={30}
             />
-            <p className="min-w-fit">{title}</p>
+            <p className="min-w-fit">{task.title}</p>
             <p className="ml-auto flex items-center text-[#03ABFF] gap-2">
               $CLS {task.rewardPoints}
               <Image

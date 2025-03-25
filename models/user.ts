@@ -5,11 +5,10 @@ import { Schema, model, Document, models } from "mongoose";
 export interface IUser extends Document {
   _id: string;
   photo: string;
-  name: string;
   username?: string;
   role: "user" | "creator";
   referralCode?: string;
-  referredBy?: string | null; 
+  referredBy?: string | null;
   referralCount: number;
   balance: number;
   lastLoginDate: Date | null;
@@ -26,6 +25,7 @@ export interface IUser extends Document {
 // Task Interface
 export interface ITask extends Document {
   creator: string;
+  title: string;
   type: "like" | "follow" | "comment" | "repost" | "quote" | "referral";
   platform: "twitter" | "youtube" | "tiktok" | "facebook" | "referral";
   description: string;
@@ -43,7 +43,6 @@ const UserSchema = new Schema<IUser>(
   {
     _id: { type: String, required: true }, // Privy ID stored as a string
     photo: String,
-    name: String,
     username: {
       type: String,
       trim: true,
@@ -96,6 +95,7 @@ const UserSchema = new Schema<IUser>(
 // Task Schema
 const TaskSchema = new Schema<ITask>({
   creator: { type: String, ref: "User", required: true }, // Privy ID as string
+  title: {type: String, required: true},
   type: {
     type: String,
     enum: ["like", "follow", "comment", "repost", "quote", "referral"],

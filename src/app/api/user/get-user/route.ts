@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
         _id: privyId,
         username: generateRandomUsername(),
         referralCode: generateReferralCode(),
+        balance: 25,
       });
 
       await user.save();

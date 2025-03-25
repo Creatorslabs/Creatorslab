@@ -14,6 +14,7 @@ import { MdVerified } from "react-icons/md";
 import { GoUnverified } from "react-icons/go";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { IoArrowForward } from "react-icons/io5";
+import RoleToggleButton from "./switch-role";
 
 const UserProfile = ({ dbUser, user }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(false);
@@ -81,16 +82,11 @@ const UserProfile = ({ dbUser, user }) => {
           </div>
           <div className="flex justify-between items-center flex-1 sm:ml-5 sm:text-xl font-medium mt-4 sm:mt-0">
             <p>User profile</p>
-            <button className="dark:border border-[#606060] rounded-lg p-2 sm:px-4 sm:py-2 bg-[#F7F8F9] dark:bg-[#242424] dark:text-white flex justify-center items-center gap-2 text-xs sm:text-base">
-              <Image
-                src="/images/coin.svg"
-                alt="coin"
-                width={30}
-                height={30}
-                className="w-[15px] sm:w-[30px] h-[15px] sm:h-[30px]"
-              />
-              Earn $CLS
-            </button>
+            <RoleToggleButton 
+              userId={user.id} 
+              currentRole={dbUser.role} 
+              onRoleSwitch={() => router.refresh()}
+            />
           </div>
         </div>
         {/* details section */}

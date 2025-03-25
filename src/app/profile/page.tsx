@@ -20,7 +20,7 @@ const fetchUser = useCallback(async () => {
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}api/user/get-user`,
+      `/api/user/get-user`,
       {
         method: "POST",
         body: JSON.stringify({ privyId: clipBeforeLastColon(user.id) }),

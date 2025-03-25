@@ -11,12 +11,12 @@ export async function POST(req: NextRequest) {
     // Required fields
     const requiredFields = [
       "creatorId",
+      "title",
       "type",
       "platform",
       "description",
       "target",
       "rewardPoints",
-      "status",
       "maxParticipants",
       "expiration",
     ];
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
 
     const {
       creatorId,
+      title,
       type,
       platform,
       description,
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
     // Create new task
     const task = await Task.create({
       creator: creator._id,
+      title,
       type,
       platform,
       description,

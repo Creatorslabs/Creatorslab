@@ -19,8 +19,6 @@ import TaskCard from "../../tasks/_comp/task-card";
 import { toast } from "react-toastify";
 import CustomModal from "../../components/Modals/custom-modal";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_URL;
-
 function AllTask({tasks}) {
   return tasks.map((task, i) => (
     <TaskCard task={task} key={i}/>
@@ -94,7 +92,7 @@ const unfollow = async () => {
 
   const fetchUser = async (userId) => {
   try {
-    const response = await fetch(`${API_BASE_URL}api/creator/get`, {
+    const response = await fetch(`/api/creator/get`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),
@@ -113,7 +111,7 @@ const unfollow = async () => {
 
 const fetchMainUser = async (userId) => {
   try {
-    const response = await fetch(`${API_BASE_URL}api/creator/get`, {
+    const response = await fetch(`/api/creator/get`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),

@@ -57,7 +57,7 @@ const CreatorTasksTable = () => {
                   Ongoing
                 </td>
                 <td className="p-4">
-                  <button className="bg-blue-500 dark:bg-[#03ABFF] bg-opacity-10 border border-blue-500 dark:border-[#03ABFF] text-blue-500 dark:text-[#03ABFF] py-1 px-4 rounded-md text-sm md:text-base">
+                  <button className="bg-blue-500 dark:bg-[#03ABFF] bg-opacity-10 border border-blue-500 dark:border-[#03ABFF] text-blue-500 dark:text-white py-1 px-4 rounded-md text-sm md:text-base">
                     View
                   </button>
                 </td>

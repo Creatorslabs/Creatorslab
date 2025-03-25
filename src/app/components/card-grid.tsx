@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image"
-import { generateTaskTitle } from "@/actions/generate-task-title";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa6";
 
@@ -29,7 +28,7 @@ const CardGrid = ({tasks}) => {
                   />
                 </div>
                 <div className="flex flex-col py-3 gap-2">
-                  <h3 className="font-syne text-xl">{ generateTaskTitle(task.type, task.platform, task.creator.username)}</h3>
+                  <h3 className="font-syne text-xl">{ task.title}</h3>
                   <p className="text-sm text-gray-500">
                     {task.description}
                   </p>

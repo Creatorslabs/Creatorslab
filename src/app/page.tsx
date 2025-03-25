@@ -1,7 +1,4 @@
-"use client"
-
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 // Icons
@@ -10,43 +7,28 @@ import { IoIosRocket } from "react-icons/io";
 import { FaLink } from "react-icons/fa";
 import { IoMdArrowBack } from "react-icons/io";
 import { IoArrowForward } from "react-icons/io5";
-import { DarkThemeToggle, useThemeMode } from "flowbite-react";
+import { DarkThemeToggle } from "flowbite-react";
 import { ITask } from "@/models/user";
-import Skeleton from "./components/skeleton-loader";
 import TaskCard from "./tasks/_comp/task-card";
 import ResponsiveBackgroundSection from "./components/responsive-background-section";
+import { cookies } from "next/headers";
 
-function LandingPage() {
-  const { computedMode } = useThemeMode()
-  const [tasks, setTasks] = useState<ITask[]>([])
-  const [loading, setLoading] = useState(true)
+async function fetchTasks(): Promise<ITask[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}api/tasks/get-all`, {
+    cache: "no-store",
+  });
 
-  const fetchTasks = async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/tasks/get-all`, {
-        method: "GET",
-      });
+  if (!res.ok) throw new Error("Failed to fetch tasks");
+  return res.json();
+}
 
-      if (!res.ok) return;
-
-      const data = await res.json();
-      setTasks(data.slice(0, 3));
-
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      console.error("Error fetching tasks:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+export default async function LandingPage() {
+  const theme = cookies().get("theme")?.value || "light";
+  
+  const tasks = await fetchTasks()
 
   return (
     <div className="relative w-full">
-      {/** background overlay */}
-      {/* <div className="absolute top-0 bottom-0 left-0 right-0 -z-50 bg-black backdrop:blur-lg opacity-20"></div> */}
       {/** Header section*/}
       <div className="flex justify-between px-6 py-4 md:px-16 md:py-8 items-center">
         <Link href="/" className="flex flex-row gap-2 items-center">
@@ -210,7 +192,7 @@ function LandingPage() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading ? <><Skeleton height="200px"/><Skeleton height="200px"/><Skeleton height="200px"/></>: tasks.map((task, index) => (
+            {tasks.slice(0,3).map((task, index) => (
               <TaskCard task={task} key={index}/>
             ))}
           </div>
@@ -232,21 +214,13 @@ function LandingPage() {
                   alt="coin sack"
                   className="w-[100px] h-auto object-cover rounded-md"
                 />
-                {
-                            computedMode === "dark" ? <Image
-                            src="/images/landing-page/st-light.png"
-                            width={70}
-                            height={70}
-                            alt="coin sack"
-                            className="w-[100px] h-auto object-cover rounded-md"
-                          /> : <Image
-                            src="/images/landing-page/st-dark.png"
-                            width={70}
-                            height={70}
-                            alt="coin sack"
-                            className="w-[100px] h-auto object-cover rounded-md"
-                          />
-                          }
+                <Image
+                  src={theme === "dark" ? "/images/landing-page/st-dark.png" : "/images/landing-page/st-light.png"}
+                  width={70}
+                  height={70}
+                  alt="coin sack"
+                  className="w-[100px] h-auto object-cover rounded-md"
+                />
                     </div>
                   </div>
 
@@ -257,5 +231,3 @@ function LandingPage() {
     </div>
   );
 }
-
-export default LandingPage;
