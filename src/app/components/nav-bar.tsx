@@ -167,7 +167,11 @@ const Navbar: React.FC = () => {
         )}
       </nav>
 
-      <TaskModal isOpen={modalOpen} onClose={() => setModalOpen(false)} user={user} />
+      <TaskModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        user={user}
+      />
     </>
   );
 };
