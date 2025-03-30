@@ -3,7 +3,7 @@ import connectDB from "@/utils/connectDB";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
-export const createAdmin = async (req: NextRequest): Promise<NextResponse> => {
+export const POST = async (req: NextRequest): Promise<NextResponse> => {
     try {
         await connectDB();
         const { username, email, password, role } = await req.json();

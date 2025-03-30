@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Admin from "@/models/admin";
 
-export const loginAdmin = async (req: NextRequest): Promise<NextResponse> => {
+export const POST = async (req: NextRequest): Promise<NextResponse> => {
     try {
         await connectDB();
         const { email, password } = await req.json();
