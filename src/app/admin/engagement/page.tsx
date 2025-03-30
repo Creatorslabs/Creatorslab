@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import AdminHeader from '../../components/admin-header'
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '../../components/table';
@@ -63,10 +63,10 @@ const engagementColumns: ColumnDef<EngagementData>[] = [
 ];
 
 const Engagement = () => {
-  const [page, setPage] = useState(0);
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
+  // const [page, setPage] = useState(0);
+  // const handlePageChange = (newPage: number) => {
+  //   setPage(newPage);
+  // };
 
   return (
     <div className="max-w-[1600px] mx-auto">

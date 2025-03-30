@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import AdminHeader from '../../components/admin-header'
 import AdminCard from '../../components/admin-card'
 import { ColumnDef } from '@tanstack/react-table';
@@ -76,10 +76,10 @@ const taskColumns: ColumnDef<TaskData>[] = [
 ];
 
 const Tasks = () => {
-  const [page, setPage] = useState(0);
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
+  // const [page, setPage] = useState(0);
+  // const handlePageChange = (newPage: number) => {
+  //   setPage(newPage);
+  // };
 
   return (
     <div className="max-w-[1600px] mx-auto">

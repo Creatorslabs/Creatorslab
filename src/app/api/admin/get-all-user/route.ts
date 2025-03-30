@@ -13,7 +13,7 @@ export const GET = async () => {
         );
     } catch (error) {
         return NextResponse.json(
-            { error: "Internal server error" },
+            { error: "Internal server error" + (error as Error).message },
             { status: 500 }
         );
     }
