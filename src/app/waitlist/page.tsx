@@ -59,7 +59,7 @@ function Waitlist() {
           <DarkThemeToggle />
           <Link
           href="#waitlist"
-          className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
+          className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-base text-white"
         >
           Join waitlist
         </Link>
@@ -82,7 +82,7 @@ function Waitlist() {
 
           <Link
             href="#waitlist"
-            className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-sm text-white"
+            className="rounded-lg py-2 px-4 bg-gradient-to-br from-[#5D3FD1] to-[#03ABFF] text-base text-white"
           >
             Join Waitlist
           </Link>
@@ -118,7 +118,7 @@ function Waitlist() {
           <h2 className="md:w-[80%] text-5xl font-syne text-extrabold">
             Built on the lightning-fast, low-fee Solana blockchain
           </h2>
-          <p className="text-center text-sm text-gray-500 md:w-[50%]">
+          <p className="text-center text-base text-gray-500 md:w-[50%]">
             Creators Lab is backed by our powerhouse partners Solana Foundation
             and SuperteamNG. Together, we are crafting a digital playground
             where creators rule.
@@ -130,8 +130,8 @@ function Waitlist() {
                     <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#03ABFF] rounded-sm -z-40"></div>
                     <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
                       <IoIosRocket size={30} />
-                      <p className="text-xl">Fast & Smooth Transactions</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-2xl">Fast & Smooth Transactions</p>
+                      <p className="text-base text-gray-500">
                         {
                           "Solana's speed means no waiting around, transactions happen in the blink of an eye."
                         }
@@ -143,10 +143,10 @@ function Waitlist() {
                     <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#4CDE86] rounded-sm -z-40"></div>
                     <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
                       <FaHeart size={30} />
-                      <p className="text-xl">Earn & Grow</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-2xl">Earn & Grow</p>
+                      <p className="text-base text-gray-500">
                         {
-                          "Every like, comment, and share earns you Seeds. More Seeds = more visibility!"
+                          "Every like, comment, and share earns you Seeds which is important for greater visibility in the Web3 content economy."
                         }
                       </p>
                     </div>
@@ -156,8 +156,8 @@ function Waitlist() {
                     <div className="absolute top-[-3px] left-1/2 transform -translate-x-1/2 w-16 h-5 bg-[#7985FF] rounded-sm -z-40"></div>
                     <div className="w-full h-full  z-40 px-4 py-6 flex flex-col justify-center items-center gap-3 rounded-lg border dark:bg-[#161616]/90 backdrop-filter backdrop-blur-sm sm:shadow-md md:shadow-lg lg:shadow-xl xl:shadow-2xl dark:border-[#3F3F3F]">
                       <FaLink size={30} />
-                      <p className="text-xl">Wallet Integration</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-2xl">Wallet Integration</p>
+                      <p className="text-base text-gray-500">
                         {
                           "Seamless sign-ins with Solflare, Phantom, or even your email—your call!"
                         }
@@ -179,10 +179,10 @@ function Waitlist() {
           className="absolute right-0 md:right-20 -z-10"
         />
         <div className="relative p-6 md:py-8 md:px-14 flex flex-col gap-4 items-center">
-          <h3 className="font-syne text-5xl text-center">
+          <h3 className="font-syne text-6xl text-center">
             Join Our Waitlist
           </h3>
-          <p className="text-gray-400 text-center">
+          <p className="text-gray-400 text-center text-base">
             This is your moment. Jump into the Web3 revolution and make your
             mark. Be the first to experience our platform. Sign up below and get
             exclusive early access!
@@ -217,7 +217,7 @@ function Waitlist() {
           <style>{`body { overflow: hidden; }`}</style>
 
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-black p-8 rounded-lg shadow-xl w-96 text-center text-white">
+            <div className="bg-black p-8 rounded-lg shadow-xl w-96 text-center text-white text-base">
               <p>{modalMessage}</p>
               <button
                 onClick={() => setShowModal(false)}
@@ -264,7 +264,7 @@ function Waitlist() {
             </div>
 
       {/** Footer */}
-      <div className="text-center text-gray-500 text-sm p-4">
+      <div className="text-center text-gray-500 text-base p-4">
         Copyright {new Date().getFullYear()}
       </div>
     </div>
