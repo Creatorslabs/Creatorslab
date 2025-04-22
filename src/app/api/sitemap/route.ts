@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 const siteUrl = "https://creatorlab.cc";
 
-const pages = ["/waitlist"]; // Add more pages as your site expands
+const pages = ["/waitlist"];
 
 export async function GET() {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -27,7 +27,6 @@ export async function GET() {
   });
 }
 
-// Handle POST if needed
 export async function POST() {
   return new NextResponse("POST method not required for sitemap", {
     status: 405,

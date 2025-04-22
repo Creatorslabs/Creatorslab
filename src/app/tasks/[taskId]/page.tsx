@@ -6,8 +6,8 @@ import React, { useEffect, useState } from "react";
 import serif from "../../../../public/images/serif.png";
 import creator from "../../../../public/images/user03.jpeg";
 import coin from "../../../../public/images/coin.svg";
-// import X from "../../../../public/images/X.svg";
-// import telegram from "../../../../public/images/telegram.svg";
+import X from "../../../../public/images/X.svg";
+import telegram from "../../../../public/images/telegram.svg";
 import { IoIosLock, IoMdArrowRoundBack } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { Progress } from "@heroui/progress";
@@ -15,14 +15,16 @@ import CustomModal from "../../components/Modals/custom-modal";
 import { HiLightBulb } from "react-icons/hi";
 import CopyButton from "../../components/copy-button";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { usePrivy } from "@privy-io/react-auth";
+import { useLinkAccount, usePrivy, useUser } from "@privy-io/react-auth";
 import Skeleton from "../../components/skeleton-loader";
 import { ITask } from "@/models/user";
-// import { toast } from "react-toastify";
 import { clipBeforeLastColon } from "@/actions/clip-privy-id";
 import CountdownTimer, { calculateTimeLeft } from "../../components/countdonw-timer";
 import PlatformIcon from "../_comp/platform-image";
 import FollowUnfollowButton from "../../components/followbutton";
+import { toast } from "react-toastify";
+import ImageUpload from "./_components/file-input";
+import myImageLoader from "@/actions/image/loader";
 
 const returnCreatorUsername = (creator) => {
   return creator.username
@@ -38,8 +40,12 @@ const Page = () => {
   const [otherTasks, setOtherTasks] = useState<ITask[]>([]);
   const [totalTasks, setTotalTasks] = useState<number>(0)
   const [loading, setLoading] = useState(true);
+  const [hasParticipated, setHasParticipated] = useState(false)
+  const [proofURL, setProofURL] = useState("")
 
-  const pathname = usePathname(); // Get current URL path
+
+
+  const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
@@ -56,17 +62,42 @@ const Page = () => {
 
   const { taskId } = useParams();
 
-  // const {refreshUser} = useUser()
-    // const { linkTwitter, linkTelegram } = useLinkAccount({
-    //   onSuccess: ({ linkMethod }) => {
-    //     toast.success(`${linkMethod} linked successfully!`)
-    //     refreshUser()
-    //   },
-    //   onError: (error, details) => {
-    //     toast.error(`Failed to link ${details.linkMethod}`)
-    //     console.log("Failed to link:", error);
-    //   }
-    // })
+  const {refreshUser} = useUser()
+    const { linkTwitter, linkTelegram } = useLinkAccount({
+      onSuccess: ({ linkMethod }) => {
+        toast.success(`${linkMethod} linked successfully!`)
+        refreshUser()
+      },
+      onError: (error, details) => {
+        toast.error(`Failed to link ${details.linkMethod}`)
+        console.log("Failed to link:", error);
+      }
+    })
+
+  const updateProofUrl = (url: string) => {
+    setProofURL(url)
+  }
+
+  const handleSubmit = async () => {
+      try {
+        const res = await fetch(`/api/tasks/submit`, {
+          method: "POST",
+          body: JSON.stringify({ userId: clipBeforeLastColon(user?.id), taskId, proof: proofURL }),
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch.")
+
+        const data = await res.json();
+        
+        setTask(data);
+        setIsModalOpen(true)
+      } catch (error) {
+        console.error("Error submitting task:", error);
+        // router.refresh()
+      } finally {
+        setLoading(false);
+      }
+  }
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -111,11 +142,28 @@ const Page = () => {
       }
     }
 
+    async function checkstatus(userId) {
+      const response = await fetch("/api/tasks/get-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({taskId, userId})
+      })
+
+      if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+      const data = await response.json();
+
+      setHasParticipated(data.participated)
+    }
+
     if (ready && authenticated) {
         const userId = clipBeforeLastColon(user?.id);
         
         fetchTask();
         getOtherTasks(userId)
+        checkstatus(userId)
       }
   }, [ready, authenticated, user, taskId]);
 
@@ -126,7 +174,6 @@ const Page = () => {
     
       setTimeout(() => {
         router.replace(`/login`);
-        // router.replace(`/login?next=${redirectUrl}`);
       }, 5000);
   }
 }, [ready, authenticated, redirectUrl, router]);
@@ -176,8 +223,10 @@ const Page = () => {
                   md:bg-gradient-to-r md:from-blue-900 md:via-blue-400 md:to-blue-900 md:via-40% md:to-pink-500 md:to-80% 
                   lg:bg-gradient-to-r lg:from-blue-900 lg:via-blue-400 lg:to-blue-900 lg:via-40% lg:to-pink-500 lg:to-70% lg:to-gray-500 bg-no-repeat bg-cover p-4 flex flex-col gap-6">
               <Image
-                src={serif}
-                alt=""
+                src={task.image}
+                alt={task.title}
+                loader={myImageLoader}
+                quality={75}
                 width={80}
                 height={80}
                 className="rounded-xl"
@@ -221,16 +270,17 @@ const Page = () => {
               </p>
             </div>
 
-            <div className="border border-[#606060] p-3 md:px-6 md:py-4 flex flex-row flex-nowrap items-center justify-between rounded-lg gap-2 text-sm">
-              <div className="flex items-center flex-1 gap-1">
+            <div className="border border-[#606060] p-3 md:px-6 md:py-4 rounded-lg flex flex-col gap-6 text-sm">
+              <div className="flex flex-row flex-nowrap items-center justify-between"><div className="flex items-center flex-1 gap-1">
                 <FaCheckCircle size={30} className="pr-1 aspect-square h-8" />
                 <p>
                   {task.title}
                 </p>
               </div>
-              <button className="p-2 bg-[#222222] rounded-lg text-white">
-                Verify
-              </button>
+              <Link href={task.target} className="px-4 py-2 bg-[#222222] rounded-lg text-white">
+                visit
+                  </Link></div>
+                <ImageUpload handleSuccess={updateProofUrl} />
             </div>
 
             <div className="border border-[#606060] rounded-lg p-3 md:px-6 md:py-4 text-sm flex flex-col gap-3">
@@ -241,7 +291,7 @@ const Page = () => {
                 </Link>
                 <CopyButton link={`${process.env.NEXT_PUBLIC_URL}tasks/${taskId}`} />
               </div>
-              {/* <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
                 <p className="font-bold">Connect your X</p>
                 {user?.twitter ?  <button className=" flex items-center justify-center p-2 rounded-lg w-full bg-white text-black font-bold" disabled={user.twitter !== null}>
                   <Image
@@ -275,7 +325,7 @@ const Page = () => {
                     className="mr-4"
                   />
                   Linked to {user.telegram.username}
-                </button> : <button className="flex items-center justify-center p-2 rounded-lg w-full bg-gradient-to-tr from-[#2aabee] to-[#229ed9] font-bold" onClick={() => linkTelegram({ launchParams: { initDataRaw: "this is telegram login" } })}>
+                </button> : <button className="flex items-center justify-center p-2 rounded-lg w-full bg-gradient-to-tr from-[#2aabee] to-[#229ed9] font-bold" onClick={() => linkTelegram({ launchParams: { initDataRaw: "this is telegram login" } })} disabled>
                   <Image
                     src={telegram}
                     alt=""
@@ -285,16 +335,28 @@ const Page = () => {
                   />
                   Connect Telegram
                 </button>}
-              </div> */}
+              </div>
             </div>
 
             <button
-              className="p-4 bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] text-white rounded-md w-full md:w-[40%] self-end"
-                onClick={() => setIsModalOpen(true)}
-                disabled={calculateTimeLeft(task.expiration) === "Task has ended"}
+              className="p-4 bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] text-white rounded-md w-full md:w-[40%] self-end disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleSubmit}
+              disabled={
+                calculateTimeLeft(task.expiration) === "Task has ended" ||
+                task.status === "completed" ||
+                hasParticipated
+              }
             >
-              {calculateTimeLeft(task.expiration) === "Task has ended" ? "Task has ended" : "Complete"}
+              {calculateTimeLeft(task.expiration) === "Task has ended"
+                ? "Task has ended"
+                : task.status === "completed"
+                ? "Task already claimed"
+                : hasParticipated
+                ? "Already participated"
+                : "Claim"}
             </button>
+
+
           </div>
           <div className="w-full md:w-[35%]  p-4 md:py-14 md:px-8  bg-[#F7F8F9] dark:bg-[#1c1c1c] rounded-xl flex flex-col gap-4">
             <div className="border border-[#606060] p-3 md:px-6 md:py-4 rounded-lg bg-[#5D3FD126] flex flex-col gap-2">
@@ -312,18 +374,18 @@ const Page = () => {
                 </div>
                 
                {otherTasks.slice(0,6).map((task, index) => (
-  <Link href={`/tasks/${task._id}`} key={index} className="my-4 border border-[#606060] rounded-md flex items-center justify-between p-3 md:px-6 md:py-4 gap-3 flex-wrap">
-    <div className="flex flex-col gap-2 text-sm flex-1">
-      <p>{task.title}</p>
-      <PlatformIcon platform={task.platform} />
-    </div>
+              <Link href={`/tasks/${task._id}`} key={index} className="my-4 border border-[#606060] rounded-md flex items-center justify-between p-3 md:px-6 md:py-4 gap-3 flex-wrap">
+                <div className="flex flex-col gap-2 text-sm flex-1">
+                  <p>{task.title}</p>
+                  <PlatformIcon platform={task.platform} />
+                </div>
 
-    <button className="p-2 bg-gradient-to-br from-[#5d3fd1] to-[#03abff] rounded-lg flex items-center justify-between gap-1 flex-nowrap text-xs text-white">
-      $CLS {task.rewardPoints}
-      <Image src={coin} alt="" width={20} height={20} />
-    </button>
-  </Link>
-))}
+                <button className="p-2 bg-gradient-to-br from-[#5d3fd1] to-[#03abff] rounded-lg flex items-center justify-between gap-1 flex-nowrap text-xs text-white">
+                  $CLS {task.rewardPoints}
+                  <Image src={coin} alt="" width={20} height={20} />
+                </button>
+              </Link>
+            ))}
           </div></>}
         </div>
       </div>
