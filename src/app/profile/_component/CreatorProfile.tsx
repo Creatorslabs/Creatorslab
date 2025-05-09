@@ -206,7 +206,7 @@ const CreatorProfile = ({ dbUser, user }) => {
                 </div>
           </div>
           <div className="creator-content">
-                <CreatorTasksTable />
+            <CreatorTasksTable creatorId={dbUser._id} />
                 <div className="border-[0.5px] border-[#606060] p-4 sm:p-8 rounded-xl mt-8">
                   <div className="mb-8">
                     <p className="text-lg mb-2">Social Media Accounts</p>

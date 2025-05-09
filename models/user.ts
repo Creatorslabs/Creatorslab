@@ -1,7 +1,6 @@
 import { generateReferralCode } from "@/actions/generate-referal-code";
 import { Schema, model, Document, models } from "mongoose";
 
-// User Interface
 export interface IUser extends Document {
   _id: string;
   photo: string;
@@ -17,17 +16,17 @@ export interface IUser extends Document {
   createdTasks: string[];
   participatedTasks: {
     task: string;
-    status: "pending" | "completed" | "claimed";
+    status: "pending" | "completed";
     proof: string;
   }[];
 }
 
-// Task Interface
 export interface ITask extends Document {
   creator: string;
   title: string;
-  type: "like" | "follow" | "comment" | "repost" | "quote" | "referral";
+  type: "like" | "follow" | "comment" | "repost" | "quote" | "referral" | "subscribe";
   platform: "twitter" | "youtube" | "tiktok" | "facebook" | "referral";
+  image: string;
   description: string;
   target: string;
   rewardPoints: number;
@@ -38,10 +37,9 @@ export interface ITask extends Document {
   createdAt: string;
 }
 
-// User Schema
 const UserSchema = new Schema<IUser>(
   {
-    _id: { type: String, required: true }, // Privy ID stored as a string
+    _id: { type: String, required: true },
     photo: String,
     username: {
       type: String,
@@ -57,7 +55,7 @@ const UserSchema = new Schema<IUser>(
       default: generateReferralCode,
     },
     referredBy: {
-      type: String, // Reference another user by Privy ID
+      type: String,
       ref: "User",
       default: null,
     },
@@ -74,15 +72,15 @@ const UserSchema = new Schema<IUser>(
       default: "user",
       required: true,
     },
-    followingCreators: [{ type: String, ref: "User" }], // Store as string
-    followers: [{ type: String, ref: "User" }], // Store as string
+    followingCreators: [{ type: String, ref: "User" }],
+    followers: [{ type: String, ref: "User" }],
     createdTasks: [{ type: String, ref: "Task" }],
     participatedTasks: [
       {
         task: { type: String, ref: "Task", required: true },
         status: {
           type: String,
-          enum: ["pending", "completed", "claimed"],
+          enum: ["pending", "completed"],
           default: "pending",
         },
         proof: String,
@@ -92,28 +90,27 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-// Task Schema
 const TaskSchema = new Schema<ITask>({
-  creator: { type: String, ref: "User", required: true }, // Privy ID as string
+  creator: { type: String, ref: "User", required: true },
   title: {type: String, required: true},
   type: {
     type: String,
-    enum: ["like", "follow", "comment", "repost", "quote", "referral"],
+    enum: ["like", "follow", "comment", "repost", "quote", "referral", "subscribe"],
   },
   platform: {
     type: String,
     enum: ["twitter", "youtube", "tiktok", "facebook", "referral"],
   },
+  image: { type: String, required: true },
   description: { type: String, required: true },
   target: { type: String, required: true },
   rewardPoints: { type: Number, required: true },
   maxParticipants: { type: Number, required: true },
-  participants: [{ type: String, ref: "User", default: [] }], // Store as string
+  participants: [{ type: String, ref: "User", default: [] }],
   status: { type: String, enum: ["active", "completed"], default: "active" },
   expiration: Date,
 });
 
-// Pre-save hook to check if task is filled
 TaskSchema.pre("save", function (next) {
   if (this.participants.length >= this.maxParticipants) {
     this.status = "completed";

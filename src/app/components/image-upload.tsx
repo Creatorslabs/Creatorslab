@@ -57,6 +57,7 @@ const ImageUploader = ({ onImageUpload }) => {
           // Create a FormData object
           const formData = new FormData();
           formData.append('file', file);
+          formData.append("type", "tasks")
 
           // Simulate upload progress
           const simulateProgress = () => {
@@ -73,7 +74,6 @@ const ImageUploader = ({ onImageUpload }) => {
 
           progressInterval = simulateProgress();
 
-          // Simulated API call
           const response = await fetch('/api/upload', {
               method: 'POST',
               body: formData,
@@ -81,14 +81,13 @@ const ImageUploader = ({ onImageUpload }) => {
 
           if (!response.ok) throw new Error("Failed to upload!");
 
-          const { url } = await response.json();
+          const { url } = await response.json(); 
 
           // Simulating API response delay
           await new Promise(resolve => setTimeout(resolve, 2000));
           clearInterval(progressInterval);
           setUploadProgress(100);
 
-          // Call the parent component's handler with the image URL
           console.log("Image URL:", url);
           
           onImageUpload(url);
