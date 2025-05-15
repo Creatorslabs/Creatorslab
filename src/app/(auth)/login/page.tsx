@@ -18,7 +18,6 @@ import {
 } from "@privy-io/react-auth";
 import { DarkThemeToggle } from "flowbite-react";
 import { clipBeforeLastColon } from "@/actions/clip-privy-id";
-import CustomModal from "../../components/Modals/custom-modal";
 
 const Spinner = () => (
   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -63,7 +62,7 @@ const NewUserModal = ({ onContinue }: { onContinue: () => void }) => {
             onClick={onContinue}
             className="w-full bg-gradient-to-b from-[#5D3FD1] to-[#03ABFF] p-2 rounded-md"
           >
-            Let's go!
+            Let&apos;s go!
           </button>
         </div>
       </div>
@@ -74,9 +73,6 @@ const NewUserModal = ({ onContinue }: { onContinue: () => void }) => {
 const Login: FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [isSubmittingOtp, setIsSubmittingOtp] = useState(false);
 
   const [resendTimer, setResendTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
@@ -116,9 +112,7 @@ const fetchUser = React.useCallback(async (user: User) => {
 }, []);
 
 const authCallback = async ({ user, isNewUser }) => {
-  try {
-    setLoading(true);
-    
+  try {    
     if (isNewUser) {
       const newUser = await fetchUser(user);
       if (newUser) {
@@ -127,16 +121,12 @@ const authCallback = async ({ user, isNewUser }) => {
     } else {
       router.push(redirectTo);
     }
-  } finally {
-    setLoading(false);
-    setIsSubmittingOtp(false);
   }
 };
 
     const handleError = (error) => {
       console.error("Authentication Error:", error);
       setError(error.message || "An unexpected error occurred");
-      setLoading(false);
       setSocialLoading(null);
     };
 
@@ -224,7 +214,7 @@ const { connectWallet } = useConnectWallet({
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [authState.status, router, redirectTo]);
+  }, [newUser]);
 
   return (
     <div className="w-full h-screen flex flex-col">
