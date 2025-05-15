@@ -8,24 +8,33 @@ import TaskCard from "./_comp/task-card";
 import React from "react";
 
 async function fetchTasks(): Promise<{ newTasks: ITask[]; trendingTasks: ITask[] }> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/tasks/get-all`, {
-    cache: "no-store",
-  });
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_URL;
+    if (!baseUrl) throw new Error("NEXT_PUBLIC_URL is not defined");
 
-  if (!res.ok) throw new Error("Failed to fetch tasks");
-  const tasks: ITask[] = await res.json();
+    const res = await fetch(`${baseUrl}/api/tasks/get-all`, {
+      cache: "no-store",
+    });
 
-  // Sorting for "newTasks" (latest created first)
-  const newTasks = [...tasks].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+    if (!res.ok) {
+      throw new Error(`Failed to fetch tasks: ${res.status} ${res.statusText}`);
+    }
 
-  // Sorting for "trendingTasks" (most participants first)
-  const trendingTasks = [...tasks].sort(
-    (a, b) => b.participants.length - a.participants.length
-  );
+    const tasks = (await res.json()) as ITask[];
 
-  return { newTasks, trendingTasks };
+    const newTasks = [...tasks].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    const trendingTasks = [...tasks].sort(
+      (a, b) => (b.participants?.length || 0) - (a.participants?.length || 0)
+    );
+
+    return { newTasks, trendingTasks };
+  } catch (error) {
+    console.error("fetchTasks error:", error);
+    return { newTasks: [], trendingTasks: [] };
+  }
 }
 
 export default async function Page() {

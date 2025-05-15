@@ -6,7 +6,8 @@ import { FaCircleCheck } from 'react-icons/fa6';
 import ImageUploader from '../../image-upload';
 import { User } from '@privy-io/react-auth';
 import { clipBeforeLastColon } from '@/actions/clip-privy-id';
-
+import myImageLoader from '../../../../../actions/image/loader';
+import Image from "next/image"
 interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -203,6 +204,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, user }) => {
       taskLink: '',
     });
     setErrors({});
+    setStep(1);
     onClose();
   };
 
@@ -218,28 +220,32 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, user }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 dark:bg-[#101214] dark:text-white border-gray-600">
-       <div className="bg-[#F7F8F9] dark:bg-[#242424] dark:text-white p-6 rounded-lg w-full max-w-lg relative border-gray-600 shadow-lg max-md:w-full max-md:h-full max-md:rounded-none max-md:top-0 overflow-y-scroll">
+       <div className="bg-[#F7F8F9] dark:bg-[#242424] dark:text-white py-3 px-6 rounded-lg w-full max-w-lg relative border-gray-600 shadow-lg max-md:w-full max-md:h-full max-md:rounded-none max-md:top-0 overflow-y-scroll">
         {loading ? (
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center min-h-[200px] p-6 rounded-xl bg-white dark:bg-[#101214] shadow-md">
               {success ? (
-                <div className="h-16 w-16 rounded-full bg-green-500 flex items-center justify-center text-white">
-                  <FaCircleCheck size={35}/>
+                <div className="h-20 w-20 rounded-full bg-green-500 flex items-center justify-center text-white transition-all duration-300">
+                  <FaCircleCheck size={40} />
                 </div>
               ) : (
-                <div className="h-16 w-16 relative">
-                  <div className="absolute inset-0 rounded-full border-4 border-gray-200"></div>
+                <div className="h-20 w-20 relative">
+                  <div className="absolute inset-0 rounded-full border-4 border-gray-300 dark:border-gray-600"></div>
                   <div className="absolute inset-0 rounded-full border-4 border-t-blue-500 animate-spin"></div>
                 </div>
               )}
-              <p className="mt-4 text-gray-700 font-medium">
-                {success ? "Success" : "Creating..."}
+            
+              <p className="mt-6 text-lg font-semibold text-gray-700 dark:text-gray-100 tracking-wide">
+                {success ? "Success!" : "Creating..."}
               </p>
             </div>
           ) : (
             <>
               <button className="absolute top-2 right-4 text-gray-600 dark:text-gray-400 text-xl" onClick={handleClose}>&times;</button>
-        <h2 className="text-lg font-bold mb-4 font-syne">Create Your Task</h2>
-        <span className='text-gray-600 dark:text-gray-400 text-sm'>Enter the information about your task</span>
+              {step !== 4 && (
+                <>
+                <h2 className="text-lg font-bold mb-4 font-syne">Create Your Task</h2>
+                <span className='text-gray-600 dark:text-gray-400 text-sm'>Enter the information about your task</span></>
+        )}
 
         <HR />
 
@@ -268,27 +274,45 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, user }) => {
 
         {step === 2 && (
           <div>
-            <label className="block my-4">
-              Social Platform:
-              <select name="platform" value={formData.platform} onChange={handleChange} className="w-full p-2 rounded border border-gray-600 bg-inherit" required>
-                <option value="">Select Platform</option>
-                {Object.keys(platformEngagementTypes).map((platform) => (
-                  <option key={platform} value={platform}>{platform}</option>
-                ))}
-              </select>
-              {errors.platform && <p className="text-red-500 text-sm">{errors.platform}</p>}
-            </label>
-            <label className="block my-4">
-              Engagement Type:
-              <select name="engagementType" value={formData.engagementType} onChange={handleChange} className="w-full p-2 rounded border border-gray-600 bg-inherit" required>
-                <option value="">Select Engagement Type</option>
-                {(platformEngagementTypes[formData.platform] || []).map((type) => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-              </select>
-              {errors.engagementType && <p className="text-red-500 text-sm">{errors.engagementType}</p>}
-            </label>
-          </div>
+          <label className="block my-4 text-gray-800 dark:text-gray-200">
+            Social Platform:
+            <select
+              name="platform"
+              value={formData.platform}
+              onChange={handleChange}
+              required
+              className="w-full p-2 mt-1 rounded border border-gray-300 dark:border-gray-600 bg-[#F7F8F9] dark:bg-[#242424] text-gray-900 dark:text-gray-100"
+            >
+              <option value="">Select Platform</option>
+              {Object.keys(platformEngagementTypes).map((platform) => (
+                <option key={platform} value={platform}>{platform}</option>
+              ))}
+            </select>
+            {errors.platform && (
+              <p className="text-red-500 text-sm mt-1">{errors.platform}</p>
+            )}
+          </label>
+        
+          <label className="block my-4 text-gray-800 dark:text-gray-200">
+            Engagement Type:
+            <select
+              name="engagementType"
+              value={formData.engagementType}
+              onChange={handleChange}
+              required
+              className="w-full p-2 mt-1 rounded border border-gray-300 dark:border-gray-600  bg-[#F7F8F9] dark:bg-[#242424] text-gray-900 dark:text-gray-100"
+            >
+              <option value="">Select Engagement Type</option>
+              {(platformEngagementTypes[formData.platform] || []).map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+            {errors.engagementType && (
+              <p className="text-red-500 text-sm mt-1">{errors.engagementType}</p>
+            )}
+          </label>
+        </div>
+        
         )}
 
         {step === 3 && (
@@ -316,9 +340,100 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, user }) => {
           </div>
         )}
 
+        {step === 4 && 
+          (
+            <div>
+            <h2 className="text-2xl font-semibold mb-6">Review Your Task</h2>
+      
+            {formData.image && (
+                <div className="mb-6">
+                  <p className="text-sm font-medium mb-2">Image Preview</p>
+                  <div className="relative group inline-block">
+                    {/* Thumbnail */}
+                    <Image
+                      loader={myImageLoader}
+                      quality={75}
+                      width={64}
+                      height={64}
+                      src={formData.image}
+                      alt="Thumbnail"
+                      className="rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer object-cover w-16 h-16"
+                    />
+
+                    {/* Hover Preview */}
+                    <div className="absolute z-50 hidden group-hover:flex top-0 left-20 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-700 shadow-xl transition-all duration-200">
+                      <Image
+                        loader={myImageLoader}
+                        src={formData.image}
+                        alt="Full Preview"
+                        width={300}
+                        height={200}
+                        className="rounded-md object-contain max-w-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+      
+      <div className="space-y-3">
+  {/* Title - full width */}
+  <div>
+    <p className="text-sm font-medium">Title</p>
+    <p className="text-lg font-semibold">{formData.title || '—'}</p>
+  </div>
+
+  {/* Description - full width */}
+  <div>
+    <p className="text-sm font-medium">Description</p>
+    <p className="text-lg">{formData.description || '—'}</p>
+  </div>
+
+  {/* Paired fields in two-column grid */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <p className="text-sm font-medium">Platform</p>
+      <p className="text-lg">{formData.platform || '—'}</p>
+    </div>
+
+    <div>
+      <p className="text-sm font-medium">Engagement Type</p>
+      <p className="text-lg">{formData.engagementType || '—'}</p>
+    </div>
+
+    <div>
+      <p className="text-sm font-medium">Reward Points</p>
+      <p className="text-lg">{formData.rewardPoints || '—'}</p>
+    </div>
+
+    <div>
+      <p className="text-sm font-medium">Max Participants</p>
+      <p className="text-lg">{formData.maxParticipants || '—'}</p>
+    </div>
+
+    <div>
+      <p className="text-sm font-medium">Expiration</p>
+      <p className="text-lg">{formData.expiration || '—'}</p>
+    </div>
+
+    <div>
+      <p className="text-sm font-medium">Task Link</p>
+      <a
+        href={formData.taskLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 dark:text-blue-400 underline break-all"
+      >
+        {formData.taskLink || '—'}
+      </a>
+    </div>
+  </div>
+</div>
+
+          </div>
+          )
+        }              
+
         <HR />
-
-
 
         <div className="flex justify-between mt-4">
           {step > 1 && <button className="bg-gray-600 p-2 rounded" onClick={handleBack}>Back</button>}

@@ -1,6 +1,5 @@
-import { Button, Label, FileInput } from 'flowbite-react';
-import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import { Label, FileInput } from 'flowbite-react';
+import React, { useState } from 'react';
 
 const ImageUpload = ({ handleSuccess }: {
     handleSuccess: (url: string) => void

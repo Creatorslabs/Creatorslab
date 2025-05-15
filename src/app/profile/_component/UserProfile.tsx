@@ -43,32 +43,32 @@ const UserProfile = ({ dbUser, user }) => {
 
 
   useEffect(() => {
-  if (!dbUser?.participatedTasks) return;
-
-  const remappedTasks = dbUser.participatedTasks.map((task) => ({
-    creator: {
-      username: task.task.creator.username,
-      id: task.task.creator._id.toString(), 
-    },
-    type: task.task.type,
-    platform: task.task.platform,
-    target: task.task.target,
-    rewardPoints: task.task.rewardPoints,
-    maxParticipants: task.task.maxParticipants,
-    participants: task.task.participants.map((participant: any) =>
-      participant.toString()
-    ),
-    status: task.status,
-    expiration: task.task.expiration ? new Date(task.task.expiration) : undefined,
-  }));
-
-  setParticipatedTasks((prevTasks) => {
-    // Avoid unnecessary state updates
-    const isSame = JSON.stringify(prevTasks) === JSON.stringify(remappedTasks);
-    return isSame ? prevTasks : remappedTasks;
-  });
-}, [dbUser]);
-
+    if (!dbUser?.participatedTasks) return;
+  
+    const remappedTasks = dbUser.participatedTasks
+      .filter((task) => task?.task) // guard against undefined task
+      .map((task) => ({
+        creator: {
+          username: task.task.creator?.username ?? '',
+          id: task.task.creator?._id?.toString() ?? '',
+        },
+        type: task.task.type,
+        platform: task.task.platform,
+        target: task.task.target,
+        rewardPoints: task.task.rewardPoints,
+        maxParticipants: task.task.maxParticipants,
+        participants: (task.task.participants || []).map((participant: any) =>
+          participant?.toString?.() ?? ''
+        ),
+        status: task.status,
+        expiration: task.task.expiration ? new Date(task.task.expiration) : undefined,
+      }));
+  
+    setParticipatedTasks((prevTasks) => {
+      const isSame = JSON.stringify(prevTasks) === JSON.stringify(remappedTasks);
+      return isSame ? prevTasks : remappedTasks;
+    });
+  }, [dbUser?.participatedTasks]);
 
   return (
     <div className="w-full">

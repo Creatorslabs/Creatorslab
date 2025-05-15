@@ -6,7 +6,7 @@ function CTA() {
   return (
     <div className="relative m-6 md:m-8 rounded-md overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <div className="relative w-full h-full">
+        {/* <div className="relative w-full h-full">
           <Image
             src="/images/landing-page/Frame 44.png"
             alt="creator-background"
@@ -17,7 +17,7 @@ function CTA() {
             }}
             loading="lazy"
           />
-        </div>
+        </div> */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#5D3FD1] via-[#03ABFF] to-[#F4B30C] opacity-80 mix-blend-multiply"></div>
       </div>
 

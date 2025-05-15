@@ -81,14 +81,12 @@ const ImageUploader = ({ onImageUpload }) => {
 
           if (!response.ok) throw new Error("Failed to upload!");
 
-          const { url } = await response.json(); 
+          const { url } = await response.json();
 
           // Simulating API response delay
           await new Promise(resolve => setTimeout(resolve, 2000));
           clearInterval(progressInterval);
           setUploadProgress(100);
-
-          console.log("Image URL:", url);
           
           onImageUpload(url);
       } catch (error) {
@@ -101,56 +99,68 @@ const ImageUploader = ({ onImageUpload }) => {
   };
 
   return (
-      <div className="w-full">
-          {previewUrl ? (
-              <div className="mb-4 relative">
-                  <Image
-                      src={previewUrl}
-                      alt="Preview"
-                      className="w-full max-h-32 object-contain rounded-lg"
-                      height={100}
-                      width={100}
-                  />
-                  <Button
-                      color="blue"
-                      size="sm"
-                      className="absolute top-2 right-2 bg-white bg-opacity-70"
-                      onClick={() => {
-                          setPreviewUrl("");
-                          setFile(null);
-                          setUploadProgress(0);
-                          setIsUploading(false)
-                      }}
-                  >
-                      Change
-                  </Button>
-              </div>
-          ) : (
-              <Label
-                  htmlFor="dropzone-file"
-                  className={`flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed ${
-                      uploadError ? "border-red-500 bg-red-50" : "border-gray-300 bg-gray-50 hover:bg-gray-100"
-                  }`}
-              >
-                  <div className="flex flex-col items-center justify-center pb-6 pt-5 w-full">
-                      <p className="mb-2 text-sm text-gray-500">
-                          <span className="font-semibold">Click to upload</span> or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 5MB)</p>
-                      {uploadError && <p className="text-red-500 text-sm mt-2">{uploadError}</p>}
-                  </div>
-                  <FileInput id="dropzone-file" className="hidden" onChange={handleFileChange} accept="image/*" disabled={isUploading} />
-              </Label>
-          )}
-
-          {isUploading && (
-              <p className="text-sm text-gray-500 mt-1 text-center">Uploading... {uploadProgress}%</p>
-          )}
-
-          {previewUrl.trim().length !== 0 && !isUploading && (
-              <Button onClick={uploadImage}>Upload</Button>
-          )}
+    <div className="w-full">
+    {previewUrl ? (
+      <div className="mb-4 relative bg-[#F7F8F9] dark:bg-[#242424] p-2 rounded-lg">
+        <Image
+          src={previewUrl}
+          alt="Preview"
+          className="w-full max-h-32 object-contain rounded-lg"
+          height={100}
+          width={100}
+        />
+        <Button
+          color="blue"
+          size="sm"
+          className="absolute top-2 right-2 bg-white bg-opacity-70"
+          onClick={() => {
+            setPreviewUrl("");
+            setFile(null);
+            setUploadProgress(0);
+            setIsUploading(false);
+          }}
+        >
+          Change
+        </Button>
       </div>
+    ) : (
+      <Label
+        htmlFor="dropzone-file"
+        className={`flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors ${
+          uploadError
+            ? "border-red-500 bg-red-50 dark:bg-red-950"
+            : "border-gray-300 bg-gray-50 hover:bg-gray-100 bg-[#F7F8F9] dark:bg-[#242424] dark:hover:bg-[#1a1c1f]"
+        }`}
+      >
+        <div className="flex flex-col items-center justify-center pb-6 pt-5 w-full">
+          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+            <span className="font-semibold">Click to upload</span> or drag and drop
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            SVG, PNG, JPG or GIF (MAX. 5MB)
+          </p>
+          {uploadError && <p className="text-red-500 text-sm mt-2">{uploadError}</p>}
+        </div>
+        <FileInput
+          id="dropzone-file"
+          className="hidden"
+          onChange={handleFileChange}
+          accept="image/*"
+          disabled={isUploading}
+        />
+      </Label>
+    )}
+  
+    {isUploading && (
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 text-center">
+        Uploading... {uploadProgress}%
+      </p>
+    )}
+  
+    {previewUrl.trim().length !== 0 && !isUploading && (
+      <Button onClick={uploadImage}>Upload</Button>
+    )}
+  </div>  
   );
 };
 

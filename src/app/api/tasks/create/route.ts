@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
     const requiredFields = [
       "creatorId",
       "title",
+      "image",
       "type",
       "platform",
       "description",
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
     const {
       creatorId,
       title,
+      image,
       type,
       platform,
       description,
@@ -56,6 +58,7 @@ export async function POST(req: NextRequest) {
     const task = await Task.create({
       creator: creator._id,
       title,
+      image,
       type,
       platform,
       description,

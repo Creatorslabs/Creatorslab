@@ -31,7 +31,7 @@ const returnCreatorUsername = (creator) => {
 }
 
 const returnCreatorid = (creator) => {
-  return creator._id
+  return creator._id || creator.id;
 }
 
 const Page = () => {
@@ -277,9 +277,15 @@ const Page = () => {
                   {task.title}
                 </p>
               </div>
-              <Link href={task.target} className="px-4 py-2 bg-[#222222] rounded-lg text-white">
-                visit
-                  </Link></div>
+              <Link 
+                  href={task.target} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-[#222222] rounded-lg text-white"
+                >
+                  visit
+                </Link>
+                </div>
                 <ImageUpload handleSuccess={updateProofUrl} />
             </div>
 

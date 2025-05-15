@@ -109,6 +109,8 @@ const TaskSchema = new Schema<ITask>({
   participants: [{ type: String, ref: "User", default: [] }],
   status: { type: String, enum: ["active", "completed"], default: "active" },
   expiration: Date,
+}, {
+  timestamps: true
 });
 
 TaskSchema.pre("save", function (next) {

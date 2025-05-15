@@ -6,10 +6,11 @@ export async function GET() {
   try {
     await connectDB();
 
-    // Fetch all active tasks sorted by newest first
     const tasks = await Task.find({ status: "active" })
       .populate("creator", "_id username email photo")
       .sort({ createdAt: -1 });
+    
+    console.log(tasks[1])
 
     return NextResponse.json(tasks);
   } catch (error) {
