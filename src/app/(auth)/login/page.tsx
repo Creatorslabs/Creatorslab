@@ -112,7 +112,7 @@ const fetchUser = React.useCallback(async (user: User) => {
 }, []);
 
 const authCallback = async ({ user, isNewUser }) => {
-  try {    
+  try {
     if (isNewUser) {
       const newUser = await fetchUser(user);
       if (newUser) {
@@ -121,8 +121,11 @@ const authCallback = async ({ user, isNewUser }) => {
     } else {
       router.push(redirectTo);
     }
+  } catch (error) {
+    console.error("Error in authCallback:", error);
+    setError("An unexpected error occurred");
   }
-};
+}
 
     const handleError = (error) => {
       console.error("Authentication Error:", error);
