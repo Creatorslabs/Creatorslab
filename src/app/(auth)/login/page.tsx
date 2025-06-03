@@ -3,16 +3,16 @@ import React, { FC, Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "@solana/wallet-adapter-react-ui/styles.css";
-// import { TiSocialTwitter } from "react-icons/ti";
-// import { FaDiscord, FaWallet } from "react-icons/fa";
-// import { IoMdMail } from "react-icons/io";
+import { TiSocialTwitter } from "react-icons/ti";
+import { FaDiscord, FaWallet } from "react-icons/fa";
+import { IoMdMail } from "react-icons/io";
 import { useRouter, useSearchParams } from "next/navigation";
 import { InputOtp } from "@heroui/input-otp";
 
 import {
+  useConnectWallet,
   useLoginWithEmail,
-  // useLoginWithOAuth,
-  // useConnectWallet,
+  useLoginWithOAuth,
   User,
 } from "@privy-io/react-auth";
 import { DarkThemeToggle } from "flowbite-react";
@@ -24,6 +24,7 @@ const Comp: FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("next") || "/tasks";
@@ -48,56 +49,51 @@ const Comp: FC = () => {
       }
     };
 
-  const authCallback = async ({ user, isNewUser }) => {
+ const authCallback = async ({ user, isNewUser }) => {
+  setLoading(true); 
+
   if (isNewUser) {
     const newUser = await fetchUser(user);
     if (newUser) {
       setIsModalOpen(true);
+      return;
     }
   } else {
     router.push(redirectTo);
   }
 };
 
-  const {
-    sendCode: sendCodeEmail,
-    loginWithCode: loginWithCodeEmail,
-    state: stateEmail,
-  } = useLoginWithEmail({
-    onComplete: authCallback,
-    onError: (error) => {
-      console.log(error);
-      setError(error);
-    },
-  });
+const handleError = (error) => {
+  console.error("Authentication Error:", error);
+  setError(error);
+  setLoading(false);
+};
 
-  // const { initOAuth } = useLoginWithOAuth({
-  //   onComplete: authCallback,
-  //   onError: (error) => {
-  //     console.log(error);
-  //     setError(error);
-  //   },
-  // });
+const { sendCode: sendCodeEmail, loginWithCode: loginWithCodeEmail, state: stateEmail } = useLoginWithEmail({
+  onComplete: authCallback,
+  onError: handleError,
+});
 
-  // const { connectWallet } = useConnectWallet({
-  //   onSuccess: ({ wallet }) => {
-  //     console.log(wallet.address);
-  //     router.push(redirectTo);
-  //   }, 
-  //   onError: (error) => {
-  //     console.log(error);
-  //     setError(error);
-  //   },
-  // });
+const { initOAuth } = useLoginWithOAuth({
+  onComplete: authCallback,
+  onError: handleError,
+});
+
+const { connectWallet } = useConnectWallet({
+  onSuccess: ({ wallet }) => {
+    console.log(wallet.address);
+    router.push(redirectTo);
+  },
+  onError: handleError,
+});
 
 
-
-  // const [loginType, setLoginType] = useState(1);
+  const [loginType, setLoginType] = useState(1);
   const [email, setEmail] = useState("");
   const [codeEmail, setCodeEmail] = useState("");
   const [emailState, setEmailState] = useState(stateEmail.status as string);
 
-  // Update email status
+
   useEffect(() => {
     if (stateEmail.status === "error" && stateEmail.error) {
       const message = `Error ${stateEmail.error.message}`;
@@ -126,9 +122,9 @@ const Comp: FC = () => {
         <div className="border border-[#F1F2F4] rounded-lg max-w-[350px] md:max-w-[450px] w-full m-auto p-4 md:p-8  mt-10 md:mt-0 shadow-lg">
           <h2 className="font-syne font-bold text-xl">Welcome to CreatorsLab</h2>
           <p className="text-sm text-[#606060]">Join the global community of content creators and earn.</p>
-          {/* {loginType === 2 ? (
+          {loginType === 2 ? (
             <div className="flex flex-col my-4 text-sm">Login with wallet</div>
-          ) : ( */}
+          ) : (
             <div className="w-full py-2">
               {emailState === "awaiting-code-input" ? (
                 <>
@@ -183,9 +179,9 @@ const Comp: FC = () => {
                   OTP sent successfully, please check your email!
                 </p>
               )}
-            </div>
+            </div>)}
 
-          {/* <div className="flex flex-row gap-2 items-center">
+          <div className="flex flex-row gap-2 items-center">
             <div className="flex-1 border-t border-[#3f3f3f]"></div>
             <p className="text-sm text-[#3f3f3f] font-bold">OR</p>
             <div className="flex-1 border-t border-[#3f3f3f]"></div>
@@ -236,7 +232,7 @@ const Comp: FC = () => {
                 </button>
               )}
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
        <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

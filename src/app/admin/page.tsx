@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import AdminHeader from '../components/admin-header'
 import { useRouter } from 'next/navigation';
 import AdminCard from '../components/admin-card';
@@ -148,10 +148,10 @@ const columns: ColumnDef<UserData>[] = [
 ];
 
 const Dashboard = () => {
-  const [page, setPage] = useState(0);
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
+  // const [page, setPage] = useState(0);
+  // const handlePageChange = (newPage: number) => {
+  //   setPage(newPage);
+  // };
 
   const router = useRouter();
 

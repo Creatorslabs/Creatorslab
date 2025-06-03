@@ -158,6 +158,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, user }) => {
   try {
     const payload = {
       creatorId: clipBeforeLastColon(user.id),
+      image: formData.image,
       title: formData.title,
       description: formData.description,
       type: formData.engagementType.toLowerCase(),

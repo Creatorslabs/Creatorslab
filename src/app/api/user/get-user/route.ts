@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
   try {
     const { privyId, referrerCode } = await req.json();
 
-    // Validate request
     if (!privyId) {
       return NextResponse.json(
         { error: "Privy ID is required" },
@@ -18,7 +17,6 @@ export async function POST(req: NextRequest) {
 
     await connectDB();
 
-    // Check if user already exists
     let user = await User.findOne({ _id: privyId });
 
     if (!user) {
@@ -31,9 +29,7 @@ export async function POST(req: NextRequest) {
 
       await user.save();
 
-      // Handle referral system if referrerCode is provided
       if (referrerCode) {
-        // Find referrer by referralCode
         const referrer = await User.findOne({ referralCode: referrerCode });
 
         if (!referrer) {
@@ -43,7 +39,6 @@ export async function POST(req: NextRequest) {
           );
         }
 
-        // Prevent self-referral
         if (referrer._id.toString() === privyId) {
           return NextResponse.json(
             { error: "You cannot refer yourself" },
@@ -51,7 +46,6 @@ export async function POST(req: NextRequest) {
           );
         }
 
-        // Increment referrer's balance by 3
         await User.findByIdAndUpdate(
           referrer._id,
           { $inc: { balance: 3 } },

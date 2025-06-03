@@ -1,6 +1,43 @@
-import Image from "next/image";
+"use client"
 
-const CreatorTasksTable = () => {
+import axios from "axios";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+const CreatorTasksTable = ({creatorId}: {creatorId: string}) => {
+  const [tasks, setTasks] = useState([])
+  const [error, setError] = useState("")
+
+ useEffect(() => {
+   const fetchTasks = async () => {
+     try {
+       setError("");
+        const res = await fetch("/api/tasks/get-by-creator", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ creatorId }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          setError(data.error || "Failed to fetch tasks");
+          setTasks([]);
+        } else {
+          setTasks(data);
+        }
+      } catch (err: any) {
+        console.error("Request failed:", err.message);
+        setError("Something went wrong while fetching tasks.");
+        setTasks([]);
+      }
+    };
+
+    fetchTasks();
+ }, [creatorId]);
+  
   return (
     <div className="creator-tasks-table max-h-[500px] overflow-hidden w-full bg-white dark:bg-[#161616] text-black dark:text-white">
       {/* Header with Search */}
@@ -35,7 +72,7 @@ const CreatorTasksTable = () => {
             </tr>
           </thead>
           <tbody>
-            {[...Array(19)].map((_, index) => (
+            {tasks ? tasks.map((_, index) => (
               <tr
                 key={index}
                 className="border-b border-gray-300 dark:border-gray-700"
@@ -62,7 +99,8 @@ const CreatorTasksTable = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            )) : <tr className="text-center text-sm">No tasks created yet!</tr>}
+            {error && <p className="text-sm text-red">{ error }</p> }
           </tbody>
         </table>
       </div>

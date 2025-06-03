@@ -1,4 +1,3 @@
-// pages/api/upload.js (Next.js API route)
 import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 
@@ -9,6 +8,7 @@ export async function POST(request) {
   try {
     const form = await request.formData();
     const file = form.get('file');
+    const type = form.get('type')
 
     if (!file) {
       return NextResponse.json(
@@ -26,11 +26,10 @@ export async function POST(request) {
 
     const fileExtension = file.name.split('.').pop();
     
-    const filename = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${fileExtension}`;
+    const filename = `${type}/${type}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExtension}`;
 
     const blob = await put(filename, file, {
       access: 'public',
-      // You can add more options here as needed
     });
 
     return NextResponse.json({

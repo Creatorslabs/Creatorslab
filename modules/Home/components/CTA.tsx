@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react'
 
-const ResponsiveBackgroundSection = () => {
+function CTA() {
   return (
     <div className="relative m-6 md:m-8 rounded-md overflow-hidden">
       <div className="absolute inset-0 z-0">
@@ -12,30 +13,36 @@ const ResponsiveBackgroundSection = () => {
             fill
             className="object-contain md:object-cover"
             style={{
-              objectPosition: 'center'
+              objectPosition: "center",
             }}
-                      loading="lazy"
+            loading="lazy"
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-[#5D3FD1] via-[#03ABFF] to-[#F4B30C] opacity-80 mix-blend-multiply"></div>
       </div>
-      
+
       <div className="relative z-10 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex flex-col gap-3 w-full md:w-[50%] items-start justify-center text-white">
           <h3 className="text-2xl md:text-3xl font-syne font-bold">
             Earn, Engage and Expand with Creatorslab.
           </h3>
           <p className="text-sm md:text-base">
-            We are building more than just a platform, we&apos;re creating a decentralized social network where builders and content creators thrive.
+            We are building more than just a platform, we&apos;re creating a
+            decentralized social network where builders and content creators
+            thrive.
           </p>
           <p className="text-sm md:text-base">
-            Expand your reach, grow your influence, and connect with a global Web3 community that values engagement.
+            Expand your reach, grow your influence, and connect with a global
+            Web3 community that values engagement.
           </p>
-          <Link href="/tasks" className="mt-2 p-3 rounded-md bg-white bg-opacity-20 hover:bg-opacity-30 transition-all">
+          <Link
+            href="/tasks"
+            className="mt-2 p-3 rounded-md bg-white bg-opacity-20 hover:bg-opacity-30 transition-all"
+          >
             Become a member
           </Link>
         </div>
-        
+
         <div className="w-full md:w-auto flex justify-center md:justify-end">
           <Image
             src="/images/landing-page/Group 11.png"
@@ -48,6 +55,6 @@ const ResponsiveBackgroundSection = () => {
       </div>
     </div>
   );
-};
+}
 
-export default ResponsiveBackgroundSection;
+export default CTA
