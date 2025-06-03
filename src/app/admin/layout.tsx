@@ -7,9 +7,9 @@ export default function ProductDetailsLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex h-screen text-white">
+        <div className="flex flex-col md:flex-row h-screen text-white">
             <SideBar />
-            <main className="flex-1 p-6 overflow-auto">{children}</main>
+            <main className="flex-1 p-2 md:p-6 overflow-auto">{children}</main>
         </div>
     )
 }

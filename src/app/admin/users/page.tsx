@@ -165,12 +165,12 @@ const Users = () => {
   }
 
   return (
-    <div className="max-w-[1600px] mx-auto">
+    <div className="max-w-[1600px] mx-auto w-full px-2 sm:px-4">
       <AdminHeader 
         title='Users' 
       />
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 sm:p-5'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-2 sm:p-5'>
         <AdminCard 
           icon='/images/admin/totalusers.svg'
           title='Total Users'
@@ -190,8 +190,8 @@ const Users = () => {
         />
       </div>
 
-      <div className='p-4 sm:p-5'>
-        <div className='rounded-lg p-4 sm:p-5 border border-gray-600'>
+      <div className='p-2 sm:p-5'>
+        <div className='rounded-lg p-2 sm:p-5 border border-gray-600 overflow-x-auto'>
           <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5'>
             <h2 className="text-lg font-semibold">Users List</h2>
             <button className='bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700' onClick={handleAddUser}>
@@ -199,7 +199,7 @@ const Users = () => {
             </button>
           </div>
 
-          <div className="overflow-hidden">
+          <div className="overflow-x-auto">
             {loading ? (
               <div className="py-8 text-center">Loading users...</div>
             ) : error ? (
