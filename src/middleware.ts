@@ -29,8 +29,6 @@ export function middleware(req: NextRequest) {
 
   // Redirect everything else to /waitlist
   return NextResponse.redirect(new URL("/waitlist", req.url));
-
-    return NextResponse.next();
 }
 
 export const config = {

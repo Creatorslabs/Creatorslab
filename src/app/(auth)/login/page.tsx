@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, Suspense, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "@solana/wallet-adapter-react-ui/styles.css";

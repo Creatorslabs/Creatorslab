@@ -1,4 +1,5 @@
 "use client";
+
 import { PrivyProvider } from "@privy-io/react-auth";
 import { SessionProvider } from "next-auth/react";
 import { FC, ReactNode } from "react";
